@@ -1,16 +1,18 @@
-// Headless boot smoke test — SF Thread-4 (political). Serves the real index.html and
-// drives it in Chromium via Playwright (.github/workflows/smoke-test.yml on every
-// PR). Asserts both the network-free deliverables and the offline classification:
-// the app boots on the SF map, registers EXPECT_LAYERS layers with no console
-// errors, is SF-branded, and degrades a base-map tile outage to a dismissible
-// banner; the three offline anchors (supervisor / neighborhood / police-district)
-// classify SF City Hall against the ground truth from same-origin data/app files,
-// and the negative Bay point honestly reports no district (never snaps to nearest).
-// The ZIP stub, the station + schools layers, and the three legislative chambers
-// (U.S. House / CA Senate / CA Assembly, live Census TIGERweb) are live
-// DataSF/TIGERweb — not reachable from CI/sandbox — so they are asserted present
-// (registered) only; their classification lands with the live-API threads (this
-// gate is re-derived each thread — docs/METRO_EXPANSION_PLAYBOOK.md §9).
+// Headless boot smoke test — SF Thread-5 (pipeline: pre-built legislative geometry).
+// Serves the real index.html and drives it in Chromium via Playwright
+// (.github/workflows/smoke-test.yml on every PR). Asserts both the network-free
+// deliverables and the offline classification: the app boots on the SF map,
+// registers EXPECT_LAYERS layers with no console errors, is SF-branded, and
+// degrades a base-map tile outage to a dismissible banner; the three offline
+// anchors (supervisor / neighborhood / police-district) classify SF City Hall
+// against the ground truth from same-origin data/app files, and the negative Bay
+// point honestly reports no district (never snaps to nearest); the three
+// legislative chambers (U.S. House / CA Senate / CA Assembly) now classify City
+// Hall from pre-built, SF-clipped same-origin geometry too. The ZIP stub and the
+// station + schools layers remain live DataSF/TIGERweb — not reachable from
+// CI/sandbox — so they are asserted present (registered) only; their
+// classification lands with the roster thread (this gate is re-derived each
+// thread — docs/METRO_EXPANSION_PLAYBOOK.md §9).
 //
 // Run locally against a static server:
 //     python3 -m http.server 8000 &
@@ -40,8 +42,8 @@ const BASE = process.env.BASE_URL || "http://localhost:8000/";
 const POINT = "37.77927,-122.41924"; // SF City Hall (Civic Center)
 const OFFLINE = ["supervisor-district", "neighborhood", "police-district"];
 const EXPECT_DISTRICT = { "supervisor-district": "5", "neighborhood": "Tenderloin", "police-district": "NORTHERN" };
-const NEGATIVE_POINT = "37.80000,-122.35500"; // San Francisco Bay (open water east of the Embarcadero) - outside all shoreline-clipped anchors
-const EXPECT_LAYERS = 11; // Thread-4: +3 legislative chambers (US House / CA Senate / CA Assembly, live TIGERweb) atop the 8 civic layers
+const NEGATIVE_POINT = "37.74000,-122.59000"; // Open Pacific west of Ocean Beach, beyond CA state waters - outside every layer, including the water-inclusive TIGERweb legislative chambers
+const EXPECT_LAYERS = 11; // Thread-5: legislative chambers now pre-built SF-clipped geometry (data/app); 11 layers total
 // ==== GENERATED:END smoke-config ====
 const BOOT_TIMEOUT = 45000; // Leaflet + first paint on a cold CI runner
 const QUERY_TIMEOUT = 25000;
@@ -82,7 +84,7 @@ async function cardText(page, id) {
 
 const browser = await chromium.launch();
 try {
-  // 1. App boots on the SF map with the Thread-4 layers, SF-branded, clean console.
+  // 1. App boots on the SF map with the Thread-5 layers, SF-branded, clean console.
   {
     const context = await browser.newContext({ serviceWorkers: "block" });
     const page = await context.newPage();
@@ -125,11 +127,8 @@ try {
     const schoolsOk = await page.evaluate(() =>
       !!document.getElementById("toggle-elementary-attendance-area") && !!document.getElementById("toggle-school-site"));
     check("elementary-zone + school-site layers present", schoolsOk);
-    // The three legislative chambers are live TIGERweb — assert they register.
-    const chambersOk = await page.evaluate(() =>
-      !!document.getElementById("toggle-congress") && !!document.getElementById("toggle-ca-senate") &&
-      !!document.getElementById("toggle-ca-assembly"));
-    check("US House + CA Senate + CA Assembly layers present", chambersOk);
+    // (The three legislative chambers are asserted by offline classification in
+    // block 2c below, now that their geometry is pre-built same-origin.)
 
     check("no console errors during boot", consoleErrors.length === 0, consoleErrors.slice(0, 2).join(" | "));
 
@@ -168,6 +167,28 @@ try {
     await context.close();
   }
 
+  // 2c. The three legislative chambers classify City Hall from pre-built,
+  //     SF-clipped same-origin geometry (data/app) — deterministic, no live API.
+  //     They use water-inclusive TIGERweb boundaries, so — unlike the
+  //     shoreline-clipped anchors — they legitimately DO contain the negative Bay
+  //     point (§7); they are checked positive-only here, deliberately not in the
+  //     negative-point block above.
+  {
+    const CHAMBERS = { "congress": "11", "ca-senate": "11", "ca-assembly": "17" };
+    const ids = Object.keys(CHAMBERS);
+    const context = await browser.newContext({ serviceWorkers: "block" });
+    const page = await context.newPage();
+    await routeLeaflet(page);
+    await page.goto(`${BASE}#point=${POINT}&layers=${ids.join(",")}`, { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(() => !!window.SFExplorer, null, { timeout: BOOT_TIMEOUT });
+    for (const id of ids) {
+      const c = await cardText(page, id);
+      const want = CHAMBERS[id];
+      check(`${id} classifies City Hall (District ${want})`, !c.error && c.text.includes(want), c.text.slice(0, 70));
+    }
+    await context.close();
+  }
+
   // 3. Base-map tile failure surfaces an honest, dismissible banner (engine behaviour).
   {
     const context = await browser.newContext({ serviceWorkers: "block" });
@@ -198,4 +219,4 @@ if (failures.length) {
   console.error(`\n${failures.length} smoke check(s) failed: ${failures.join(", ")}`);
   process.exit(1);
 }
-console.log("\nAll SF Thread-4 smoke checks passed.");
+console.log("\nAll SF Thread-5 smoke checks passed.");
