@@ -59,8 +59,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Any failure here — including a missing release — FAILS the deploy:
-      # the site never ships without hash-verified engine assembly. (The
+      # Download from the engine's SOURCE repo (engine.lock.json.source_repo),
+      # not this fork's own repo: the engine is published once by the reference
+      # implementation (CHI) and every fork consumes those exact hash-pinned
+      # bytes — this is what the source_repo pin is for. A fork that publishes no
+      # engine release of its own (a pure consumer, like this one) still deploys.
+      # source_repo is public, so github.token reads its releases fine.
+      # Any failure here — including a missing release — FAILS the deploy: the
+      # site never ships without hash-verified engine assembly. (The
       # bootstrap-window skip guard that used to live here was deleted after
       # engine-v1.0.0 published, per its TODO.)
       - name: Fetch pinned engine release
@@ -68,7 +74,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release download "$(jq -r .engine_version engine.lock.json)" \
-            --repo "$GITHUB_REPOSITORY" \
+            --repo "$(jq -r .source_repo engine.lock.json)" \
             --pattern 'engine.bundle.js' --pattern 'engine.manifest.json' --clobber
 
       # The TWO spaces between hash and filename are load-bearing — a single
