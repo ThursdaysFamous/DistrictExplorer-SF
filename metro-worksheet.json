@@ -125,22 +125,36 @@
       "rank_note": "SF Analysis Neighborhood (41) - smallest polygon layer"
     },
     {
+      "id": "elementary-attendance-area",
+      "label": "Elementary Attendance Area",
+      "group": "schools",
+      "area_rank": 5,
+      "rank_note": "SFUSD elementary attendance area (58; lottery tiebreaker, not a guaranteed seat)"
+    },
+    {
       "id": "police-station",
       "label": "Police Station",
       "group": "safety",
-      "area_rank": 5,
+      "area_rank": 6,
       "rank_note": "SFPD station house (nearest 3, straight-line; 10 stations) - point layer, topmost"
     },
     {
       "id": "fire-station",
       "label": "Fire Station",
       "group": "safety",
-      "area_rank": 6,
+      "area_rank": 7,
       "rank_note": "SFFD firehouse (nearest 3, straight-line; 44 active stations) - point layer, topmost"
+    },
+    {
+      "id": "school-site",
+      "label": "School Location",
+      "group": "schools",
+      "area_rank": 8,
+      "rank_note": "Every active SF school (nearest 3, straight-line; 232 public/charter/private) - point layer, topmost"
     }
   ],
-  "min_register_layer": 6,
-  "layer_count_note": "Thread-2: 3 offline anchors + ZIP stub + police/fire station points (nearest-3)",
+  "min_register_layer": 7,
+  "layer_count_note": "Thread-3: offline anchors + ZIP stub + police/fire stations + SFUSD elementary zone + school points",
   "anchor_point": {
     "lat": 37.77927,
     "lng": -122.41924,
