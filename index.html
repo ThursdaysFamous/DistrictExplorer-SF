@@ -3380,8 +3380,10 @@ function initSFExplorer() {
     "police-district",   // SFPD district (10)
     "zip-code",          // national ZCTA (Census TIGERweb), SF-bounded
     "neighborhood",      // SF Analysis Neighborhood (41) - smallest polygon layer
+    "elementary-attendance-area", // SFUSD elementary attendance area (58; lottery tiebreaker, not a guaranteed seat)
     "police-station",    // SFPD station house (nearest 3, straight-line; 10 stations) - point layer, topmost
-    "fire-station"       // SFFD firehouse (nearest 3, straight-line; 44 active stations) - point layer, topmost
+    "fire-station",      // SFFD firehouse (nearest 3, straight-line; 44 active stations) - point layer, topmost
+    "school-site"        // Every active SF school (nearest 3, straight-line; 232 public/charter/private) - point layer, topmost
   ];
   /* ==== GENERATED:END layer-area-rank ==== */
 
@@ -4895,13 +4897,6 @@ function initSFExplorer() {
   }
   /* ==== ENGINE:END int-field ==== */
 
-  /* ---------- builds a sanitized cps.edu school-profile link, or null if no id ---------- */
-  function schoolProfileHtml(schoolId) {
-    if (!schoolId) return null;
-    var url = "https://www.cps.edu/schools/schoolprofiles/" + encodeURIComponent(String(schoolId));
-    return '<a href="' + sanitize(url) + '" target="_blank" rel="noopener">School profile</a>';
-  }
-
   /* ==== ENGINE:BEGIN school-zone-factory ==== */
   function registerSchoolZone(opts) {
     // One point-in-polygon attendance-zone layer per school level. City-specific
@@ -5022,6 +5017,87 @@ function initSFExplorer() {
     });
   }
   /* ==== ENGINE:END cps-network-factory ==== */
+
+  /* =========================================================================
+   * THREAD 3 — SCHOOLS: SFUSD elementary attendance area + every school site.
+   * SF's governance differs from the reference on purpose:
+   *   - One unified district (SFUSD) with an AT-LARGE board -> the districted
+   *     school-board layer is dropped (recorded in Thread 0); no CPS-style
+   *     administrative "networks" exist, so registerCpsNetwork stays unused.
+   *   - Only ELEMENTARY attendance areas are published. SFUSD middle school is
+   *     a feeder pattern (no boundary dataset) and high school is citywide
+   *     choice (no zones) -> no middle/high zone layers (honest drop, recorded).
+   *   - Elementary assignment itself is a LOTTERY; the attendance area is only a
+   *     tiebreaker preference, never a guaranteed seat -> the zone card carries
+   *     that caveat, which is why it's a bespoke block, not registerSchoolZone.
+   * ======================================================================= */
+
+  /* ---------- SFUSD Elementary Attendance Area (point-in-polygon). 58 zones
+   * (DataSF "SFUSD School Attendance Areas", e6tr-sxwg — year-versioned 2024-25,
+   * so a Thread-5 freshness chore). Bespoke rather than the registerSchoolZone
+   * factory so the card can state the lottery caveat honestly. The dataset has
+   * no per-school address, so this layer drops no map pin (the School Location
+   * layer supplies addresses). ---------- */
+  var loadElementaryZones = makeCachedLoader("e6tr-sxwg");
+  var SFUSD_ENROLL_URL = "https://www.sfusd.edu/enroll";
+
+  registerLayer({
+    id: "elementary-attendance-area",
+    group: "schools",
+    label: "Elementary Attendance Area",
+    // hover popup: the zoned school name — same identity the card headline shows.
+    hoverName: function (feature) {
+      return findPropCI(feature.properties || {}, ["sch_lng_na", "aaname", "e_aa_name"]) || null;
+    },
+    overlay: {
+      load: loadElementaryZones,
+      style: { color: "#6A3FA0", weight: 1.5, fillColor: "#6A3FA0", fillOpacity: 0.06, dashArray: "4 3" }
+    },
+    query: function (point, seq) {
+      return loadElementaryZones().then(function (geojson) {
+        var feature = findFeatureContaining(geojson, point);
+        if (!feature) return null;
+        return { seq: seq, name: findPropCI(feature.properties || {}, ["sch_lng_na", "aaname", "e_aa_name"]) };
+      });
+    },
+    render: function (result) {
+      return renderFieldList([
+        { label: "Attendance-area school", value: result.name ? String(result.name) : "Unknown" },
+        { label: "School district", value: "San Francisco Unified (SFUSD)" },
+        { label: "How assignment works", value: "SFUSD assigns elementary seats by lottery. This attendance area is a tiebreaker preference for the school above — not a guaranteed seat." },
+        { label: "Enroll", html: '<a href="' + sanitize(SFUSD_ENROLL_URL) + '" target="_blank" rel="noopener">SFUSD enrollment</a>' }
+      ]);
+    }
+  });
+
+  /* ---------- School Location — every active school, nearest 3 (not point-in-
+   * polygon). DataSF "Schools" (7e7j-59qk): 232 active public, charter AND
+   * private schools, PK-12, with real Point geometry. A click almost never lands
+   * on a school point, so we answer with the nearest 3 by straight-line distance
+   * (same haversine pattern as Police/Fire Stations). status='Active' drops the
+   * lone Pending (not-yet-open) row, so a "nearest school" is always a real one. ---------- */
+  var loadSchoolSites = makeSocrataPointLoader("7e7j-59qk", "status='Active'", "latitude", "longitude");
+
+  registerNearestPointLayer({
+    id: "school-site",
+    group: "schools",
+    color: "#0F6F6F",
+    fill: "#4FB0A5",
+    label: "School Location",
+    loader: loadSchoolSites,
+    intro: "Nearest schools (public, charter & private), straight-line distance:",
+    line: function (props) {
+      var name = findPropCI(props, ["school", "school_name", "name"]);
+      var lo = findPropCI(props, ["low_grade"]);
+      var hi = findPropCI(props, ["high_grade"]);
+      var addr = findPropCI(props, ["street_address", "address"]);
+      var kind = findPropCI(props, ["charter_yesno"]) ? "charter"
+        : (findPropCI(props, ["public_yesno"]) === false ? "private" : "public");
+      var grades = (lo && hi) ? " (grades " + String(lo) + "-" + String(hi) + ", " + kind + ")" : " (" + kind + ")";
+      return (name ? String(name) : "School") + grades + (addr ? " — " + String(addr) : "");
+    }
+  });
+
   /* ---------- generic cached-promise wrapper (Socrata-geojson-specific
    * makeCachedLoader above predates this; this variant memoizes any loader
    * function, used here for the roster/geometry JSON fetches and TIGERweb) ---------- */

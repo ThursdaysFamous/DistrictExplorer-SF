@@ -123,6 +123,22 @@ Established from authoritative sources — **not** yet the playbook's endpoint-l
 
 The `nc68-ngbr` "Fire Station #%" filter excludes 12 non-station Fire-Department rows (HQ, Bureau of Equipment, Division of Training, Chief's Residence, and a decommissioned "Old Fire Station 21") — showing those as a "nearest station" would be dishonest.
 
+**Thread 3 — schools (2026-07-17):**
+
+| Layer | Dataset | Route / loader | Fields the card reads | Verified |
+|---|---|---|---|---|
+| `elementary-attendance-area` (point-in-polygon) | DataSF **SFUSD School Attendance Areas (2024-25)** `e6tr-sxwg` (58 elementary zones) | `.geojson` serves MultiPolygon → `makeCachedLoader`; **bespoke** `registerLayer` (not `registerSchoolZone`) so the card can state the lottery caveat | `sch_lng_na` (school), `aaname` | ✅ City Hall → Tenderloin Community School |
+| `school-site` (nearest 3) | DataSF **Schools** `7e7j-59qk`, `$where=status='Active'` (232 active; public/charter/private) | `.geojson` serves Point geometry, but we filter status → `makeSocrataPointLoader` | `school`, `low_grade`/`high_grade`, `charter_yesno`/`public_yesno`, `street_address` | ✅ City Hall → Mission Montessori / Tenderloin Community / Millennium |
+
+The elementary card carries an explicit honesty caveat — "SFUSD assigns elementary seats by lottery; this attendance area is a tiebreaker preference, not a guaranteed seat" — and links to `sfusd.edu/enroll` (verified 200). `e6tr-sxwg` is year-versioned (2024-25) → a Thread-5 freshness chore (a new `SY####` edition supersedes it).
+
+**Schools drops (no honest SF analog in open data — never invent, per §3 step 4):**
+- **Middle / High attendance zones** — only *elementary* attendance areas are published (the `e_aa_` field prefix). SFUSD middle school is a feeder pattern with no boundary dataset; high school is citywide choice with no zones. (CHI ships ES/MS/HS zones because CPS publishes all three; SF publishes only ES.)
+- **CPS-style administrative networks** — SFUSD is one undivided district with no "network" sub-regions carrying a named chief, so the inherited `registerCpsNetwork` factory stays unused.
+- **Districted school board** — already dropped in Thread 0 (SF's Board of Education is elected at-large).
+
+Also removed the inherited Chicago `schoolProfileHtml` helper (hardcoded `cps.edu`, unreferenced in the SF fork).
+
 ## Performance parity for the SF port (see playbook §13)
 
 The reference forks' measured perf campaign splits into what SF **already has** and what SF **must re-earn** — playbook §13 is the full guide; this is the SF-specific cut.
