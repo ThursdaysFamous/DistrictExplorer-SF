@@ -54,6 +54,9 @@ const SHELL_URLS = [
 // works offline) and refresh in the background. Precached at install so
 // those layers work offline.
 const GEOMETRY_URLS = [
+  "./data/app/supervisor-districts.json",
+  "./data/app/sf-neighborhoods.json",
+  "./data/app/police-districts.json",
 ];
 
 // Roster/officeholder data (also in data/app/) is refreshed by the weekly CI
