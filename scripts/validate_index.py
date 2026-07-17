@@ -96,6 +96,9 @@ GEOMETRY_FILES = {
     "supervisor-districts.json": (11, 11),
     "sf-neighborhoods.json": (41, 41),
     "police-districts.json": (10, 10),
+    "congress-districts.json": (6, 6),
+    "ca-senate-districts.json": (4, 4),
+    "ca-assembly-districts.json": (8, 8),
 }
 
 # file -> minimum key count (officeholder rosters).

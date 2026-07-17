@@ -153,6 +153,22 @@ All three register through the shared `registerIlgaChamber` factory with **live 
 
 **Removed dead code:** the inherited Chicago Cook County political loader (`loadCookCountyLayerGeoJSON` / `COOK_COUNTY_POLITICAL_BOUNDARY`) — a Thread-0 re-core miss (its layer registration was deleted but the helper survived, unreferenced). The Cook County Commissioner / Board of Review analogs were already dropped in Thread 0 (SF has no county board separate from the Supervisors).
 
+**Thread 5 (pipeline, part 1) — pre-built legislative geometry (2026-07-17):**
+
+The three chambers moved from live TIGERweb to same-origin, cache-first `data/app` files via `build_legislative_boundaries.py` (wired through the `opts.loadDistricts` hook):
+
+| File | Districts (SF window) | Size | Validation (2,000-point protocol) |
+|---|---|---|---|
+| `congress-districts.json` | 6 | 11.9 KB | 99.95% agreement, 0 overlaps |
+| `ca-senate-districts.json` | 4 | 11.3 KB | 100% agreement, 0 overlaps |
+| `ca-assembly-districts.json` | 8 | 24.0 KB | 100% agreement, 0 overlaps |
+
+**SF-specific builder deviation (recorded):** unlike the reference (which ships Illinois statewide), California's districts are far larger/more numerous (52/40/80), so each is **clipped to the SF permalink-gate window** with mapshaper (`-clip bbox`) — ~47 KB total vs the ~26 MB the three statewide layers would be. Clipping is geometrically exact, so point-in-polygon *inside* the window is identical to the full district; `validate()` re-checks that against the unclipped fetch. The chambers now classify **offline** in CI (the smoke test asserts US House 11 / CA Senate 11 / CA Assembly 17).
+
+**Negative-point moved (§7):** the TIGERweb chambers are **water-inclusive** — they cover the SF Bay — so the old Bay negative point (37.80, -122.355) now falls *inside* a district and `validate_index`'s "negative point misses every anchor geometry" gate rejected it. Moved to the **open Pacific west of Ocean Beach, beyond CA state waters** (37.74, -122.59), which misses every layer including the chambers (the SF analog of CHI's Indiana-waters negative point).
+
+**Still pending in Thread 5:** the officeholder rosters (US House / CA Senate / CA Assembly / SF supervisors) via scraper→builder pairs + weekly workflows, and the SF source-freshness manifest (`validate_sources.py`).
+
 ## Performance parity for the SF port (see playbook §13)
 
 The reference forks' measured perf campaign splits into what SF **already has** and what SF **must re-earn** — playbook §13 is the full guide; this is the SF-specific cut.

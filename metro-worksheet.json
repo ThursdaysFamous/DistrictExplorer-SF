@@ -101,21 +101,21 @@
       "label": "U.S. House District",
       "group": "political",
       "area_rank": 1,
-      "rank_note": "U.S. House (Congressional) district via TIGERweb (CA 52; ~1 in SF) - largest, live"
+      "rank_note": "U.S. House (Congressional) district, pre-built SF-clipped TIGERweb (6 in window; CA-11 in SF) - largest"
     },
     {
       "id": "ca-senate",
       "label": "California State Senate District",
       "group": "political",
       "area_rank": 2,
-      "rank_note": "CA State Senate (SLDU) via TIGERweb (40; ~1 in SF) - live"
+      "rank_note": "CA State Senate (SLDU), pre-built SF-clipped TIGERweb (4 in window; SD-11 in SF)"
     },
     {
       "id": "ca-assembly",
       "label": "California State Assembly District",
       "group": "political",
       "area_rank": 3,
-      "rank_note": "CA State Assembly (SLDL) via TIGERweb (80; SF split into 2) - live"
+      "rank_note": "CA State Assembly (SLDL), pre-built SF-clipped TIGERweb (8 in window; SF split AD-17/19)"
     },
     {
       "id": "supervisor-district",
@@ -175,7 +175,7 @@
     }
   ],
   "min_register_layer": 7,
-  "layer_count_note": "Thread-4: +3 legislative chambers (US House / CA Senate / CA Assembly, live TIGERweb) atop the 8 civic layers",
+  "layer_count_note": "Thread-5: legislative chambers now pre-built SF-clipped geometry (data/app); 11 layers total",
   "anchor_point": {
     "lat": 37.77927,
     "lng": -122.41924,
@@ -196,9 +196,9 @@
     }
   ],
   "negative_point": {
-    "lat": 37.8,
-    "lng": -122.355,
-    "note": "San Francisco Bay (open water east of the Embarcadero) - outside all shoreline-clipped anchors"
+    "lat": 37.74,
+    "lng": -122.59,
+    "note": "Open Pacific west of Ocean Beach, beyond CA state waters - outside every layer, including the water-inclusive TIGERweb legislative chambers"
   },
   "data_files": {
     "geometry": [
@@ -216,6 +216,21 @@
         "file": "police-districts.json",
         "min_features": 10,
         "max_features": 10
+      },
+      {
+        "file": "congress-districts.json",
+        "min_features": 6,
+        "max_features": 6
+      },
+      {
+        "file": "ca-senate-districts.json",
+        "min_features": 4,
+        "max_features": 4
+      },
+      {
+        "file": "ca-assembly-districts.json",
+        "min_features": 8,
+        "max_features": 8
       }
     ],
     "rosters": []
