@@ -34,11 +34,11 @@ if (VENDORED_LEAFLET) console.log("  (serving Leaflet from scripts/vendor/leafle
 
 const BASE = process.env.BASE_URL || "http://localhost:8000/";
 // ==== GENERATED:BEGIN smoke-config ====
-const POINT = "41.88250,-87.62850"; // downtown Loop — inside Cook County
-const OFFLINE = ["school-board", "il-supreme-court", "ccbr"];
-const EXPECT_DISTRICT = { "school-board": "12", "il-supreme-court": "1", "ccbr": "3" };
-const NEGATIVE_POINT = "41.70000,-87.10000"; // Lake Michigan, Indiana waters — outside all three anchor layers
-const EXPECT_LAYERS = 33; // 18 base + police-beat (#43) + school-site (#45) + ccpsa-district-council + ward-precinct + 6 statewide local-gov layers (county, township, municipality, school districts x3 — TIGERweb) + will-county-board (per-county, coverage-gated) — live-verified 2026-07
+const POINT = "37.77927,-122.41924"; // SF City Hall (Civic Center) - Thread-0 placeholder anchor
+const OFFLINE = ["zip-code", "zip-code", "zip-code"];
+const EXPECT_DISTRICT = { "zip-code": "94102", "zip-code": "94102", "zip-code": "94102" };
+const NEGATIVE_POINT = "37.83000,-122.37000"; // San Francisco Bay (open water) - outside shoreline-clipped layers
+const EXPECT_LAYERS = 1; // Thread-0 stub: only the ZIP Code layer is registered; the count grows as SF layers land
 // ==== GENERATED:END smoke-config ====
 // Anchor layers that declare a location-relevance test (mod.coverage) HIDE at
 // an out-of-coverage point instead of reporting an empty card — this list
@@ -72,7 +72,7 @@ async function booted(context, url, routeFn) {
   }
   if (routeFn) await routeFn(page);
   await page.goto(url, { waitUntil: "domcontentloaded" });
-  await page.waitForFunction(() => !!window.ChiExplorer, null, { timeout: BOOT_TIMEOUT });
+  await page.waitForFunction(() => !!window.SFExplorer, null, { timeout: BOOT_TIMEOUT });
   return page;
 }
 
@@ -107,7 +107,7 @@ try {
   {
     const context = await browser.newContext({ serviceWorkers: "block" });
     const page = await booted(context, BASE);
-    check("app boots (window.ChiExplorer exported)", true);
+    check("app boots (window.SFExplorer exported)", true);
     const n = await page.evaluate(
       () => document.querySelectorAll('input[type=checkbox][id^="toggle-"]').length
     );
@@ -140,7 +140,7 @@ try {
     // re-styling every path. 41.99,-87.66 is school-board district 4 (vs 12 at
     // the Loop point above), and the matched-region highlight must move with it.
     const moved = await page.evaluate(async () => {
-      window.ChiExplorer.setSelectedPoint(41.99, -87.66);
+      window.SFExplorer.setSelectedPoint(41.99, -87.66);
       const el = document.getElementById("card-school-board");
       for (let i = 0; i < 100; i++) {
         if (el && !el.querySelector(".loading-row") && /District\s+4\b/i.test(el.innerText)) break;
@@ -218,7 +218,7 @@ try {
         // assert the invariant directly, not just its hash reflection: hide
         // must never mutate state.layersOn (that's what keeps permalinks and
         // reappear-on-return working)
-        const stillOn = await page.evaluate((cid) => window.ChiExplorer.state.layersOn[cid] === true, id);
+        const stillOn = await page.evaluate((cid) => window.SFExplorer.state.layersOn[cid] === true, id);
         check(
           `${id} hides at the negative point (out of coverage, permalink intact)`,
           hidden && hashKeepsLayer && stillOn,
@@ -293,7 +293,7 @@ try {
     const res = await page.evaluate(() => {
       const el = document.getElementById("card-school-board");
       return {
-        pointSelected: !!(window.ChiExplorer && window.ChiExplorer.state.selectedPoint),
+        pointSelected: !!(window.SFExplorer && window.SFExplorer.state.selectedPoint),
         errored: !!el && el.classList.contains("state-error"),
         hasRetry: !!el && !!el.querySelector(".retry-btn"),
         visible: !!el && getComputedStyle(el).display !== "none",

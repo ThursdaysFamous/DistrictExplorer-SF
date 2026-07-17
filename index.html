@@ -4,42 +4,28 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<!-- Google tag (gtag.js) — production host only; keeps local dev + CI out of analytics -->
-<script>
-  (function () {
-    if (location.hostname !== 'chidistricts.com') return;
-    var s = document.createElement('script');
-    s.async = true;
-    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-YPJ570LWJB';
-    document.head.appendChild(s);
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function () { dataLayer.push(arguments); };
-    gtag('js', new Date());
-    gtag('config', 'G-YPJ570LWJB');
-  })();
-</script>
 
-<title>Chicago District Explorer — find your districts &amp; representatives</title>
-<meta name="description" content="Find your Chicago ward, police district, community area, congressional and state legislative districts, school zones, and more — plus who represents you." />
+<title>San Francisco District Explorer — find your districts &amp; representatives</title>
+<meta name="description" content="Click any point in San Francisco — or search an address — and see every civic district that contains it, and who represents you there." />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://chidistricts.com/" />
 
 <!-- Open Graph / social share previews (Facebook, LinkedIn, iMessage, Slack…) -->
 <meta property="og:type" content="website" />
-<meta property="og:site_name" content="Chicago District Explorer" />
-<meta property="og:title" content="Chicago District Explorer — find your districts and representatives" />
-<meta property="og:description" content="Click the map or search any Chicago address to see every civic district that covers it — ward, police district, community area, congressional and state districts, school zones — and who represents you." />
+<meta property="og:site_name" content="San Francisco District Explorer" />
+<meta property="og:title" content="San Francisco District Explorer — find your districts and representatives" />
+<meta property="og:description" content="Click the map or search any San Francisco address to see every civic district that covers it, and who represents you." />
 <meta property="og:url" content="https://chidistricts.com/" />
 <meta property="og:image" content="https://chidistricts.com/og-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="Chicago District Explorer — a map of Chicago with the question: which districts cover this point, and who represents you?" />
+<meta property="og:image:alt" content="San Francisco District Explorer — a map of San Francisco with the question: which districts cover this point, and who represents you?" />
 <meta property="og:locale" content="en_US" />
 
 <!-- Twitter / X card -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Chicago District Explorer — find your districts and representatives" />
-<meta name="twitter:description" content="See every civic district that covers a Chicago address — ward, police district, community area, congressional and state districts, school zones — and who represents you." />
+<meta name="twitter:title" content="San Francisco District Explorer — find your districts and representatives" />
+<meta name="twitter:description" content="See every civic district that covers a San Francisco address, and who represents you." />
 <meta name="twitter:image" content="https://chidistricts.com/og-image.png" />
 
 <!-- Structured data: help search engines understand what this tool is -->
@@ -51,8 +37,8 @@
       "@type": "WebSite",
       "@id": "https://chidistricts.com/#website",
       "url": "https://chidistricts.com/",
-      "name": "Chicago District Explorer",
-      "description": "Find every civic district that covers a point or address in Chicago, and who represents you there.",
+      "name": "San Francisco District Explorer",
+      "description": "Find every civic district that covers a point or address in San Francisco, and who represents you there.",
       "inLanguage": "en-US",
       "publisher": { "@id": "https://chidistricts.com/#publisher" }
     },
@@ -64,9 +50,9 @@
     },
     {
       "@type": "WebApplication",
-      "name": "Chicago District Explorer",
+      "name": "San Francisco District Explorer",
       "url": "https://chidistricts.com/",
-      "description": "Click any point in Chicago, or search an address, to see every civic district that contains it — ward, police district and beat, community area, U.S. House and Illinois legislative districts, Cook County commissioner and Board of Review, elected school board district, and CPS attendance zones — and who represents you.",
+      "description": "Click any point in San Francisco, or search an address, to see every civic district that contains it, and who represents you.",
       "applicationCategory": "Reference",
       "operatingSystem": "Any (modern web browser)",
       "browserRequirements": "Requires JavaScript",
@@ -74,34 +60,18 @@
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
       "inLanguage": "en-US",
       "image": "https://chidistricts.com/og-image.png",
-      "areaServed": { "@type": "City", "name": "Chicago", "containedInPlace": { "@type": "State", "name": "Illinois" } },
-      "keywords": "Chicago ward map, what ward am I in, Chicago police district, Chicago community area, congressional district, Illinois legislative district, Cook County commissioner, elected school board district, CPS attendance zone, who represents me Chicago",
+      "areaServed": { "@type": "City", "name": "San Francisco", "containedInPlace": { "@type": "State", "name": "California" } },
+      "keywords": "San Francisco district map, what district am I in, San Francisco supervisor district, civic districts, who represents me San Francisco",
       "isPartOf": { "@id": "https://chidistricts.com/#website" },
-      "sameAs": "https://github.com/ThursdaysFamous/DistrictExplorer-CHI"
+      "sameAs": "https://github.com/ThursdaysFamous/DistrictExplorer-SF"
     }
   ]
 }
 </script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "@id": "https://chidistricts.com/#faq",
-  "isPartOf": { "@id": "https://chidistricts.com/#website" },
-  "mainEntity": [
-    { "@type": "Question", "name": "How do I find out what ward I'm in?", "acceptedAnswer": { "@type": "Answer", "text": "Search your address or click your location on the map above. The tool shows your Chicago ward and who represents it, along with every other civic district that covers that exact point." } },
-    { "@type": "Question", "name": "How many wards does Chicago have?", "acceptedAnswer": { "@type": "Answer", "text": "Chicago has 50 wards, each represented by an alderperson on the City Council." } },
-    { "@type": "Question", "name": "What are my Chicago police district and beat?", "acceptedAnswer": { "@type": "Answer", "text": "Chicago is divided into 22 police districts, each split into smaller beats. Select any address above to see the police district and beat that cover it, plus the nearest police station." } },
-    { "@type": "Question", "name": "What is a Chicago community area?", "acceptedAnswer": { "@type": "Answer", "text": "Chicago has 77 official community areas — long-established neighborhood boundaries used for planning and statistics. The tool shows which community area contains any point you pick." } },
-    { "@type": "Question", "name": "Who represents me in Congress and in Springfield?", "acceptedAnswer": { "@type": "Answer", "text": "Pick a location to see your U.S. House district, Illinois State Senate district, and Illinois State House district, along with the people currently holding those seats." } },
-    { "@type": "Question", "name": "Is this an official government tool?", "acceptedAnswer": { "@type": "Answer", "text": "No. It draws on public data sources that disclaim legal precision, so always confirm district assignments and officeholders with the relevant government office before relying on them for anything official." } }
-  ]
-}
-</script>
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#0b3d91">
+<meta name="theme-color" content="#C0362C">
 
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2341B6E6'/%3E%3Cpolygon points='32,6 36,25.07 54.52,19 40,32 54.52,45 36,38.93 32,58 28,38.93 9.48,45 24,32 9.48,19 28,25.07' fill='%23C8102E'/%3E%3C/svg%3E" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23C0362C'/%3E%3Cpolygon points='32,6 36,25.07 54.52,19 40,32 54.52,45 36,38.93 32,58 28,38.93 9.48,45 24,32 9.48,19 28,25.07' fill='%23ffffff'/%3E%3C/svg%3E" />
 
 <!-- warm the connections first paint waits on: Leaflet's CDN (JS before the app
      script) and the CARTO tile hosts the map hits the moment it initializes.
@@ -957,11 +927,11 @@ svg.leaflet-image-layer.leaflet-interactive path {
   size-adjust: 107.40%;
 }
   :root {
-    /* ---- Chicago flag palette ---- */
-    --accent: #41B6E6;        /* flag stripe blue */
-    --accent-deep: #0B5394;   /* deeper blue for text/links on light bg */
-    --accent-warm: #C8102E;         /* flag star red */
-    --accent-warm-deep: #9C0B24;
+    /* ---- San Francisco palette (bay blue + Golden Gate International Orange) ---- */
+    --accent: #1D6F8B;        /* flag stripe blue */
+    --accent-deep: #124F63;   /* deeper blue for text/links on light bg */
+    --accent-warm: #C0362C;         /* flag star red */
+    --accent-warm-deep: #8E2A22;
   /* ==== ENGINE:BEGIN styles-core ==== */
 
     --ink: #14181C;
@@ -1859,7 +1829,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
   /* ---- selected-boundary highlight: SVG drop-shadow filter so the matched
      region reads as physically lifted above the faded rest of the layer ---- */
   /* ==== ENGINE:END styles-footer ==== */
-  .chi-region-highlight {
+  .sf-region-highlight {
     filter: drop-shadow(0 5px 7px rgba(20, 24, 28, 0.5)) drop-shadow(0 1px 2px rgba(20, 24, 28, 0.35));
     transition: filter 120ms ease-out;
   }
@@ -1868,8 +1838,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
    * rasterizing a ~2.3 Mpx region every frame); this drops it to the filter-off
    * baseline during pan/zoom with NO change at rest — the base rule's 120 ms
    * transition fades the shadow back in on moveend. (OPTIMIZATION_PLAYBOOK P9/R2-5.) */
-  .chi-panning .chi-region-highlight { filter: none; transition: none; }
-  .chi-poi-pin { background: none; border: none; }
+  .sf-panning .sf-region-highlight { filter: none; transition: none; }
+  .sf-poi-pin { background: none; border: none; }
   /* Chicago-specific: the SEO/orientation lede under the empty-state prompt —
      the district vocabulary a first-time (or crawling) visitor reads before a
      point is picked. Styled a step down from the primary prompt above it. */
@@ -1975,8 +1945,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
   /* ==== ENGINE:END styles-hover-responsive ==== */
 </style>
 
-<script data-goatcounter="https://chidistricts.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 
@@ -1989,7 +1957,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
         <svg class="masthead-star" viewBox="0 0 100 100" aria-hidden="true">
           <path fill="var(--accent-warm)" id="star-path-header"></path>
         </svg>
-        <span class="title-text">Chicago District Explorer</span>
+        <span class="title-text">San Francisco District Explorer</span>
       </span>
       <small>Click the map or search an address to see every district that covers it, and who represents it.</small>
     </h1>
@@ -1999,13 +1967,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 <main class="layout" id="layout">
   <section class="map-col" aria-label="Interactive district map">
-    <div id="map" role="application" aria-label="Map of Chicago. Click anywhere to select a point, or use the search box above."></div>
+    <div id="map" role="application" aria-label="Map of San Francisco. Click anywhere to select a point, or use the search box above."></div>
 
     <div class="map-toolbar">
       <div class="search-shell">
         <form id="geocode-form" class="search-row" role="search">
-          <label for="geocode-input" class="visually-hidden">Search a Chicago address</label>
-          <input type="text" id="geocode-input" placeholder="Search a Chicago address…" autocomplete="off" />
+          <label for="geocode-input" class="visually-hidden">Search a San Francisco address</label>
+          <input type="text" id="geocode-input" placeholder="Search a San Francisco address…" autocomplete="off" />
           <button type="submit">Search</button>
         </form>
         <div class="search-extra" id="search-extra">
@@ -2052,33 +2020,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 <div class="flag-stripe" aria-hidden="true"></div>
 
-<section class="faq-section" aria-labelledby="faq-heading">
-  <h2 id="faq-heading">Common questions about Chicago districts</h2>
-  <details>
-    <summary>How do I find out what ward I'm in?</summary>
-    <p>Search your address or click your location on the map above. The tool shows your Chicago ward and who represents it, along with every other civic district that covers that exact point.</p>
-  </details>
-  <details>
-    <summary>How many wards does Chicago have?</summary>
-    <p>Chicago has 50 wards, each represented by an alderperson on the City Council.</p>
-  </details>
-  <details>
-    <summary>What are my Chicago police district and beat?</summary>
-    <p>Chicago is divided into 22 police districts, each split into smaller beats. Select any address above to see the police district and beat that cover it, plus the nearest police station.</p>
-  </details>
-  <details>
-    <summary>What is a Chicago community area?</summary>
-    <p>Chicago has 77 official community areas — long-established neighborhood boundaries used for planning and statistics. The tool shows which community area contains any point you pick.</p>
-  </details>
-  <details>
-    <summary>Who represents me in Congress and in Springfield?</summary>
-    <p>Pick a location to see your U.S. House district, Illinois State Senate district, and Illinois State House district, along with the people currently holding those seats.</p>
-  </details>
-  <details>
-    <summary>Is this an official government tool?</summary>
-    <p>No. It draws on public data sources that disclaim legal precision, so always confirm district assignments and officeholders with the relevant government office before relying on them for anything official.</p>
-  </details>
-</section>
 
 <div class="flag-stripe" aria-hidden="true"></div>
 <footer class="site-footer">
@@ -2095,7 +2036,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
     <div class="footer-sources" id="footer-sources">
       <span class="footer-sources-label">Sources</span>
       <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">Geocoding © OpenStreetMap contributors (Nominatim &amp; Photon/Komoot)</a>
-      <a href="https://data.cityofchicago.org" target="_blank" rel="noopener">Chicago Data Portal</a>
+      <a href="https://data.sfgov.org" target="_blank" rel="noopener">DataSF</a>
       <a href="https://tigerweb.geo.census.gov" target="_blank" rel="noopener">U.S. Census TIGERweb</a>
       <a href="https://github.com/unitedstates/congress-legislators" target="_blank" rel="noopener">unitedstates/congress-legislators</a>
       <a href="https://www.ilga.gov" target="_blank" rel="noopener">Illinois General Assembly</a>
@@ -2111,7 +2052,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
     <!-- ==== ENGINE:END metro-links-html ==== -->
     <div class="footer-links">
       <button type="button" id="feedback-btn" class="footer-link-btn">💬 Report a bug or leave a comment</button>
-      <a href="https://github.com/ThursdaysFamous/DistrictExplorer-CHI" target="_blank" rel="noopener">View source on GitHub</a>
+      <a href="https://github.com/ThursdaysFamous/DistrictExplorer-SF" target="_blank" rel="noopener">View source on GitHub</a>
       <a href="https://overberg.co" target="_blank" rel="noopener">overberg.co</a>
       <a href="https://github.com/sponsors/ThursdaysFamous" target="_blank" rel="noopener">💛 Support this project</a>
     </div>
@@ -2146,8 +2087,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
 <script>
 // The app boot was a bare IIFE that ran at parse time and dereferenced L
 // synchronously. With Leaflet now deferred, boot is gated on DOMContentLoaded
-// (deferred scripts finish before it), so L is ready when initChiExplorer runs.
-function initChiExplorer() {
+// (deferred scripts finish before it), so L is ready when initSFExplorer runs.
+function initSFExplorer() {
   "use strict";
 
   /* =========================================================================
@@ -2160,19 +2101,19 @@ function initChiExplorer() {
    * lives here, so an ENGINE block never needs a per-city edit. Fenced ENGINE
    * blocks are byte-identical across every metro fork — see
    * docs/ENGINE_SYNC.md and scripts/check_engine_parity.py. */
-  var THIS_METRO = "chicago";           // key into METRO_EXPLORERS below
-  var METRO_NAME = "Chicago";           // used in user-facing strings
-  var METRO_BBOX = { minLng: -88.6, minLat: 41.0, maxLng: -87.0, maxLat: 42.6 };
-  var METRO_CENTER = [41.8781, -87.6298];
+  var THIS_METRO = "sf";                // key into METRO_EXPLORERS below
+  var METRO_NAME = "San Francisco";     // used in user-facing strings
+  var METRO_BBOX = { minLng: -122.517, minLat: 37.703, maxLng: -122.353, maxLat: 37.833 };
+  var METRO_CENTER = [37.7749, -122.4194];
   // Permalink sanity gate: the *greater* metro area (wider than METRO_BBOX).
-  var PERMALINK_GATE = { minLat: 40.8, maxLat: 42.7, minLng: -88.8, maxLng: -86.9 };
-  var SOCRATA_HOST = "https://data.cityofchicago.org";
+  var PERMALINK_GATE = { minLat: 37.6, maxLat: 37.95, minLng: -122.6, maxLng: -122.3 };
+  var SOCRATA_HOST = "https://data.sfgov.org";
   // Socrata app token: some metros' portals throttle anonymous requests. It is
   // a throttling identifier, not a secret — public exposure is Socrata's
   // intended use (do NOT put an API Key *secret* here). Blank = sent as-is.
   var SOCRATA_APP_TOKEN = "";
-  var REPO_ISSUES = "https://github.com/ThursdaysFamous/DistrictExplorer-CHI/issues/new";
-  var FEEDBACK_SUBJECT = "Chicago District Explorer feedback";
+  var REPO_ISSUES = "https://github.com/ThursdaysFamous/DistrictExplorer-SF/issues/new";
+  var FEEDBACK_SUBJECT = "San Francisco District Explorer feedback";
   /* Sibling District Explorer deployments — one canonical list shared by every
    * metro fork. When a new metro launches, add its entry to every fork's
    * worksheet and regenerate (Conversion 3 will source this list from the
@@ -2186,12 +2127,14 @@ function initChiExplorer() {
     { id: "chicago", label: "Chicago", url: "https://chidistricts.com/", emoji: "🌭",
       bbox: { minLng: -88.6, minLat: 41.0, maxLng: -87.0, maxLat: 42.6 } },
     { id: "nyc", label: "New York City", url: "https://nyc.chidistricts.com/", emoji: "🗽",
-      bbox: { minLng: -74.3, minLat: 40.45, maxLng: -73.6, maxLat: 41.0 } }
+      bbox: { minLng: -74.3, minLat: 40.45, maxLng: -73.6, maxLat: 41.0 } },
+    { id: "sf", label: "San Francisco", url: "https://sf.chidistricts.com/", emoji: "🌉",
+      bbox: { minLng: -122.6, minLat: 37.6, maxLng: -122.3, maxLat: 37.95 } }
   ];
   /* CSS class names for the fork-branded map chrome: ENGINE code applies them,
    * this fork's stylesheet defines them (they carry the fork's palette). */
-  var HIGHLIGHT_CLASS = "chi-region-highlight"; // selected-region highlight (drop-shadow filter)
-  var POI_PIN_CLASS = "chi-poi-pin";           // geocoded point-of-interest marker
+  var HIGHLIGHT_CLASS = "sf-region-highlight"; // selected-region highlight (drop-shadow filter)
+  var POI_PIN_CLASS = "sf-poi-pin";            // geocoded point-of-interest marker
   // FALLBACK district-number key list, fed through extractDistrictNumber
   // (which adds a name-field regex fallback for the layers whose number only
   // lives inside a "…name" string). The factories declare per-layer hoverName
@@ -2200,11 +2143,9 @@ function initChiExplorer() {
   // keys are this metro's dataset vocabulary — re-seed them from observed
   // field names in the worksheet, keeping encoded fields out.
   var HOVER_NUMBER_KEYS = [
-    "ward", "ward_num", "ward_number", "ward_id",
-    "district", "dist_num", "dist", "district_number", "district_no",
-    "area_numbe", "area_num_1", "area_number", "community_area_number", "area_num",
-    "beat_num", "beat", "beat_number", "beat_no",
-    "zip", "zip_code", "zipcode", "zcta5ce10",
+    "zip", "zip_code", "zipcode", "zcta5ce10", "zcta5ce20", "geoid20", "geoid10",
+    "supervisor", "sup_dist", "supdist", "supname", "supdistpad",
+    "district", "dist_num", "dist", "district_number",
     "number"
   ];
 
@@ -2213,8 +2154,7 @@ function initChiExplorer() {
   // are excluded on purpose: for legislative layers those just restate the
   // number this pairs with.
   var HOVER_NAME_KEYS = [
-    "community", "community_area_name", "commarea", "comarea",
-    "short_name", "school_nam", "school_nm", "school_name", "schoolname", "sch_name"
+    "nhood", "neighborhood", "name"
   ];
   /* ==== GENERATED:END metro-config ==== */
   /* ==== METRO:END config ==== */
@@ -2240,31 +2180,14 @@ function initChiExplorer() {
   document.getElementById("star-path-empty").setAttribute("d", starPath(50, 50, 40, 16));
 
   var starDivIcon = L.divIcon({
-    className: "chi-star-marker",
+    className: "sf-star-marker",
     html: '<svg viewBox="0 0 100 100" width="34" height="34" style="filter:drop-shadow(0 2px 3px rgba(0,0,0,0.45))">' +
-          '<path d="' + starPath(50, 50, 46, 19) + '" fill="#C8102E" stroke="#ffffff" stroke-width="4"/>' +
+          '<path d="' + starPath(50, 50, 46, 19) + '" fill="#C0362C" stroke="#ffffff" stroke-width="4"/>' +
           "</svg>",
     iconSize: [34, 34],
     iconAnchor: [17, 17]
   });
 
-  /* ---------- water-taxi marker: the selection marker becomes the Chicago Water
-   * Taxi seal when a clicked/searched point lands on Lake Michigan (open water),
-   * not on land — see selectPointMarker(). The logo is a circular seal
-   * (icons/water-taxi.png, cropped from the supplied art — see
-   * icons/source/README.md), so it's presented as a round white badge sized to
-   * read at map scale. It's preloaded here and only swapped in once it actually
-   * loads, so a missing/broken asset cleanly falls back to the default star. ---------- */
-  var WATER_TAXI_ICON_URL = "icons/water-taxi.png";
-  var waterTaxiDivIcon = L.divIcon({
-    className: "chi-water-taxi-marker",
-    html: '<img src="' + WATER_TAXI_ICON_URL + '" width="46" height="46" ' +
-          'alt="Selected point (on water)" ' +
-          'style="display:block;border-radius:50%;background:#ffffff;' +
-          'border:2px solid #ffffff;box-shadow:0 2px 4px rgba(0,0,0,0.45)">',
-    iconSize: [50, 50],
-    iconAnchor: [25, 25]
-  });
   // Run cb during browser idle (fallback: a short timeout). Used to keep
   // conditional-marker art and the decorative coverage wash — both of which PSI
   // measured sitting in the initial-navigation critical chain — OFF the boot
@@ -2272,110 +2195,6 @@ function initChiExplorer() {
   function whenIdle(cb) {
     return (window.requestIdleCallback || function (fn) { return setTimeout(fn, 200); })(cb);
   }
-  // Preload at idle (not on the boot critical path) so a water selection still
-  // swaps instantly, but the 27 KB PNG doesn't compete with first paint; the
-  // load-state guard still prevents a broken/blocked asset from ever producing a
-  // broken-image marker.
-  var waterTaxiImg = new Image();
-  var waterTaxiImgState = "loading"; // "loading" | "ready" | "failed"
-  waterTaxiImg.addEventListener("load", function () { waterTaxiImgState = "ready"; });
-  waterTaxiImg.addEventListener("error", function () { waterTaxiImgState = "failed"; });
-  whenIdle(function () { waterTaxiImg.src = WATER_TAXI_ICON_URL; });
-
-  // Run cb(true) once the logo image has loaded, cb(false) if it failed. Callable
-  // any time — resolves synchronously if the state is already known, otherwise
-  // waits for the in-flight preload without clobbering other waiters.
-  function whenWaterTaxiImgReady(cb) {
-    if (waterTaxiImgState === "ready") { cb(true); return; }
-    if (waterTaxiImgState === "failed") { cb(false); return; }
-    var done = false;
-    function finish(ok) { if (done) return; done = true; cb(ok); }
-    waterTaxiImg.addEventListener("load", function () { finish(true); });
-    waterTaxiImg.addEventListener("error", function () { finish(false); });
-  }
-
-  /* ---------- location-aware selection marker: beyond the Chicago flag star
-   * (inside the city) and the Water Taxi seal (on Lake Michigan), a point that
-   * lands in a county outside the city gets that county's seal — the Cook
-   * County seal (public-domain, icons/seals/cook-county.png) where we ship one,
-   * and a clean county-name badge for every other county until its seal is
-   * added. See selectPointMarker() for the containment hierarchy; the seals map
-   * grows over time without any code change. ---------- */
-  var COUNTY_SEAL_URLS = {
-    // keyed by the TIGER county NAME field ("<County> County"). Add an entry +
-    // drop a derived PNG in icons/seals/ (see icons/source/README.md) to light
-    // up another county; absent counties fall back to the name badge below.
-    // Every seal shipped here is cleanly licensed (public domain or an explicit
-    // free license) — provenance + license for each is recorded in
-    // icons/source/README.md. Counties with no freely-licensed seal keep the
-    // name badge (see docs/COUNTY_SEALS_REVIEW.md for the outstanding list).
-    "Cook County": "icons/seals/cook-county.png",
-    "Hamilton County": "icons/seals/hamilton.png",
-    "Kane County": "icons/seals/kane.png",
-    "Lake County": "icons/seals/lake.png",
-    "Macon County": "icons/seals/macon.png",
-    "Saline County": "icons/seals/saline.png",
-    "St. Clair County": "icons/seals/st-clair.png",
-    "Washington County": "icons/seals/washington.png",
-    "Will County": "icons/seals/will.png"
-  };
-
-  // Round white seal badge (mirrors the water-taxi badge) for a county we ship a
-  // seal image for.
-  function makeCountySealDivIcon(url, name) {
-    return L.divIcon({
-      className: "chi-county-seal-marker",
-      html: '<img src="' + url + '" width="42" height="42" ' +
-            'alt="Selected point (' + sanitize(name) + ')" ' +
-            'style="display:block;border-radius:50%;background:#ffffff;' +
-            'border:2px solid #ffffff;box-shadow:0 2px 4px rgba(0,0,0,0.45)">',
-      iconSize: [46, 46],
-      iconAnchor: [23, 23]
-    });
-  }
-
-  // Clean name badge for a county with no seal yet: a rounded pill in the app's
-  // civic blue with the county name, centred on the point like the star.
-  function makeCountyBadgeDivIcon(name) {
-    var label = sanitize(name);
-    var w = Math.max(52, name.length * 7 + 22);
-    return L.divIcon({
-      className: "chi-county-badge-marker",
-      html: '<div style="box-sizing:border-box;white-space:nowrap;overflow:hidden;' +
-            'text-overflow:ellipsis;width:' + w + 'px;padding:3px 9px;border-radius:11px;' +
-            'background:#0B5394;color:#ffffff;border:2px solid #ffffff;' +
-            "font:600 11px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;" +
-            'text-align:center;box-shadow:0 2px 4px rgba(0,0,0,0.45)">' + label + '</div>',
-      iconSize: [w, 22],
-      iconAnchor: [w / 2, 11]
-    });
-  }
-
-  // Preload + readiness tracking for seal images, keyed by URL — same pattern as
-  // the water-taxi preload, so a blocked/broken seal cleanly falls back to the
-  // name badge instead of a broken-image marker.
-  var sealImgCache = {};
-  function whenSealImgReady(url, cb) {
-    var e = sealImgCache[url];
-    if (!e) {
-      e = sealImgCache[url] = { state: "loading", img: new Image() };
-      e.img.addEventListener("load", function () { e.state = "ready"; });
-      e.img.addEventListener("error", function () { e.state = "failed"; });
-      e.img.src = url;
-    }
-    if (e.state === "ready") { cb(true); return; }
-    if (e.state === "failed") { cb(false); return; }
-    var done = false;
-    function finish(ok) { if (done) return; done = true; cb(ok); }
-    e.img.addEventListener("load", function () { finish(true); });
-    e.img.addEventListener("error", function () { finish(false); });
-  }
-  // Warm the seals we ship so the first out-of-city selection swaps instantly —
-  // at idle, off the boot critical path (R2-4; PSI flagged these 18 KB+ PNGs).
-  whenIdle(function () {
-    Object.keys(COUNTY_SEAL_URLS).forEach(function (k) { whenSealImgReady(COUNTY_SEAL_URLS[k], function () {}); });
-  });
-
   /* ==== ENGINE:BEGIN sanitize ==== */
   /* ---------- sanitize: escape any external string before it touches innerHTML ---------- */
   function sanitize(str) {
@@ -2641,12 +2460,12 @@ function initChiExplorer() {
   var map = L.map("map", { minZoom: 9, maxZoom: 18, zoomControl: false }).setView(METRO_CENTER, 11);
   L.control.zoom({ position: "bottomright" }).addTo(map);
   // Pause the selection-highlight drop-shadow during pan/zoom (see the
-  // .chi-panning CSS rule): the filter's per-frame rasterization is the measured
+  // .sf-panning CSS rule): the filter's per-frame rasterization is the measured
   // pan cost (R2-5). A class on the map container flips it off on move/zoom
   // start and back on end; classList add/remove is idempotent so overlapping
   // pan+zoom events are harmless.
-  map.on("movestart zoomstart", function () { map.getContainer().classList.add("chi-panning"); });
-  map.on("moveend zoomend", function () { map.getContainer().classList.remove("chi-panning"); });
+  map.on("movestart zoomstart", function () { map.getContainer().classList.add("sf-panning"); });
+  map.on("moveend zoomend", function () { map.getContainer().classList.remove("sf-panning"); });
   var baseTiles = L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
     maxZoom: 19,
     subdomains: "abcd",
@@ -3557,49 +3376,7 @@ function initChiExplorer() {
   // geometry library in this codebase to compute polygon area from data.
   // GENERATED from the worksheet's layers[] (area_rank order + rank notes).
   var LAYER_AREA_RANK = [
-    "il-supreme-court",  // judicial district — largest
-    "congress",          // U.S. House district
-    "il-senate",         // IL State Senate district
-    "il-house",          // IL State House district
-    "county",            // IL county (102 statewide; TIGERweb, live-verified 2026-07)
-    "school-district-secondary", // IL secondary school district (105 statewide; only where elem/HS pairs exist)
-    "school-district-unified", // IL unified school district (387 statewide incl. CPS as SD 299)
-    "school-district-elementary", // IL elementary school district (371 statewide)
-    "township",          // IL county subdivision (1,695 statewide: townships + city/precinct MCDs)
-    "municipality",      // IL incorporated place (1,294 statewide; empty card = unincorporated)
-    "will-county-judicial", // Will County judicial subcircuit (5; PA 102-0693 Judicial_Districts_2022, coverage-gated)
-    "will-county-board", // Will County Board district (11, current Board-Approved-11/2/21 map; live from county GIS, coverage-gated to Will County)
-    "ccbr",              // Cook County Board of Review district (only 3, county-wide)
-    "commissioner",      // Cook County Commissioner district
-    "will-county-fire",  // Will County fire protection district (37; trustees live from county GIS, coverage-gated)
-    "will-county-park",  // Will County park district (22; partial coverage, commissioners from county GIS, coverage-gated)
-    "school-board",      // Elected School Board district (10, citywide)
-    "cps-hs-network",    // CPS High School Network (admin grouping)
-    "cps-network",       // CPS K-8 Network (admin grouping)
-    "ward",              // City Ward (50)
-    // Smaller than its parent ward, so it renders on top (smallest-on-top); turning it
-    // on drops the ward to outline-only, framing the precinct fills from underneath.
-    "ward-precinct",     // Ward Precinct (sub-selection of City Ward)
-    "police-district",   // Police District (22)
-    // Smaller than its parent district, so it renders on top (smallest-on-top);
-    // turning it on drops the district to outline-only, framing the beat fills from underneath.
-    "police-beat",       // Police Beat (~277)
-    // CCPSA District Council shares the police-district geometry exactly (22,
-    // one council per district); place it just after so its outline draws on
-    // top when both are on and its distinct teal dash stays legible.
-    "ccpsa-district-council",
-    "community-area",    // Community Area (77)
-    "zip-code",          // ZIP Code (statewide Census ZCTA; ZCTA ≈ USPS ZIP)
-    "cps-high",          // High School attendance zone
-    "cps-middle",        // Middle School attendance zone
-    // Smallest Will County layer, so it renders on top of Township and County
-    // (smallest-on-top); turning it on drops both to outline-only, framing the
-    // precinct fills from underneath.
-    "will-county-precinct", // Will County voting precinct (310; current 2022 map Precincts_2022, coverage-gated)
-    "cps-elementary",    // Elementary School attendance zone — smallest polygon layer
-    "school-site",       // individual school-campus footprints — smallest polygons, above the zones
-    "police-station",    // point marker — no polygon area, always topmost
-    "fire-station"       // point marker — no polygon area, always topmost
+    "zip-code"           // Thread-0 stub — national ZCTA (Census TIGERweb); real SF layers land in Threads 1-4
   ];
   /* ==== GENERATED:END layer-area-rank ==== */
 
@@ -5748,14 +5525,14 @@ function initChiExplorer() {
     renderFieldList: renderFieldList
   };
   /* ==== ENGINE:END exports ==== */
-  window.ChiExplorer = EXPLORER_EXPORTS;
+  window.SFExplorer = EXPLORER_EXPORTS;
 }
 // Deferred Leaflet (above) executes before DOMContentLoaded, so L is ready by
 // the time this fires. Run immediately if the DOM is already parsed, else wait.
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initChiExplorer);
+  document.addEventListener("DOMContentLoaded", initSFExplorer);
 } else {
-  initChiExplorer();
+  initSFExplorer();
 }
 </script>
 <script>
