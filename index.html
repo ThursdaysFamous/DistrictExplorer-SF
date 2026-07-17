@@ -4,42 +4,28 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<!-- Google tag (gtag.js) — production host only; keeps local dev + CI out of analytics -->
-<script>
-  (function () {
-    if (location.hostname !== 'chidistricts.com') return;
-    var s = document.createElement('script');
-    s.async = true;
-    s.src = 'https://www.googletagmanager.com/gtag/js?id=G-YPJ570LWJB';
-    document.head.appendChild(s);
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function () { dataLayer.push(arguments); };
-    gtag('js', new Date());
-    gtag('config', 'G-YPJ570LWJB');
-  })();
-</script>
 
-<title>Chicago District Explorer — find your districts &amp; representatives</title>
-<meta name="description" content="Find your Chicago ward, police district, community area, congressional and state legislative districts, school zones, and more — plus who represents you." />
+<title>San Francisco District Explorer — find your districts &amp; representatives</title>
+<meta name="description" content="Click any point in San Francisco — or search an address — and see every civic district that contains it, and who represents you there." />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://chidistricts.com/" />
 
 <!-- Open Graph / social share previews (Facebook, LinkedIn, iMessage, Slack…) -->
 <meta property="og:type" content="website" />
-<meta property="og:site_name" content="Chicago District Explorer" />
-<meta property="og:title" content="Chicago District Explorer — find your districts and representatives" />
-<meta property="og:description" content="Click the map or search any Chicago address to see every civic district that covers it — ward, police district, community area, congressional and state districts, school zones — and who represents you." />
+<meta property="og:site_name" content="San Francisco District Explorer" />
+<meta property="og:title" content="San Francisco District Explorer — find your districts and representatives" />
+<meta property="og:description" content="Click the map or search any San Francisco address to see every civic district that covers it, and who represents you." />
 <meta property="og:url" content="https://chidistricts.com/" />
 <meta property="og:image" content="https://chidistricts.com/og-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="Chicago District Explorer — a map of Chicago with the question: which districts cover this point, and who represents you?" />
+<meta property="og:image:alt" content="San Francisco District Explorer — a map of San Francisco with the question: which districts cover this point, and who represents you?" />
 <meta property="og:locale" content="en_US" />
 
 <!-- Twitter / X card -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Chicago District Explorer — find your districts and representatives" />
-<meta name="twitter:description" content="See every civic district that covers a Chicago address — ward, police district, community area, congressional and state districts, school zones — and who represents you." />
+<meta name="twitter:title" content="San Francisco District Explorer — find your districts and representatives" />
+<meta name="twitter:description" content="See every civic district that covers a San Francisco address, and who represents you." />
 <meta name="twitter:image" content="https://chidistricts.com/og-image.png" />
 
 <!-- Structured data: help search engines understand what this tool is -->
@@ -51,8 +37,8 @@
       "@type": "WebSite",
       "@id": "https://chidistricts.com/#website",
       "url": "https://chidistricts.com/",
-      "name": "Chicago District Explorer",
-      "description": "Find every civic district that covers a point or address in Chicago, and who represents you there.",
+      "name": "San Francisco District Explorer",
+      "description": "Find every civic district that covers a point or address in San Francisco, and who represents you there.",
       "inLanguage": "en-US",
       "publisher": { "@id": "https://chidistricts.com/#publisher" }
     },
@@ -64,9 +50,9 @@
     },
     {
       "@type": "WebApplication",
-      "name": "Chicago District Explorer",
+      "name": "San Francisco District Explorer",
       "url": "https://chidistricts.com/",
-      "description": "Click any point in Chicago, or search an address, to see every civic district that contains it — ward, police district and beat, community area, U.S. House and Illinois legislative districts, Cook County commissioner and Board of Review, elected school board district, and CPS attendance zones — and who represents you.",
+      "description": "Click any point in San Francisco, or search an address, to see every civic district that contains it, and who represents you.",
       "applicationCategory": "Reference",
       "operatingSystem": "Any (modern web browser)",
       "browserRequirements": "Requires JavaScript",
@@ -74,34 +60,18 @@
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
       "inLanguage": "en-US",
       "image": "https://chidistricts.com/og-image.png",
-      "areaServed": { "@type": "City", "name": "Chicago", "containedInPlace": { "@type": "State", "name": "Illinois" } },
-      "keywords": "Chicago ward map, what ward am I in, Chicago police district, Chicago community area, congressional district, Illinois legislative district, Cook County commissioner, elected school board district, CPS attendance zone, who represents me Chicago",
+      "areaServed": { "@type": "City", "name": "San Francisco", "containedInPlace": { "@type": "State", "name": "California" } },
+      "keywords": "San Francisco district map, what district am I in, San Francisco supervisor district, civic districts, who represents me San Francisco",
       "isPartOf": { "@id": "https://chidistricts.com/#website" },
-      "sameAs": "https://github.com/ThursdaysFamous/DistrictExplorer-CHI"
+      "sameAs": "https://github.com/ThursdaysFamous/DistrictExplorer-SF"
     }
   ]
 }
 </script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "@id": "https://chidistricts.com/#faq",
-  "isPartOf": { "@id": "https://chidistricts.com/#website" },
-  "mainEntity": [
-    { "@type": "Question", "name": "How do I find out what ward I'm in?", "acceptedAnswer": { "@type": "Answer", "text": "Search your address or click your location on the map above. The tool shows your Chicago ward and who represents it, along with every other civic district that covers that exact point." } },
-    { "@type": "Question", "name": "How many wards does Chicago have?", "acceptedAnswer": { "@type": "Answer", "text": "Chicago has 50 wards, each represented by an alderperson on the City Council." } },
-    { "@type": "Question", "name": "What are my Chicago police district and beat?", "acceptedAnswer": { "@type": "Answer", "text": "Chicago is divided into 22 police districts, each split into smaller beats. Select any address above to see the police district and beat that cover it, plus the nearest police station." } },
-    { "@type": "Question", "name": "What is a Chicago community area?", "acceptedAnswer": { "@type": "Answer", "text": "Chicago has 77 official community areas — long-established neighborhood boundaries used for planning and statistics. The tool shows which community area contains any point you pick." } },
-    { "@type": "Question", "name": "Who represents me in Congress and in Springfield?", "acceptedAnswer": { "@type": "Answer", "text": "Pick a location to see your U.S. House district, Illinois State Senate district, and Illinois State House district, along with the people currently holding those seats." } },
-    { "@type": "Question", "name": "Is this an official government tool?", "acceptedAnswer": { "@type": "Answer", "text": "No. It draws on public data sources that disclaim legal precision, so always confirm district assignments and officeholders with the relevant government office before relying on them for anything official." } }
-  ]
-}
-</script>
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#0b3d91">
+<meta name="theme-color" content="#C0362C">
 
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2341B6E6'/%3E%3Cpolygon points='32,6 36,25.07 54.52,19 40,32 54.52,45 36,38.93 32,58 28,38.93 9.48,45 24,32 9.48,19 28,25.07' fill='%23C8102E'/%3E%3C/svg%3E" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23C0362C'/%3E%3Cpolygon points='32,6 36,25.07 54.52,19 40,32 54.52,45 36,38.93 32,58 28,38.93 9.48,45 24,32 9.48,19 28,25.07' fill='%23ffffff'/%3E%3C/svg%3E" />
 
 <!-- warm the connections first paint waits on: Leaflet's CDN (JS before the app
      script) and the CARTO tile hosts the map hits the moment it initializes.
@@ -957,11 +927,11 @@ svg.leaflet-image-layer.leaflet-interactive path {
   size-adjust: 107.40%;
 }
   :root {
-    /* ---- Chicago flag palette ---- */
-    --accent: #41B6E6;        /* flag stripe blue */
-    --accent-deep: #0B5394;   /* deeper blue for text/links on light bg */
-    --accent-warm: #C8102E;         /* flag star red */
-    --accent-warm-deep: #9C0B24;
+    /* ---- San Francisco palette (bay blue + Golden Gate International Orange) ---- */
+    --accent: #1D6F8B;        /* flag stripe blue */
+    --accent-deep: #124F63;   /* deeper blue for text/links on light bg */
+    --accent-warm: #C0362C;         /* flag star red */
+    --accent-warm-deep: #8E2A22;
   /* ==== ENGINE:BEGIN styles-core ==== */
 
     --ink: #14181C;
@@ -1859,7 +1829,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
   /* ---- selected-boundary highlight: SVG drop-shadow filter so the matched
      region reads as physically lifted above the faded rest of the layer ---- */
   /* ==== ENGINE:END styles-footer ==== */
-  .chi-region-highlight {
+  .sf-region-highlight {
     filter: drop-shadow(0 5px 7px rgba(20, 24, 28, 0.5)) drop-shadow(0 1px 2px rgba(20, 24, 28, 0.35));
     transition: filter 120ms ease-out;
   }
@@ -1868,13 +1838,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
    * rasterizing a ~2.3 Mpx region every frame); this drops it to the filter-off
    * baseline during pan/zoom with NO change at rest — the base rule's 120 ms
    * transition fades the shadow back in on moveend. (OPTIMIZATION_PLAYBOOK P9/R2-5.) */
-  .chi-panning .chi-region-highlight { filter: none; transition: none; }
-  .chi-poi-pin { background: none; border: none; }
-  /* Chicago-specific: the SEO/orientation lede under the empty-state prompt —
+  .sf-panning .sf-region-highlight { filter: none; transition: none; }
+  .sf-poi-pin { background: none; border: none; }
+  /* The SEO/orientation lede under the empty-state prompt —
      the district vocabulary a first-time (or crawling) visitor reads before a
      point is picked. Styled a step down from the primary prompt above it. */
   .empty-state .empty-state-lede { font-size: 12.5px; margin-top: 12px; max-width: 40ch; color: var(--slate-soft); }
-  /* Chicago-specific: evergreen FAQ below the tool — crawlable answers to the
+  /* (legacy) FAQ styles below the tool — crawlable answers to the
      district questions people search for, kept in collapsed <details> so they
      stay indexable without cluttering the UI. */
   .faq-section { max-width: 1800px; margin: 0 auto; padding: 34px 20px 8px; }
@@ -1975,8 +1945,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
   /* ==== ENGINE:END styles-hover-responsive ==== */
 </style>
 
-<script data-goatcounter="https://chidistricts.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 
@@ -1989,7 +1957,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
         <svg class="masthead-star" viewBox="0 0 100 100" aria-hidden="true">
           <path fill="var(--accent-warm)" id="star-path-header"></path>
         </svg>
-        <span class="title-text">Chicago District Explorer</span>
+        <span class="title-text">San Francisco District Explorer</span>
       </span>
       <small>Click the map or search an address to see every district that covers it, and who represents it.</small>
     </h1>
@@ -1999,13 +1967,13 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 <main class="layout" id="layout">
   <section class="map-col" aria-label="Interactive district map">
-    <div id="map" role="application" aria-label="Map of Chicago. Click anywhere to select a point, or use the search box above."></div>
+    <div id="map" role="application" aria-label="Map of San Francisco. Click anywhere to select a point, or use the search box above."></div>
 
     <div class="map-toolbar">
       <div class="search-shell">
         <form id="geocode-form" class="search-row" role="search">
-          <label for="geocode-input" class="visually-hidden">Search a Chicago address</label>
-          <input type="text" id="geocode-input" placeholder="Search a Chicago address…" autocomplete="off" />
+          <label for="geocode-input" class="visually-hidden">Search a San Francisco address</label>
+          <input type="text" id="geocode-input" placeholder="Search a San Francisco address…" autocomplete="off" />
           <button type="submit">Search</button>
         </form>
         <div class="search-extra" id="search-extra">
@@ -2044,7 +2012,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
       </svg>
       <h2>No point selected</h2>
       <p>Search an address or click anywhere on the map to build a civic profile for that location.</p>
-      <p class="empty-state-lede">See your ward, police district and beat, community area, congressional and Illinois legislative districts, Cook County commissioner, elected school board district, and CPS school zones — plus who represents you.</p>
+      <p class="empty-state-lede">See every civic district that covers your location — and who represents you there.</p>
     </div>
     <div id="groups-root" hidden></div>
   </section>
@@ -2052,33 +2020,6 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 <div class="flag-stripe" aria-hidden="true"></div>
 
-<section class="faq-section" aria-labelledby="faq-heading">
-  <h2 id="faq-heading">Common questions about Chicago districts</h2>
-  <details>
-    <summary>How do I find out what ward I'm in?</summary>
-    <p>Search your address or click your location on the map above. The tool shows your Chicago ward and who represents it, along with every other civic district that covers that exact point.</p>
-  </details>
-  <details>
-    <summary>How many wards does Chicago have?</summary>
-    <p>Chicago has 50 wards, each represented by an alderperson on the City Council.</p>
-  </details>
-  <details>
-    <summary>What are my Chicago police district and beat?</summary>
-    <p>Chicago is divided into 22 police districts, each split into smaller beats. Select any address above to see the police district and beat that cover it, plus the nearest police station.</p>
-  </details>
-  <details>
-    <summary>What is a Chicago community area?</summary>
-    <p>Chicago has 77 official community areas — long-established neighborhood boundaries used for planning and statistics. The tool shows which community area contains any point you pick.</p>
-  </details>
-  <details>
-    <summary>Who represents me in Congress and in Springfield?</summary>
-    <p>Pick a location to see your U.S. House district, Illinois State Senate district, and Illinois State House district, along with the people currently holding those seats.</p>
-  </details>
-  <details>
-    <summary>Is this an official government tool?</summary>
-    <p>No. It draws on public data sources that disclaim legal precision, so always confirm district assignments and officeholders with the relevant government office before relying on them for anything official.</p>
-  </details>
-</section>
 
 <div class="flag-stripe" aria-hidden="true"></div>
 <footer class="site-footer">
@@ -2095,7 +2036,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
     <div class="footer-sources" id="footer-sources">
       <span class="footer-sources-label">Sources</span>
       <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">Geocoding © OpenStreetMap contributors (Nominatim &amp; Photon/Komoot)</a>
-      <a href="https://data.cityofchicago.org" target="_blank" rel="noopener">Chicago Data Portal</a>
+      <a href="https://data.sfgov.org" target="_blank" rel="noopener">DataSF</a>
       <a href="https://tigerweb.geo.census.gov" target="_blank" rel="noopener">U.S. Census TIGERweb</a>
       <a href="https://github.com/unitedstates/congress-legislators" target="_blank" rel="noopener">unitedstates/congress-legislators</a>
       <a href="https://www.ilga.gov" target="_blank" rel="noopener">Illinois General Assembly</a>
@@ -2111,7 +2052,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
     <!-- ==== ENGINE:END metro-links-html ==== -->
     <div class="footer-links">
       <button type="button" id="feedback-btn" class="footer-link-btn">💬 Report a bug or leave a comment</button>
-      <a href="https://github.com/ThursdaysFamous/DistrictExplorer-CHI" target="_blank" rel="noopener">View source on GitHub</a>
+      <a href="https://github.com/ThursdaysFamous/DistrictExplorer-SF" target="_blank" rel="noopener">View source on GitHub</a>
       <a href="https://overberg.co" target="_blank" rel="noopener">overberg.co</a>
       <a href="https://github.com/sponsors/ThursdaysFamous" target="_blank" rel="noopener">💛 Support this project</a>
     </div>
@@ -2146,8 +2087,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
 <script>
 // The app boot was a bare IIFE that ran at parse time and dereferenced L
 // synchronously. With Leaflet now deferred, boot is gated on DOMContentLoaded
-// (deferred scripts finish before it), so L is ready when initChiExplorer runs.
-function initChiExplorer() {
+// (deferred scripts finish before it), so L is ready when initSFExplorer runs.
+function initSFExplorer() {
   "use strict";
 
   /* =========================================================================
@@ -2160,19 +2101,19 @@ function initChiExplorer() {
    * lives here, so an ENGINE block never needs a per-city edit. Fenced ENGINE
    * blocks are byte-identical across every metro fork — see
    * docs/ENGINE_SYNC.md and scripts/check_engine_parity.py. */
-  var THIS_METRO = "chicago";           // key into METRO_EXPLORERS below
-  var METRO_NAME = "Chicago";           // used in user-facing strings
-  var METRO_BBOX = { minLng: -88.6, minLat: 41.0, maxLng: -87.0, maxLat: 42.6 };
-  var METRO_CENTER = [41.8781, -87.6298];
+  var THIS_METRO = "sf";                // key into METRO_EXPLORERS below
+  var METRO_NAME = "San Francisco";     // used in user-facing strings
+  var METRO_BBOX = { minLng: -122.517, minLat: 37.703, maxLng: -122.353, maxLat: 37.833 };
+  var METRO_CENTER = [37.7749, -122.4194];
   // Permalink sanity gate: the *greater* metro area (wider than METRO_BBOX).
-  var PERMALINK_GATE = { minLat: 40.8, maxLat: 42.7, minLng: -88.8, maxLng: -86.9 };
-  var SOCRATA_HOST = "https://data.cityofchicago.org";
+  var PERMALINK_GATE = { minLat: 37.6, maxLat: 37.95, minLng: -122.6, maxLng: -122.3 };
+  var SOCRATA_HOST = "https://data.sfgov.org";
   // Socrata app token: some metros' portals throttle anonymous requests. It is
   // a throttling identifier, not a secret — public exposure is Socrata's
   // intended use (do NOT put an API Key *secret* here). Blank = sent as-is.
   var SOCRATA_APP_TOKEN = "";
-  var REPO_ISSUES = "https://github.com/ThursdaysFamous/DistrictExplorer-CHI/issues/new";
-  var FEEDBACK_SUBJECT = "Chicago District Explorer feedback";
+  var REPO_ISSUES = "https://github.com/ThursdaysFamous/DistrictExplorer-SF/issues/new";
+  var FEEDBACK_SUBJECT = "San Francisco District Explorer feedback";
   /* Sibling District Explorer deployments — one canonical list shared by every
    * metro fork. When a new metro launches, add its entry to every fork's
    * worksheet and regenerate (Conversion 3 will source this list from the
@@ -2186,12 +2127,14 @@ function initChiExplorer() {
     { id: "chicago", label: "Chicago", url: "https://chidistricts.com/", emoji: "🌭",
       bbox: { minLng: -88.6, minLat: 41.0, maxLng: -87.0, maxLat: 42.6 } },
     { id: "nyc", label: "New York City", url: "https://nyc.chidistricts.com/", emoji: "🗽",
-      bbox: { minLng: -74.3, minLat: 40.45, maxLng: -73.6, maxLat: 41.0 } }
+      bbox: { minLng: -74.3, minLat: 40.45, maxLng: -73.6, maxLat: 41.0 } },
+    { id: "sf", label: "San Francisco", url: "https://sf.chidistricts.com/", emoji: "🌉",
+      bbox: { minLng: -122.6, minLat: 37.6, maxLng: -122.3, maxLat: 37.95 } }
   ];
   /* CSS class names for the fork-branded map chrome: ENGINE code applies them,
    * this fork's stylesheet defines them (they carry the fork's palette). */
-  var HIGHLIGHT_CLASS = "chi-region-highlight"; // selected-region highlight (drop-shadow filter)
-  var POI_PIN_CLASS = "chi-poi-pin";           // geocoded point-of-interest marker
+  var HIGHLIGHT_CLASS = "sf-region-highlight"; // selected-region highlight (drop-shadow filter)
+  var POI_PIN_CLASS = "sf-poi-pin";            // geocoded point-of-interest marker
   // FALLBACK district-number key list, fed through extractDistrictNumber
   // (which adds a name-field regex fallback for the layers whose number only
   // lives inside a "…name" string). The factories declare per-layer hoverName
@@ -2200,11 +2143,9 @@ function initChiExplorer() {
   // keys are this metro's dataset vocabulary — re-seed them from observed
   // field names in the worksheet, keeping encoded fields out.
   var HOVER_NUMBER_KEYS = [
-    "ward", "ward_num", "ward_number", "ward_id",
-    "district", "dist_num", "dist", "district_number", "district_no",
-    "area_numbe", "area_num_1", "area_number", "community_area_number", "area_num",
-    "beat_num", "beat", "beat_number", "beat_no",
-    "zip", "zip_code", "zipcode", "zcta5ce10",
+    "zip", "zip_code", "zipcode", "zcta5ce10", "zcta5ce20", "geoid20", "geoid10",
+    "supervisor", "sup_dist", "supdist", "supname", "supdistpad",
+    "district", "dist_num", "dist", "district_number",
     "number"
   ];
 
@@ -2213,8 +2154,7 @@ function initChiExplorer() {
   // are excluded on purpose: for legislative layers those just restate the
   // number this pairs with.
   var HOVER_NAME_KEYS = [
-    "community", "community_area_name", "commarea", "comarea",
-    "short_name", "school_nam", "school_nm", "school_name", "schoolname", "sch_name"
+    "nhood", "neighborhood", "name"
   ];
   /* ==== GENERATED:END metro-config ==== */
   /* ==== METRO:END config ==== */
@@ -2240,31 +2180,14 @@ function initChiExplorer() {
   document.getElementById("star-path-empty").setAttribute("d", starPath(50, 50, 40, 16));
 
   var starDivIcon = L.divIcon({
-    className: "chi-star-marker",
+    className: "sf-star-marker",
     html: '<svg viewBox="0 0 100 100" width="34" height="34" style="filter:drop-shadow(0 2px 3px rgba(0,0,0,0.45))">' +
-          '<path d="' + starPath(50, 50, 46, 19) + '" fill="#C8102E" stroke="#ffffff" stroke-width="4"/>' +
+          '<path d="' + starPath(50, 50, 46, 19) + '" fill="#C0362C" stroke="#ffffff" stroke-width="4"/>' +
           "</svg>",
     iconSize: [34, 34],
     iconAnchor: [17, 17]
   });
 
-  /* ---------- water-taxi marker: the selection marker becomes the Chicago Water
-   * Taxi seal when a clicked/searched point lands on Lake Michigan (open water),
-   * not on land — see selectPointMarker(). The logo is a circular seal
-   * (icons/water-taxi.png, cropped from the supplied art — see
-   * icons/source/README.md), so it's presented as a round white badge sized to
-   * read at map scale. It's preloaded here and only swapped in once it actually
-   * loads, so a missing/broken asset cleanly falls back to the default star. ---------- */
-  var WATER_TAXI_ICON_URL = "icons/water-taxi.png";
-  var waterTaxiDivIcon = L.divIcon({
-    className: "chi-water-taxi-marker",
-    html: '<img src="' + WATER_TAXI_ICON_URL + '" width="46" height="46" ' +
-          'alt="Selected point (on water)" ' +
-          'style="display:block;border-radius:50%;background:#ffffff;' +
-          'border:2px solid #ffffff;box-shadow:0 2px 4px rgba(0,0,0,0.45)">',
-    iconSize: [50, 50],
-    iconAnchor: [25, 25]
-  });
   // Run cb during browser idle (fallback: a short timeout). Used to keep
   // conditional-marker art and the decorative coverage wash — both of which PSI
   // measured sitting in the initial-navigation critical chain — OFF the boot
@@ -2272,110 +2195,6 @@ function initChiExplorer() {
   function whenIdle(cb) {
     return (window.requestIdleCallback || function (fn) { return setTimeout(fn, 200); })(cb);
   }
-  // Preload at idle (not on the boot critical path) so a water selection still
-  // swaps instantly, but the 27 KB PNG doesn't compete with first paint; the
-  // load-state guard still prevents a broken/blocked asset from ever producing a
-  // broken-image marker.
-  var waterTaxiImg = new Image();
-  var waterTaxiImgState = "loading"; // "loading" | "ready" | "failed"
-  waterTaxiImg.addEventListener("load", function () { waterTaxiImgState = "ready"; });
-  waterTaxiImg.addEventListener("error", function () { waterTaxiImgState = "failed"; });
-  whenIdle(function () { waterTaxiImg.src = WATER_TAXI_ICON_URL; });
-
-  // Run cb(true) once the logo image has loaded, cb(false) if it failed. Callable
-  // any time — resolves synchronously if the state is already known, otherwise
-  // waits for the in-flight preload without clobbering other waiters.
-  function whenWaterTaxiImgReady(cb) {
-    if (waterTaxiImgState === "ready") { cb(true); return; }
-    if (waterTaxiImgState === "failed") { cb(false); return; }
-    var done = false;
-    function finish(ok) { if (done) return; done = true; cb(ok); }
-    waterTaxiImg.addEventListener("load", function () { finish(true); });
-    waterTaxiImg.addEventListener("error", function () { finish(false); });
-  }
-
-  /* ---------- location-aware selection marker: beyond the Chicago flag star
-   * (inside the city) and the Water Taxi seal (on Lake Michigan), a point that
-   * lands in a county outside the city gets that county's seal — the Cook
-   * County seal (public-domain, icons/seals/cook-county.png) where we ship one,
-   * and a clean county-name badge for every other county until its seal is
-   * added. See selectPointMarker() for the containment hierarchy; the seals map
-   * grows over time without any code change. ---------- */
-  var COUNTY_SEAL_URLS = {
-    // keyed by the TIGER county NAME field ("<County> County"). Add an entry +
-    // drop a derived PNG in icons/seals/ (see icons/source/README.md) to light
-    // up another county; absent counties fall back to the name badge below.
-    // Every seal shipped here is cleanly licensed (public domain or an explicit
-    // free license) — provenance + license for each is recorded in
-    // icons/source/README.md. Counties with no freely-licensed seal keep the
-    // name badge (see docs/COUNTY_SEALS_REVIEW.md for the outstanding list).
-    "Cook County": "icons/seals/cook-county.png",
-    "Hamilton County": "icons/seals/hamilton.png",
-    "Kane County": "icons/seals/kane.png",
-    "Lake County": "icons/seals/lake.png",
-    "Macon County": "icons/seals/macon.png",
-    "Saline County": "icons/seals/saline.png",
-    "St. Clair County": "icons/seals/st-clair.png",
-    "Washington County": "icons/seals/washington.png",
-    "Will County": "icons/seals/will.png"
-  };
-
-  // Round white seal badge (mirrors the water-taxi badge) for a county we ship a
-  // seal image for.
-  function makeCountySealDivIcon(url, name) {
-    return L.divIcon({
-      className: "chi-county-seal-marker",
-      html: '<img src="' + url + '" width="42" height="42" ' +
-            'alt="Selected point (' + sanitize(name) + ')" ' +
-            'style="display:block;border-radius:50%;background:#ffffff;' +
-            'border:2px solid #ffffff;box-shadow:0 2px 4px rgba(0,0,0,0.45)">',
-      iconSize: [46, 46],
-      iconAnchor: [23, 23]
-    });
-  }
-
-  // Clean name badge for a county with no seal yet: a rounded pill in the app's
-  // civic blue with the county name, centred on the point like the star.
-  function makeCountyBadgeDivIcon(name) {
-    var label = sanitize(name);
-    var w = Math.max(52, name.length * 7 + 22);
-    return L.divIcon({
-      className: "chi-county-badge-marker",
-      html: '<div style="box-sizing:border-box;white-space:nowrap;overflow:hidden;' +
-            'text-overflow:ellipsis;width:' + w + 'px;padding:3px 9px;border-radius:11px;' +
-            'background:#0B5394;color:#ffffff;border:2px solid #ffffff;' +
-            "font:600 11px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;" +
-            'text-align:center;box-shadow:0 2px 4px rgba(0,0,0,0.45)">' + label + '</div>',
-      iconSize: [w, 22],
-      iconAnchor: [w / 2, 11]
-    });
-  }
-
-  // Preload + readiness tracking for seal images, keyed by URL — same pattern as
-  // the water-taxi preload, so a blocked/broken seal cleanly falls back to the
-  // name badge instead of a broken-image marker.
-  var sealImgCache = {};
-  function whenSealImgReady(url, cb) {
-    var e = sealImgCache[url];
-    if (!e) {
-      e = sealImgCache[url] = { state: "loading", img: new Image() };
-      e.img.addEventListener("load", function () { e.state = "ready"; });
-      e.img.addEventListener("error", function () { e.state = "failed"; });
-      e.img.src = url;
-    }
-    if (e.state === "ready") { cb(true); return; }
-    if (e.state === "failed") { cb(false); return; }
-    var done = false;
-    function finish(ok) { if (done) return; done = true; cb(ok); }
-    e.img.addEventListener("load", function () { finish(true); });
-    e.img.addEventListener("error", function () { finish(false); });
-  }
-  // Warm the seals we ship so the first out-of-city selection swaps instantly —
-  // at idle, off the boot critical path (R2-4; PSI flagged these 18 KB+ PNGs).
-  whenIdle(function () {
-    Object.keys(COUNTY_SEAL_URLS).forEach(function (k) { whenSealImgReady(COUNTY_SEAL_URLS[k], function () {}); });
-  });
-
   /* ==== ENGINE:BEGIN sanitize ==== */
   /* ---------- sanitize: escape any external string before it touches innerHTML ---------- */
   function sanitize(str) {
@@ -2641,12 +2460,12 @@ function initChiExplorer() {
   var map = L.map("map", { minZoom: 9, maxZoom: 18, zoomControl: false }).setView(METRO_CENTER, 11);
   L.control.zoom({ position: "bottomright" }).addTo(map);
   // Pause the selection-highlight drop-shadow during pan/zoom (see the
-  // .chi-panning CSS rule): the filter's per-frame rasterization is the measured
+  // .sf-panning CSS rule): the filter's per-frame rasterization is the measured
   // pan cost (R2-5). A class on the map container flips it off on move/zoom
   // start and back on end; classList add/remove is idempotent so overlapping
   // pan+zoom events are harmless.
-  map.on("movestart zoomstart", function () { map.getContainer().classList.add("chi-panning"); });
-  map.on("moveend zoomend", function () { map.getContainer().classList.remove("chi-panning"); });
+  map.on("movestart zoomstart", function () { map.getContainer().classList.add("sf-panning"); });
+  map.on("moveend zoomend", function () { map.getContainer().classList.remove("sf-panning"); });
   var baseTiles = L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
     maxZoom: 19,
     subdomains: "abcd",
@@ -2822,53 +2641,12 @@ function initChiExplorer() {
   var selectedMarker = null;
   var pointChip = document.getElementById("point-chip");
 
-  /* ---------- pick the selection marker for a point by containment, most
-   * specific first: inside Chicago → the flag star (already set); on Lake
-   * Michigan → the Water Taxi seal; otherwise the containing county's seal (or
-   * name badge); anything else (outside Illinois) keeps the star. Reuses the
-   * app's own cached geometry — chicagoCoverage (the city test every
-   * Chicago-scoped layer uses), a tiny generalized Lake Michigan hydrography
-   * polygon, and a tiny generalized county set (all lazy + cached) — so it adds
-   * no heavy fetch. Testing the city first means a downtown river point reads as
-   * city (star), not water: the taxi is now Lake-Michigan-only, as intended.
-   * Preserves both app invariants: every hop is stale-async guarded by `seq` +
-   * marker identity (a newer selection bails), and it's fully isolated — any
-   * geometry-load failure or missing asset silently leaves the current marker. ---------- */
-  function selectPointMarker(point, seq, marker) {
-    function live() { return seq === state.sequence && marker === selectedMarker; }
-    // 1. Inside the City of Chicago → keep the flag star (the default already set).
-    chicagoCoverage(point).then(function (inCity) {
-      if (!live() || inCity) return;
-      // 2. On Lake Michigan → the Water Taxi seal.
-      loadLakeMichigan().then(function (lake) {
-        if (!live()) return;
-        if (findFeatureContaining(lake, point)) {
-          whenWaterTaxiImgReady(function (ok) {
-            // re-check after the (possibly async) image load
-            if (ok && live()) marker.setIcon(waterTaxiDivIcon);
-          });
-          return;
-        }
-        // 3. Inside a county → its seal, or a name badge if we ship no seal yet.
-        loadIlCountiesGeneralized().then(function (counties) {
-          if (!live()) return;
-          var f = findFeatureContaining(counties, point);
-          if (!f) return; // 4. outside Illinois — keep the star
-          var name = findPropCI(f.properties || {}, ["name"]);
-          if (!name) return;
-          var sealUrl = COUNTY_SEAL_URLS[name];
-          if (sealUrl) {
-            whenSealImgReady(sealUrl, function (ok) {
-              if (!live()) return;
-              marker.setIcon(ok ? makeCountySealDivIcon(sealUrl, name) : makeCountyBadgeDivIcon(name));
-            });
-          } else {
-            marker.setIcon(makeCountyBadgeDivIcon(name));
-          }
-        }).catch(function () { /* county load failed — keep the star */ });
-      }).catch(function () { /* lake load failed — keep the star */ });
-    }).catch(function () { /* coverage test failed — keep the star */ });
-  }
+  /* ---------- selection marker: SF keeps the default star set in
+   * setSelectedPoint(). The reference's conditional marker swap (Chicago flag
+   * star / Water Taxi seal on Lake Michigan / county seal) read Chicago-scoped
+   * coverage + IL county geometry and was dropped in the SF re-core; a later SF
+   * thread can reintroduce a metro-specific marker here. ---------- */
+  function selectPointMarker(point, seq, marker) { /* SF: default star kept */ }
 
   function setSelectedPoint(lat, lng, opts) {
     opts = opts || {};
@@ -3598,49 +3376,7 @@ function initChiExplorer() {
   // geometry library in this codebase to compute polygon area from data.
   // GENERATED from the worksheet's layers[] (area_rank order + rank notes).
   var LAYER_AREA_RANK = [
-    "il-supreme-court",  // judicial district — largest
-    "congress",          // U.S. House district
-    "il-senate",         // IL State Senate district
-    "il-house",          // IL State House district
-    "county",            // IL county (102 statewide; TIGERweb, live-verified 2026-07)
-    "school-district-secondary", // IL secondary school district (105 statewide; only where elem/HS pairs exist)
-    "school-district-unified", // IL unified school district (387 statewide incl. CPS as SD 299)
-    "school-district-elementary", // IL elementary school district (371 statewide)
-    "township",          // IL county subdivision (1,695 statewide: townships + city/precinct MCDs)
-    "municipality",      // IL incorporated place (1,294 statewide; empty card = unincorporated)
-    "will-county-judicial", // Will County judicial subcircuit (5; PA 102-0693 Judicial_Districts_2022, coverage-gated)
-    "will-county-board", // Will County Board district (11, current Board-Approved-11/2/21 map; live from county GIS, coverage-gated to Will County)
-    "ccbr",              // Cook County Board of Review district (only 3, county-wide)
-    "commissioner",      // Cook County Commissioner district
-    "will-county-fire",  // Will County fire protection district (37; trustees live from county GIS, coverage-gated)
-    "will-county-park",  // Will County park district (22; partial coverage, commissioners from county GIS, coverage-gated)
-    "school-board",      // Elected School Board district (10, citywide)
-    "cps-hs-network",    // CPS High School Network (admin grouping)
-    "cps-network",       // CPS K-8 Network (admin grouping)
-    "ward",              // City Ward (50)
-    // Smaller than its parent ward, so it renders on top (smallest-on-top); turning it
-    // on drops the ward to outline-only, framing the precinct fills from underneath.
-    "ward-precinct",     // Ward Precinct (sub-selection of City Ward)
-    "police-district",   // Police District (22)
-    // Smaller than its parent district, so it renders on top (smallest-on-top);
-    // turning it on drops the district to outline-only, framing the beat fills from underneath.
-    "police-beat",       // Police Beat (~277)
-    // CCPSA District Council shares the police-district geometry exactly (22,
-    // one council per district); place it just after so its outline draws on
-    // top when both are on and its distinct teal dash stays legible.
-    "ccpsa-district-council",
-    "community-area",    // Community Area (77)
-    "zip-code",          // ZIP Code (statewide Census ZCTA; ZCTA ≈ USPS ZIP)
-    "cps-high",          // High School attendance zone
-    "cps-middle",        // Middle School attendance zone
-    // Smallest Will County layer, so it renders on top of Township and County
-    // (smallest-on-top); turning it on drops both to outline-only, framing the
-    // precinct fills from underneath.
-    "will-county-precinct", // Will County voting precinct (310; current 2022 map Precincts_2022, coverage-gated)
-    "cps-elementary",    // Elementary School attendance zone — smallest polygon layer
-    "school-site",       // individual school-campus footprints — smallest polygons, above the zones
-    "police-station",    // point marker — no polygon area, always topmost
-    "fire-station"       // point marker — no polygon area, always topmost
+    "zip-code"           // Thread-0 stub — national ZCTA (Census TIGERweb); real SF layers land in Threads 1-4
   ];
   /* ==== GENERATED:END layer-area-rank ==== */
 
@@ -4625,15 +4361,6 @@ function initChiExplorer() {
   }
 
   /* ==== ENGINE:END render-helper ==== */
-  /* =========================================================================
-   * THREAD 1 — GEOGRAPHY: Community Area + ZIP Code
-   * Both datasets are small (77 community areas, ~60 ZIPs) so each module
-   * fetches its full boundary set once (cached, shared between the overlay
-   * and the query so toggling a layer on never double-fetches), then does
-   * the point-in-polygon test locally via the shared pointInGeometry util.
-   * Replaces Thread 0's demo-radius stub, as planned in the playbook.
-   * ======================================================================= */
-
   /* ==== ENGINE:BEGIN socrata-loader ==== */
   /* ---------- true if at least one feature has real (non-null) geometry.
    * Some older "legacy" Socrata boundary datasets return HTTP 200 from the
@@ -4908,594 +4635,18 @@ function initChiExplorer() {
     });
   }
   /* ==== ENGINE:END polygon-factory ==== */
-
-  /* ---------- location-relevance tests (fork-owned; see mod.coverage in the
-   * overlay-cards engine block). Chicago-scoped layers hide when the selected
-   * point leaves the city; the two Cook-County layers hide outside the county.
-   * Both tests reuse geometry the app already ships: the ERSB school-board
-   * districts tile the City of Chicago exactly (they also draw the
-   * out-of-scope wash), and the three Board of Review districts tile Cook
-   * County. Same-origin static files behind makeCached — the first
-   * out-of-city selection costs at most one local fetch, and a fetch failure
-   * fails OPEN in the engine (the layer behaves exactly as it does today). */
-  // Both tests OVER-approximate the area they gate: a false SHOW just yields
-  // an honest empty card, but a false HIDE would suppress a district the
-  // dataset genuinely resolves — an honesty bug. The ERSB tiling misses
-  // slivers the city datasets cover (downtown lakefill, harbors, O'Hare-edge
-  // ZIPs), so an ERSB miss falls back to the community-area tiling — the app's
-  // long-standing "inside the city" test (chicagoCoverage is also what
-  // selectPointMarker calls to keep the flag star inside Chicago). The
-  // fallback leg swallows its own failure and stands on the first verdict
-  // (offline still hides confidently); a first-leg failure rejects through to
-  // the engine's fail-open.
-  function chicagoCoverage(point) {
-    return loadSchoolBoardDistricts().then(function (geojson) {
-      if (findFeatureContaining(geojson, point)) return true;
-      return loadCommunityAreas().then(function (areas) {
-        return !!findFeatureContaining(areas, point);
-      }, function () { return false; });
-    });
-  }
-  // Cook County: CCBR tiling first; an edge miss falls back to IL Supreme
-  // Court District 1, which is by statute exactly Cook County (both are
-  // same-origin static files).
-  function cookCountyCoverage(point) {
-    return loadCcbrDistricts().then(function (geojson) {
-      if (findFeatureContaining(geojson, point)) return true;
-      return loadSupremeCourtDistricts().then(function (sc) {
-        var f = findFeatureContaining(sc, point);
-        return !!(f && String(findPropCI(f.properties || {}, ["district"])) === "1");
-      }, function () { return false; });
-    });
-  }
-  // Chicago is served by the *unified* CPS District 299, so the elementary and
-  // secondary (high-school) TIGER tilings — mutually exclusive with the unified
-  // tiling — never resolve inside the city. Their cards would only ever read
-  // "No result" there, duplicating (far less usefully) what the CPS zone cards
-  // already answer, so hide the pair inside Chicago; the Unified card, which
-  // *does* resolve here as "Chicago Public School District 299", stays.
-  //
-  // This gates on the ERSB school-board tiling *without* chicagoCoverage's
-  // community-area fallback, and the asymmetry is deliberate. chicagoCoverage
-  // over-approximates the city — safe for a layer that SHOWS inside (a false
-  // show is an honest empty card) — but inverted to drive a HIDE that same
-  // over-approximation would suppress a genuine suburban elementary/secondary
-  // district just past the city line, the honesty bug the coverage notes warn
-  // about. ERSB alone under-approximates the city (it misses lakefill / harbor /
-  // O'Hare-edge slivers), so an edge miss falls to SHOW: at worst an honest
-  // empty card at a city sliver, never a hidden suburban district. It reuses the
-  // small same-origin cached file chicagoCoverage's first leg already loads, so
-  // gating the two cards costs no extra fetch, and a load failure fails open
-  // (the engine shows the layer, exactly as before this test existed).
-  function outsideChicagoSchoolCoverage(point) {
-    return loadSchoolBoardDistricts().then(function (geojson) {
-      return !findFeatureContaining(geojson, point);
-    });
-  }
-
-  /* =========================================================================
-   * STATEWIDE ILLINOIS — LOCAL GOVERNMENT (Census TIGERweb)
-   * Six identity layers that resolve for ANY Illinois point — county,
-   * township/county-subdivision, municipality, and the three school-district
-   * tilings — from the same TIGERweb STATE='17' pattern the legislative
-   * layers use. Live-verified 2026-07 (layer indices, field names, feature
-   * counts, and a Homer Glen / Will County ground truth: Will County, Homer
-   * township, Homer Glen village, Lockport Twp HSD 205, Homer CCSD 33C, no
-   * unified district). Identity + geometry only — officeholder joins need a
-   * verifiable statewide roster, which none of these bodies publish; per the
-   * honesty rules the cards name the district, never a guessed official.
-   * These layers declare NO coverage (statewide is this app's whole map), so
-   * outside Illinois they report the honest "No result for this point." —
-   * same behavior as il-supreme-court at the negative ground-truth point.
-   * Payload note: statewide boundary sets are heavy (county 3.5 MB … township
-   * 14.5 MB at geometryPrecision=5, measured 2026-07); they lazy-load on
-   * first toggle and cache for the session, matching every other layer.
-   * ======================================================================= */
-  function loadTigerStatewide(service, layerIndex, outFields, label) {
-    // Mirrors the legislative TIGER loader: trimmed outFields (statewide sets
-    // are an order of magnitude larger than the 118-district SLDL payload,
-    // so outFields=* is off the table), geometryPrecision=5 (~1 m), and the
-    // same no-usable-geometry guard so an Esri 200-with-error-envelope never
-    // gets pinned in the session cache.
-    var where = encodeURIComponent("STATE='17'");
-    var url = "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/" + service +
-      "/MapServer/" + layerIndex + "/query?where=" + where + "&outFields=" + outFields +
-      "&outSR=4326&f=geojson&geometryPrecision=5";
-    return fetchJSONWithRetry(url, { timeoutMs: REMOTE_GEOJSON_TIMEOUT_MS }, 2)
-      .then(function (geojson) {
-        if (!hasUsableGeometry(geojson)) throw new Error("TIGERweb " + label + " returned no usable geometry");
-        return geojson;
-      });
-  }
-  var loadIlCounties = makeCached(function () {
-    return loadTigerStatewide("State_County", 1, "GEOID,NAME,BASENAME,STATE,LSADC", "counties");
-  });
-  var loadIlTownships = makeCached(function () {
-    return loadTigerStatewide("Places_CouSub_ConCity_SubMCD", 1, "GEOID,NAME,BASENAME,STATE,COUNTY,LSADC", "county subdivisions");
-  });
-  var loadIlPlaces = makeCached(function () {
-    return loadTigerStatewide("Places_CouSub_ConCity_SubMCD", 4, "GEOID,NAME,BASENAME,STATE,LSADC", "incorporated places");
-  });
-  var loadIlSchoolUnified = makeCached(function () {
-    return loadTigerStatewide("School", 0, "GEOID,NAME,STATE", "unified school districts");
-  });
-  var loadIlSchoolSecondary = makeCached(function () {
-    return loadTigerStatewide("School", 1, "GEOID,NAME,STATE", "secondary school districts");
-  });
-  var loadIlSchoolElementary = makeCached(function () {
-    return loadTigerStatewide("School", 2, "GEOID,NAME,STATE", "elementary school districts");
-  });
-
-  /* ---------- geometry for the location-aware selection marker
-   * (selectPointMarker): a Lake Michigan hydrography polygon (so the Water Taxi
-   * icon fires on the lake and nowhere else) and a lightweight county set (so an
-   * out-of-city point gets its county's seal/badge). Both are server-generalized
-   * to a few KB because the marker only needs containment, not display-accurate
-   * boundaries — the county *layer* above keeps its full-precision loader. TIGER
-   * county polygons include their share of the lake, so the lake test must run
-   * first (selectPointMarker orders it that way). ---------- */
-  var loadLakeMichigan = makeCached(function () {
-    // TIGERweb Areal Hydrography, Lake Michigan pieces (BASENAME='Michigan'),
-    // clipped to a metro-lakefront envelope; ~13 polygons, a few KB generalized.
-    var env = { xmin: -88.2, ymin: 41.0, xmax: -86.9, ymax: 42.7 };
-    var url = "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Hydro/MapServer/1/query" +
-      "?where=" + encodeURIComponent("BASENAME='Michigan'") +
-      "&geometry=" + encodeURIComponent(JSON.stringify(env)) +
-      "&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects" +
-      "&outFields=NAME&returnGeometry=true&outSR=4326&f=geojson" +
-      "&geometryPrecision=5&maxAllowableOffset=0.0005";
-    return fetchJSONWithRetry(url, { timeoutMs: REMOTE_GEOJSON_TIMEOUT_MS }, 2)
-      .then(function (geojson) {
-        if (!hasUsableGeometry(geojson)) throw new Error("TIGERweb Lake Michigan returned no usable geometry");
-        return geojson;
-      });
-  });
-  var loadIlCountiesGeneralized = makeCached(function () {
-    // same statewide county set as loadIlCounties, but generalized to ~0.2 km —
-    // ~75 KB for all 102 counties, enough to name the county under a point.
-    var url = "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/State_County/MapServer/1/query" +
-      "?where=" + encodeURIComponent("STATE='17'") +
-      "&outFields=NAME&returnGeometry=true&outSR=4326&f=geojson" +
-      "&geometryPrecision=4&maxAllowableOffset=0.002";
-    return fetchJSONWithRetry(url, { timeoutMs: REMOTE_GEOJSON_TIMEOUT_MS }, 2)
-      .then(function (geojson) {
-        if (!hasUsableGeometry(geojson)) throw new Error("TIGERweb generalized counties returned no usable geometry");
-        return geojson;
-      });
-  });
-
-  registerPolygonLayer({
-    id: "county",
-    group: "geography",
-    label: "County",
-    loader: loadIlCounties,
-    // solid, slightly heavier stroke — the broadest local boundary on the map
-    style: { color: "#444B54", weight: 2, fillColor: "#6B7280", fillOpacity: 0.04 },
-    fields: [
-      { name: "name", label: "County", keys: ["name"], primary: true },
-      { name: "geoid", label: "FIPS", keys: ["geoid"] }
-    ],
-    // County is the top of the Township > Precinct nest. Turning it off can't
-    // leave a nested sub-selection stranded on the map, so cascade Township off
-    // (which in turn drops Precinct). No-op when Township isn't on.
-    onToggle: function (on) {
-      if (!on) {
-        var tbox = document.getElementById("toggle-township");
-        if (tbox && tbox.checked) tbox.click();
-      }
-    }
-  });
-
-  registerPolygonLayer({
-    id: "township",
-    group: "geography",
-    subOf: "county",
-    label: "Township / County Subdivision",
-    loader: loadIlTownships,
-    // long-dash brown — reads apart from Community Area's short green dash
-    style: { color: "#7A5C3E", weight: 1.5, fillColor: "#A98B6C", fillOpacity: 0.05, dashArray: "7 3" },
-    fields: [
-      // TIGER NAME already carries the honest civil-division type suffix
-      // ("Homer township", "Chicago city") — 17 of 102 counties have no
-      // township government and subdivide as precincts/cities instead,
-      // which is why the layer label says "County Subdivision" too.
-      { name: "name", label: "Subdivision", keys: ["name"], primary: true },
-      { name: "geoid", label: "GEOID", keys: ["geoid"] }
-    ],
-    // Townships are the county's subdivisions, so this nests under County (as
-    // Precinct nests under Township below). Turning it on brings County on as
-    // the outline frame; turning it off un-frames County and, since Township is
-    // itself Precinct's parent, cascades Precinct off.
-    onToggle: function (on) {
-      var countyRt = layerRuntime["county"];
-      if (on) {
-        if (!state.layersOn["county"]) {
-          var cbox = document.getElementById("toggle-county");
-          if (cbox && !cbox.checked) cbox.click();
-        }
-        countyRt.outlineOnly = true;
-      } else {
-        countyRt.outlineOnly = false;
-        var pbox = document.getElementById("toggle-will-county-precinct");
-        if (pbox && pbox.checked) pbox.click();
-      }
-      var countyMod = getLayerById("county");
-      if (countyMod && countyRt.overlayLayer) updateLayerHighlight(countyMod);
-    }
-  });
-
-  registerPolygonLayer({
-    id: "municipality",
-    group: "geography",
-    label: "Municipality",
-    loader: loadIlPlaces,
-    // tight magenta dots; an empty card here honestly means "unincorporated"
-    style: { color: "#B0316E", weight: 1.5, fillColor: "#D06A9C", fillOpacity: 0.05, dashArray: "2 3" },
-    fields: [
-      { name: "name", label: "Municipality", keys: ["name"], primary: true },
-      { name: "geoid", label: "GEOID", keys: ["geoid"] }
-    ]
-  });
-
-  registerPolygonLayer({
-    id: "school-district-unified",
-    group: "schools",
-    label: "Unified School District",
-    loader: loadIlSchoolUnified,
-    style: { color: "#2F6B3A", weight: 1.5, fillColor: "#4C8F59", fillOpacity: 0.05, dashArray: "8 3" },
-    fields: [
-      // Unified (K-12) districts and the elementary+secondary pairs tile
-      // mutually exclusive territory: exactly one of this card and the
-      // elementary/high-school pair below resolves for any Illinois point
-      // (CPS appears here as "Chicago Public School District 299"). Inside
-      // Chicago the pair is *unified* territory, so those two cards never
-      // resolve and both hide (coverage: outsideChicagoSchoolCoverage) —
-      // this Unified card is the one that answers for a Chicago point.
-      { name: "name", label: "District", keys: ["name"], primary: true },
-      { name: "geoid", label: "GEOID", keys: ["geoid"] }
-    ]
-  });
-
-  registerPolygonLayer({
-    id: "school-district-secondary",
-    group: "schools",
-    label: "High School District",
-    loader: loadIlSchoolSecondary,
-    // hidden inside Chicago (unified CPS 299 territory); see coverage note above
-    coverage: outsideChicagoSchoolCoverage,
-    style: { color: "#5E3A8C", weight: 1.5, fillColor: "#8163AE", fillOpacity: 0.05, dashArray: "10 4" },
-    fields: [
-      { name: "name", label: "District", keys: ["name"], primary: true },
-      { name: "geoid", label: "GEOID", keys: ["geoid"] }
-    ]
-  });
-
-  registerPolygonLayer({
-    id: "school-district-elementary",
-    group: "schools",
-    label: "Elementary School District",
-    loader: loadIlSchoolElementary,
-    // hidden inside Chicago (unified CPS 299 territory); see coverage note above
-    coverage: outsideChicagoSchoolCoverage,
-    style: { color: "#B26A00", weight: 1.5, fillColor: "#D19133", fillOpacity: 0.05, dashArray: "3 3" },
-    fields: [
-      { name: "name", label: "District", keys: ["name"], primary: true },
-      { name: "geoid", label: "GEOID", keys: ["geoid"] }
-    ]
-  });
-
-  /* =========================================================================
-   * WILL COUNTY — per-county layers (first of the collar-county rollout).
-   * These declare coverage so they HIDE outside Will County (mod.coverage),
-   * the intended per-county use of the relevance capability: a Chicago or
-   * downstate click never sees a Will County toggle.
-   *
-   * Coverage is exact containment in a shared same-origin Will County outline
-   * (data/app/will-county-outline.json — one polygon, TIGER-sourced at the
-   * same precision the `county` layer fetches, so coverage is consistent with
-   * what that layer resolves). Same-origin + service-worker cached, so
-   * deciding a per-county toggle's visibility costs one tiny cached fetch —
-   * the Chicago-tiling pattern (chicago/cookCountyCoverage), now shared by
-   * every Will County layer below.
-   * ======================================================================= */
-  var loadWillCountyOutline = makeCached(function () {
-    return fetchJSONWithRetry("data/app/will-county-outline.json", {}, 2);
-  });
-  function willCountyCoverage(point) {
-    return loadWillCountyOutline().then(function (geojson) {
-      return !!findFeatureContaining(geojson, point);
-    });
-  }
-
-  // Will County Board districts — the current 11-district map "Board Approved
-  // 11/2/21" (the 2020-Census redistricting; the older 13-district service is
-  // superseded). Live from the county's own maintained GIS (edited 2025-04),
-  // board-member names joined from the same features — the Cook `commissioner`
-  // live-officeholder pattern. Verified 2026-07: 11 features, Homer Glen -> D4.
-  // Every Will County layer loads from the county's own ArcGIS org the same
-  // way: a whole-county FeatureServer query at geometryPrecision=5, guarded by
-  // the shared no-usable-geometry check so an Esri 200-with-error-envelope is
-  // never pinned in the session cache (the loader pattern the TIGER/legislative
-  // layers already use).
-  var WILL_GIS = "https://services.arcgis.com/fGsbyIOAuxHnF97m/arcgis/rest/services/";
-  function loadWillFeatureServer(service, layerIndex, outFields, label) {
-    var url = WILL_GIS + service + "/FeatureServer/" + layerIndex +
-      "/query?where=1%3D1&outFields=" + outFields + "&outSR=4326&f=geojson&geometryPrecision=5";
-    return fetchJSONWithRetry(url, { timeoutMs: REMOTE_GEOJSON_TIMEOUT_MS }, 2)
-      .then(function (geojson) {
-        if (!hasUsableGeometry(geojson)) throw new Error("Will County " + label + " returned no usable geometry");
-        return geojson;
-      });
-  }
-  var loadWillCountyBoard = makeCached(function () {
-    return loadWillFeatureServer("County_Board_Districts_2022", 0, "CTY_BRD_NUMBER,REPRESENTATIVE1,REPRESENTATIVE2", "Board");
-  });
-
-  // Board members (name, city, role, phone, email, committees) scraped weekly
-  // from willcountyboard.com into a same-origin roster, keyed by district and
-  // joined to the boundary GIS by district number — the school-board
-  // boundary+roster pattern. Emails come from decoding the source pages' own
-  // Cloudflare obfuscation (see scripts/will_county_board_scraper.py); they are
-  // the real published addresses, never guessed. If the roster is missing the
-  // card falls back to the two names carried on the boundary GIS itself.
-  var loadWillCountyBoardMembers = makeCached(function () {
-    return fetchJSONWithRetry("data/app/will-county-board-members.json", {}, 2);
-  });
-  registerLayer({
-    id: "will-county-board",
-    group: "political",
-    label: "Will County Board District",
-    coverage: willCountyCoverage,
-    hoverName: function (feature) {
-      return findPropCI(feature.properties || {}, ["cty_brd_number"]) || null;
-    },
-    overlay: {
-      load: loadWillCountyBoard,
-      style: { color: "#1F6FB2", weight: 2, fillColor: "#3B8FD4", fillOpacity: 0.05, dashArray: "9 3 3 3" }
-    },
-    query: function (point, seq) {
-      return Promise.all([
-        loadWillCountyBoard(),
-        loadWillCountyBoardMembers().catch(function () { return {}; })
-      ]).then(function (results) {
-        var geojson = results[0], roster = results[1];
-        var feature = findFeatureContaining(geojson, point);
-        if (!feature) return null;
-        var props = feature.properties || {};
-        var district = findPropCI(props, ["cty_brd_number"]);
-        var entry = district != null ? roster[String(district)] : null;
-        return { seq: seq, district: district, entry: entry, props: props };
-      });
-    },
-    render: function (result) {
-      var fields = [{ label: "District", value: result.district ? String(result.district) : "Unknown" }];
-      var members = result.entry && result.entry.members;
-      if (members && members.length) {
-        members.forEach(function (m) {
-          // one rich row per member; every external string sanitized before it
-          // becomes innerHTML (name, role, city, phone, email, committees)
-          var head = "<strong>" + sanitize(m.name) + "</strong>" +
-            (m.role ? " — " + sanitize(m.role) : "") + (m.city ? " (" + sanitize(m.city) + ")" : "");
-          var contact = [];
-          if (m.phone) contact.push(sanitize(m.phone));
-          if (m.email) contact.push('<a href="mailto:' + sanitize(m.email) + '">' + sanitize(m.email) + "</a>");
-          var lines = [head];
-          if (contact.length) lines.push(contact.join(" · "));
-          if (m.committees && m.committees.length) {
-            lines.push("Committees: " + m.committees.map(sanitize).join(", "));
-          }
-          fields.push({ label: "Board Member", html: lines.join("<br>") });
-        });
-      } else {
-        var r1 = findPropCI(result.props, ["representative1"]);
-        var r2 = findPropCI(result.props, ["representative2"]);
-        if (r1) fields.push({ label: "Board Member", value: String(r1) });
-        if (r2) fields.push({ label: "Board Member", value: String(r2) });
-      }
-      fields.push({
-        label: "Official directory",
-        html: '<a href="https://www.willcountyboard.com/board-members.html" target="_blank" rel="noopener">Will County Board members (official)</a>'
-      });
-      return renderFieldList(fields);
-    },
-    hoverOfficial: {
-      load: loadWillCountyBoardMembers,
-      name: function (feature, roster) {
-        if (!roster) return null;
-        var d = findPropCI(feature.properties || {}, ["cty_brd_number"]);
-        var e = d != null ? roster[String(d)] : null;
-        if (!e || !e.members || !e.members.length) return null;
-        return e.members.map(function (m) { return m.name; }).join(", ");
-      }
-    }
-  });
-
-  // Will County judicial subcircuits — the 5 subcircuits of the 12th Judicial
-  // Circuit (PA 102-0693). Identity only; judges aren't in the data, so the
-  // card links to the official court.
-  var loadWillJudicial = makeCached(function () {
-    return loadWillFeatureServer("Judicial_Districts_2022", 0, "SUBDISTRICT", "judicial subcircuits");
-  });
-  registerPolygonLayer({
-    id: "will-county-judicial",
-    group: "political",
-    label: "Judicial Subcircuit (12th Circuit)",
-    coverage: willCountyCoverage,
-    loader: loadWillJudicial,
-    style: { color: "#6B4FA0", weight: 2, fillColor: "#8A6FBF", fillOpacity: 0.05, dashArray: "6 3" },
-    fields: [
-      { name: "subcircuit", label: "Subcircuit", keys: ["subdistrict"], primary: true },
-      { label: "Court", value: "12th Judicial Circuit (Will County)" },
-      { label: "Judges",
-        html: '<a href="https://www.illinoiscourts.gov/courts/circuit-court" target="_blank" rel="noopener">Illinois Courts — Circuit Courts (official)</a>' }
-    ]
-  });
-
-  // Will County fire protection districts — trustees live from county GIS
-  // (falsy trustee slots are dropped by the factory; a real "Office is vacant"
-  // string is shown as-is — an honest fact, not a guess).
-  var loadWillFire = makeCached(function () {
-    return loadWillFeatureServer("Fire_District", 0, "DISTRICTNAME,FULLNAME,Trustee,Trustee2,Trustee3,Trustee4,Trustee5", "fire districts");
-  });
-  registerPolygonLayer({
-    id: "will-county-fire",
-    group: "safety",
-    label: "Fire Protection District",
-    coverage: willCountyCoverage,
-    loader: loadWillFire,
-    style: { color: "#B0342A", weight: 1.5, fillColor: "#D0564C", fillOpacity: 0.05, dashArray: "5 3" },
-    fields: [
-      { name: "name", label: "Fire District", keys: ["districtname", "fullname"], primary: true },
-      { name: "t1", label: "Trustee", keys: ["trustee"] },
-      { name: "t2", label: "Trustee", keys: ["trustee2"] },
-      { name: "t3", label: "Trustee", keys: ["trustee3"] },
-      { name: "t4", label: "Trustee", keys: ["trustee4"] },
-      { name: "t5", label: "Trustee", keys: ["trustee5"] }
-    ]
-  });
-
-  // Will County park districts — partial coverage: park districts don't tile
-  // the whole county, so an in-coverage point with no park district honestly
-  // reports "No result for this point."
-  var loadWillParks = makeCached(function () {
-    return loadWillFeatureServer("Park_District", 0, "DISTRICTNAME,NAME,Commissioner,Commissioner2,Commissioner3,Commissioner4", "park districts");
-  });
-  registerPolygonLayer({
-    id: "will-county-park",
-    group: "geography",
-    label: "Park District",
-    coverage: willCountyCoverage,
-    loader: loadWillParks,
-    style: { color: "#2E7D46", weight: 1.5, fillColor: "#4FA06A", fillOpacity: 0.05, dashArray: "2 3" },
-    fields: [
-      { name: "name", label: "Park District", keys: ["districtname", "name"], primary: true },
-      { name: "c1", label: "Commissioner", keys: ["commissioner"] },
-      { name: "c2", label: "Commissioner", keys: ["commissioner2"] },
-      { name: "c3", label: "Commissioner", keys: ["commissioner3"] },
-      { name: "c4", label: "Commissioner", keys: ["commissioner4"] }
-    ]
-  });
-
-  // Will County voting precincts — the current 2022 map (310 precincts).
-  // Precincts are numbered within their TOWNSHIP (the parent unit — "Homer 1",
-  // "Wheatland 15"), so this nests under Township exactly as Ward Precinct
-  // nests under Ward: subOf "township", framed by the township outline, itself
-  // framed by County. The Illinois Election Code also sites each precinct
-  // within a single County Board district (10 ILCS 5/11-2), but the precinct
-  // data carries no board-district field — so that identity is resolved by a
-  // spatial join against the Will County Board boundary the app already loads
-  // and reported as a card row, not a nest. The sub-precinct committeeperson
-  // isn't in this data, so the card links to the county clerk's
-  // registration/polling-place lookup.
-  var loadWillPrecincts = makeCached(function () {
-    return loadWillFeatureServer("Precincts_2022", 1, "NAME,TWP_NAME,PRECINCT_NO", "precincts");
-  });
-  registerLayer({
-    id: "will-county-precinct",
-    group: "geography",
-    subOf: "township",
-    label: "Voting Precinct",
-    coverage: willCountyCoverage,
-    hoverName: function (feature) {
-      var v = findPropCI(feature.properties || {}, ["name"]);
-      return (v == null || v === "") ? null : String(v);
-    },
-    overlay: {
-      load: loadWillPrecincts,
-      // solid thin outline + visible fill: with the township dropped to
-      // outline-only, the precincts carry the interior fill. Same brown family
-      // as the township, a shade deeper so the two read as related.
-      style: { color: "#8A6D3B", weight: 1, fillColor: "#C0A060", fillOpacity: 0.14, dashArray: null }
-    },
-    query: function (point, seq) {
-      // Join the containing County Board district — a spatial lookup, since the
-      // precinct feature carries no board-district field. Best-effort: a
-      // board-boundary failure drops just that row, never the precinct card.
-      return Promise.all([
-        loadWillPrecincts(),
-        loadWillCountyBoard().catch(function () { return null; })
-      ]).then(function (results) {
-        var geojson = results[0], boardGeo = results[1];
-        var feature = findFeatureContaining(geojson, point);
-        if (!feature) return null;
-        var props = feature.properties || {};
-        var boardDistrict = null;
-        if (boardGeo) {
-          var bf = findFeatureContaining(boardGeo, point);
-          if (bf) boardDistrict = findPropCI(bf.properties || {}, ["cty_brd_number"]);
-        }
-        return {
-          seq: seq,
-          name: findPropCI(props, ["name"]),
-          township: findPropCI(props, ["twp_name"]),
-          boardDistrict: boardDistrict
-        };
-      });
-    },
-    render: function (result) {
-      var fields = [{ label: "Precinct", value: result.name ? String(result.name) : "Unknown" }];
-      if (result.township) fields.push({ label: "Township", value: String(result.township) });
-      if (result.boardDistrict != null && result.boardDistrict !== "") {
-        fields.push({ label: "County Board District", value: String(result.boardDistrict) });
-      }
-      fields.push({ label: "Registration & polling place",
-        html: '<a href="https://www.thewillcountyclerk.com/elections/" target="_blank" rel="noopener">Will County Clerk — Elections (official)</a>' });
-      return renderFieldList(fields);
-    },
-    // Precinct sits at the bottom of the County > Township > Precinct nest:
-    // turning it on brings Township on (which itself brings County on), and
-    // drops Township to outline-only so the precinct fills read as its
-    // interior subdivision.
-    onToggle: function (on) {
-      var townshipRt = layerRuntime["township"];
-      if (on) {
-        if (!state.layersOn["township"]) {
-          var tbox = document.getElementById("toggle-township");
-          if (tbox && !tbox.checked) tbox.click();
-        }
-        townshipRt.outlineOnly = true;
-      } else {
-        townshipRt.outlineOnly = false;
-      }
-      var townshipMod = getLayerById("township");
-      if (townshipMod && townshipRt.overlayLayer) updateLayerHighlight(townshipMod);
-    }
-  });
-
-  /* ---------- Community Area ---------- */
-  var loadCommunityAreas = makeCachedLoader("igwz-8jzy");
-
-  registerPolygonLayer({
-    id: "community-area",
-    group: "geography",
-    label: "Community Area",
-    coverage: chicagoCoverage,
-    loader: loadCommunityAreas,
-    // dashed outline (not just a color) so it's distinguishable from ZIP without relying on hue alone
-    style: { color: "#3D6B49", weight: 1.5, fillColor: "#5C8F6B", fillOpacity: 0.06, dashArray: "5 3" },
-    fields: [
-      { name: "name", label: "Name", keys: ["community", "community_area_name", "commarea", "comarea"], primary: true },
-      { name: "number", label: "Area #", keys: ["area_numbe", "area_num_1", "area_number", "community_area_number", "area_num"] }
-    ]
-  });
-
   /* ---------- ZIP Code (statewide ZCTA) ---------- */
-  // Was the Chicago-only Socrata dataset (unjd-c2ca), which stopped at the city
-  // line; the app now serves the whole collar-county footprint, so ZIP resolves
-  // against the Census statewide ZCTA layer like the other statewide identity
-  // layers. TIGERweb's ZCTA layer has NO STATE field (ZCTAs cross state lines),
-  // so it can't use the STATE='17' filter loadTigerStatewide relies on — it's
-  // fetched by an Illinois bounding envelope instead. Raw statewide ZCTAs are
-  // dense (~40 MB of vertices), so the server generalizes them with
-  // maxAllowableOffset (~55 m) down to ~4 MB — visually clean for a ZIP overlay
-  // and on par with the county layer (3.5 MB). ZCTAs are the Census Bureau's
-  // approximation of USPS ZIP delivery areas, not the postal boundaries
-  // themselves — the same caveat every ZCTA-based tool carries.
-  var IL_BBOX_ENVELOPE = { xmin: -91.6, ymin: 36.9, xmax: -87.0, ymax: 42.6 };
+  // Thread-0 stub layer. Census ZCTAs are national and the TIGERweb ZCTA layer
+  // has no STATE field (ZCTAs cross state lines), so it's fetched by a spatial
+  // bounding envelope — here San Francisco + the inner Bay. The server
+  // generalizes the geometry with maxAllowableOffset (~55 m). ZCTAs are the
+  // Census Bureau's approximation of USPS ZIP delivery areas, not the postal
+  // boundaries themselves — the caveat every ZCTA-based tool carries.
+  var SF_BBOX_ENVELOPE = { xmin: -122.62, ymin: 37.58, xmax: -122.28, ymax: 37.96 };
   var loadZipCodes = makeCached(function () {
     var url = "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/PUMA_TAD_TAZ_UGA_ZCTA/MapServer/11/query" +
       "?where=" + encodeURIComponent("1=1") +
-      "&geometry=" + encodeURIComponent(JSON.stringify(IL_BBOX_ENVELOPE)) +
+      "&geometry=" + encodeURIComponent(JSON.stringify(SF_BBOX_ENVELOPE)) +
       "&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects" +
       "&outFields=ZCTA5&returnGeometry=true&outSR=4326&f=geojson" +
       "&geometryPrecision=4&maxAllowableOffset=0.0005";
@@ -5517,17 +4668,6 @@ function initChiExplorer() {
       { name: "zip", label: "ZIP Code", keys: ["zcta5", "zip", "zip_code", "zipcode", "zcta5ce10"], primary: true }
     ]
   });
-
-  /* =========================================================================
-   * THREAD 2 — PUBLIC SAFETY: Police District + Police Stations + Fire Stations
-   * Police District follows the Thread 1 polygon pattern exactly, now sourced
-   * from CPD's own ArcGIS org (§2a of the playbook) rather than the Socrata
-   * mirror. Police/Fire Stations are point datasets, so instead of containment
-   * they do nearest-N proximity (haversine, straight-line) — there's no
-   * "point-in-polygon" for point data. Per the playbook, commanders aren't in
-   * open data, so this only surfaces what each dataset actually contains.
-   * ======================================================================= */
-
   /* ==== ENGINE:BEGIN haversine ==== */
   /* ---------- great-circle distance in miles ---------- */
   function haversineMiles(lat1, lng1, lat2, lng2) {
@@ -5571,356 +4711,6 @@ function initChiExplorer() {
     if (!n) return null;
     return { lat: sumLat / n, lng: sumLng / n };
   }
-
-  /* ---------- Police District ---------- */
-  // Switched from the Socrata mirror (24zt-jpfn) to CPD's own ArcGIS org per
-  // playbook §2a: Police_District_Boundary_View, fields DISTRICT/NAME. Not
-  // live-spot-checked in this sandbox (services2.arcgis.com is blocked by
-  // this environment's egress policy, same limitation as every prior
-  // thread's live-fetch checks) — findPropCI's alias lists cover both the
-  // new field names and the old Socrata ones, so this degrades gracefully
-  // if either guess is wrong; still worth an operator spot-check.
-  var POLICE_DISTRICT_BOUNDARY_SERVICE = arcgisServiceUrl("Police_District_Boundary_View");
-  var loadPoliceDistricts = makeCached(function () { return loadArcGISGeoJSON(POLICE_DISTRICT_BOUNDARY_SERVICE); });
-
-  // Police_District_Stations_View (CPD's ArcGIS org) carries station address +
-  // phone per district straight from source, CORS-enabled. Shared by two
-  // consumers: the Police Station layer (nearest-3, below) and the Police
-  // District card, which falls back to it for address/phone when the commander
-  // roster (cpd-district-info.json) is empty or a weekly scrape was blocked.
-  var POLICE_STATION_SERVICE = arcgisServiceUrl("Police_District_Stations_View");
-  var loadPoliceStations = makeCached(function () { return loadArcGISGeoJSON(POLICE_STATION_SERVICE); });
-
-  // Index the station points by bare district number ("8"), memoized on the
-  // FeatureCollection so repeated clicks don't rebuild it.
-  function policeStationsByDistrict(stationGeo) {
-    if (!stationGeo || !stationGeo.features) return {};
-    if (stationGeo.__byDistrict) return stationGeo.__byDistrict;
-    var byDistrict = {};
-    stationGeo.features.forEach(function (f) {
-      var p = f.properties || {};
-      var key = extractDistrictNumber(p, ["district", "dist_num", "dist_number", "dist", "district_number", "district_no"]);
-      if (key && !byDistrict[key]) {
-        byDistrict[key] = {
-          address: findPropCI(p, ["address", "addr", "location", "street_address"]),
-          phone: findPropCI(p, ["phone", "phone_number", "telephone", "phone_no"])
-        };
-      }
-    });
-    stationGeo.__byDistrict = byDistrict;
-    return byDistrict;
-  }
-
-  /* ---------- Commander + CAPS/station contact roster, keyed by district
-   * number. CPD's per-district pages (chicagopolice.org/{ordinal}-district-
-   * {slug}/) are the only source for commander name and CAPS unit phone/
-   * email, but send no CORS header, so they can't be fetched client-side.
-   * The roster is therefore generated build-side and shipped as the
-   * same-origin data/app/cpd-district-info.json, fetched lazily on first
-   * click. Generated by scripts/build_cpd_roster.py from
-   * scripts/cpd_district_scraper.py's scrape of those pages — do not
-   * hand-edit, re-run the scripts instead (or wait for the weekly roster PR
-   * from .github/workflows/update-cpd-roster.yml). The file starts as an
-   * empty object until the first scrape/PR lands, and a roster-fetch failure
-   * degrades gracefully (District/Label only, best-effort .catch below). ---------- */
-  var loadCpdDistrictInfo = makeCached(function () {
-    return fetchJSONWithRetry("data/app/cpd-district-info.json", {}, 2);
-  });
-
-  // CPD's boundary NAME is a dash-joined slug that repeats the district number
-  // already shown on the card — "9th-district-deering", "8th-district-chicago-
-  // lawn". Strip the "{ordinal}-district-" prefix and de-dash + title-case the
-  // neighborhood name that remains ("Deering", "Chicago Lawn"). Degrades to a
-  // plain de-dashed title-case of whatever's there if the slug shape changes.
-  function cleanPoliceDistrictLabel(raw) {
-    if (!raw) return null;
-    var name = String(raw).replace(/^\s*\d+\s*(?:st|nd|rd|th)?-?\s*district-?/i, "");
-    name = name.replace(/-/g, " ").trim();
-    if (!name) name = String(raw).replace(/-/g, " ").trim();
-    name = name.replace(/\S+/g, function (w) {
-      return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase();
-    });
-    return name || null;
-  }
-
-  registerLayer({
-    id: "police-district",
-    group: "safety",
-    label: "Police District",
-    coverage: chicagoCoverage,
-    overlay: {
-      load: loadPoliceDistricts,
-      // dash pattern distinct from both Geography layers, Chicago-flag red for the Safety group
-      style: { color: "#9C0B24", weight: 1.5, fillColor: "#C8102E", fillOpacity: 0.06, dashArray: "2 6" }
-    },
-    query: function (point, seq) {
-      return Promise.all([
-        loadPoliceDistricts(),
-        loadCpdDistrictInfo().catch(function () { return {}; }),
-        // Address/phone have a CORS-native source independent of the commander
-        // scrape; best-effort so a station-fetch failure never blocks the card.
-        loadPoliceStations().catch(function () { return null; })
-      ]).then(function (results) {
-        var geojson = results[0], cpdInfo = results[1], stationGeo = results[2];
-        var feature = findFeatureContaining(geojson, point);
-        if (!feature) return null;
-        var props = feature.properties || {};
-        // ArcGIS district views zero-pad ("008"); extractDistrictNumber strips
-        // it to the bare integer so the roster and station joins key alike.
-        var number = extractDistrictNumber(props, ["district", "dist_num", "dist_number", "dist", "district_number", "district_no"]);
-        var label = findPropCI(props, ["name", "dist_label", "district_name", "dist_name"]);
-        var info = number ? cpdInfo[number] : null;
-        var station = number ? policeStationsByDistrict(stationGeo)[number] : null;
-        return {
-          seq: seq,
-          number: number,
-          label: label,
-          commanderName: info ? info.commanderName : null,
-          commanderStatus: info ? info.commanderStatus : null,
-          // Prefer the scraped roster; fall back to the ArcGIS station view so
-          // address/phone still show when the commander scrape is blocked.
-          mainPhone: (info && info.mainPhone) || (station && station.phone) || null,
-          capsPhone: info ? info.capsPhone : null,
-          capsEmail: info ? info.capsEmail : null,
-          stationAddress: (info && info.stationAddress) || (station && station.address) || null,
-          // CPD's own per-district page — the page the commander/CAPS data is
-          // scraped from — rather than the ArcGIS instant-map app.
-          sourceUrl: info ? info.sourceUrl : null
-        };
-      });
-    },
-    render: function (result) {
-      var fields = [{ label: "District", value: result.number ? String(result.number) : "Unknown" }];
-      var cleanName = cleanPoliceDistrictLabel(result.label);
-      if (cleanName) fields.push({ label: "Name", value: cleanName });
-      if (result.commanderName) {
-        var commanderLabel = result.commanderStatus === "acting_commander" ? "Commander (Acting)" : "Commander";
-        fields.push({ label: commanderLabel, value: String(result.commanderName) });
-      }
-      if (result.stationAddress) fields.push({ label: "Station Address", value: String(result.stationAddress), pin: "#9C0B24" });
-      if (result.mainPhone) fields.push({ label: "Station Phone", value: String(result.mainPhone) });
-      if (result.capsPhone) fields.push({ label: "CAPS Phone", value: String(result.capsPhone) });
-      if (result.capsEmail) {
-        fields.push({ label: "CAPS Email", html: '<a href="mailto:' + sanitize(result.capsEmail) + '">' + sanitize(result.capsEmail) + '</a>' });
-      }
-      var districtPage = safeHttpUrl(result.sourceUrl); // scheme-check external URLs before they become an href
-      if (districtPage) fields.push({ label: "District Website", html: '<a href="' + sanitize(districtPage) + '" target="_blank" rel="noopener">' + sanitize(districtPage) + '</a>' });
-      return renderFieldList(fields);
-    },
-    // hover popup: name the district commander from the prefetched CPD info
-    // (keyed by the zero-pad-stripped district number, same as the query). An
-    // acting commander is tagged so the hover doesn't imply a permanent posting.
-    hoverOfficial: {
-      load: loadCpdDistrictInfo,
-      name: function (feature, info) {
-        if (!info) return null;
-        var n = extractDistrictNumber(feature.properties || {}, ["district", "dist_num", "dist_number", "dist", "district_number", "district_no"]);
-        var row = n ? info[n] : null;
-        if (!row || !row.commanderName) return null;
-        return row.commanderStatus === "acting_commander" ? row.commanderName + " (Acting)" : row.commanderName;
-      }
-    },
-    // drop a map pin at the district station, matching the inline Station
-    // Address icon on the card (the station always sits inside its own district,
-    // so the pin lands within this layer's highlighted polygon).
-    pointOfInterest: function (result) {
-      if (!result.stationAddress) return null;
-      var name = cleanPoliceDistrictLabel(result.label);
-      var label = name ? name + " District Station"
-        : (result.number ? "District " + String(result.number) + " Station" : "Police Station");
-      return { label: label, address: String(result.stationAddress) };
-    },
-    onToggle: function (on) {
-      // The Police Beat sub-layer only makes sense as a subdivision of a
-      // visible district, so if the district is turned off, cascade its beat
-      // sub-selection off too (which restores this layer's own fill via the
-      // beat module's onToggle(false)).
-      if (!on && state.layersOn["police-beat"]) {
-        var box = document.getElementById("toggle-police-beat");
-        if (box && box.checked) box.click();
-      }
-    }
-  });
-
-  /* ---------- Police Beat (sub-selection of Police District) ----------
-   * Beats are CPD's smallest patrol unit — each district is tiled by a
-   * handful of beats. Same CPD ArcGIS org as the district/station layers
-   * (Police_Beat_Boundary). Registered with subOf:"police-district" so its
-   * toggle nests under the district in the sidebar and reads as a
-   * sub-selection. Turning it on flips the parent district to outline-only
-   * (see onToggle) so the district's boundary frames the beats and the beat
-   * fills read as the district's interior subdivision. Field names
-   * (BEAT_NUM/BEAT, DISTRICT) per CPD's schema; not live-spot-checkable in
-   * this sandbox (services2.arcgis.com is egress-blocked here, same as the
-   * other CPD layers), so findPropCI's alias lists cover the likely casings
-   * and it degrades gracefully if a guess is wrong. ---------- */
-  var POLICE_BEAT_BOUNDARY_SERVICE = arcgisServiceUrl("Police_Beat_Boundary");
-  var loadPoliceBeats = makeCached(function () { return loadArcGISGeoJSON(POLICE_BEAT_BOUNDARY_SERVICE); });
-  // Prefer the canonical 4-digit CPD beat number (BEAT_NUMBE, e.g. "2423").
-  // "beat_num" is listed first for other possible schemas but does NOT match
-  // the live "BEAT_NUMBE" field; the truncated "beat" digit ("3") is a
-  // last-resort fallback, and the parent DISTRICT number is deliberately absent.
-  var BEAT_NUMBER_KEYS = ["beat_num", "beat_numbe", "beat_number", "beat_no", "beat", "number"];
-
-  registerLayer({
-    id: "police-beat",
-    group: "safety",
-    subOf: "police-district",
-    label: "Police Beat",
-    coverage: chicagoCoverage,
-    // a beat feature also carries its parent district number (which the generic
-    // hover extractor would pick up first), plus a truncated "BEAT" digit — so
-    // name it explicitly, preferring the canonical 4-digit beat number.
-    hoverName: function (feature) {
-      var props = feature.properties || {};
-      return findPropCI(props, BEAT_NUMBER_KEYS) || null;
-    },
-    overlay: {
-      load: loadPoliceBeats,
-      // solid thin outline + visible fill: with the district dropped to
-      // outline-only, the beats carry the interior fill. Same red family as
-      // the district, a shade brighter so the two read as related.
-      style: { color: "#7A0A1C", weight: 1, fillColor: "#E4572E", fillOpacity: 0.14, dashArray: null }
-    },
-    query: function (point, seq) {
-      return loadPoliceBeats().then(function (geojson) {
-        var feature = findFeatureContaining(geojson, point);
-        if (!feature) return null;
-        var props = feature.properties || {};
-        var beat = findPropCI(props, BEAT_NUMBER_KEYS);
-        var district = findPropCI(props, ["district", "dist_num", "dist", "district_number", "district_no"]);
-        return { seq: seq, beat: beat, district: district };
-      });
-    },
-    render: function (result) {
-      var fields = [{ label: "Beat", value: result.beat ? String(result.beat) : "Unknown" }];
-      if (result.district) fields.push({ label: "District", value: String(result.district) });
-      return renderFieldList(fields);
-    },
-    onToggle: function (on) {
-      var districtRt = layerRuntime["police-district"];
-      if (on) {
-        // a sub-selection needs its parent visible — turn the district on (as
-        // the outline frame) if it isn't already. box.click() runs the normal
-        // toggle path (overlay load + query + hash sync).
-        if (!state.layersOn["police-district"]) {
-          var box = document.getElementById("toggle-police-district");
-          if (box && !box.checked) box.click();
-        }
-        districtRt.outlineOnly = true;
-      } else {
-        districtRt.outlineOnly = false;
-      }
-      // Restyle the already-loaded district overlay to reflect the fill change.
-      // If it's still loading (just auto-enabled above), baseStyleFor reads
-      // outlineOnly at L.geoJSON construction time, so no restyle is needed yet.
-      var districtMod = getLayerById("police-district");
-      if (districtMod && districtRt.overlayLayer) updateLayerHighlight(districtMod);
-    }
-  });
-
-  /* ---------- CCPSA District Council (elected District Councilors) ----------
-   * The Community Commission for Public Safety and Accountability's 22 District
-   * Councils — three Councilors each, elected in the regular municipal elections
-   * to four-year terms — map one-to-one onto CPD's police districts and share
-   * their exact boundaries. So this layer reuses the police-district boundary the
-   * app already loads (loadPoliceDistricts, a cached loader — sharing it means no
-   * second download and no duplicate geometry file) rather than shipping its own.
-   * The Councilor roster is the only new data: the elected names are in no
-   * queryable open dataset (confirmed 2026-07-09) and ccpsa.chicago.gov sends no
-   * CORS header, so they can't be fetched client-side. The roster is therefore
-   * generated build-side (scripts/ccpsa_scraper.py + scripts/build_ccpsa_roster.py
-   * scrape the CCPSA per-council pages) and shipped as the same-origin
-   * data/app/ccpsa-district-councils.json, fetched lazily on first click. A
-   * roster-fetch failure degrades gracefully (District number only, best-effort
-   * .catch below), same as the Police District commander roster above. ---------- */
-  var loadCcpsaDistrictCouncils = makeCached(function () {
-    return fetchJSONWithRetry("data/app/ccpsa-district-councils.json", {}, 2);
-  });
-
-  registerLayer({
-    id: "ccpsa-district-council",
-    group: "safety",
-    label: "CCPSA District Council",
-    coverage: chicagoCoverage,
-    overlay: {
-      load: loadPoliceDistricts, // shares the CPD police-district geometry (cached loader — no double fetch)
-      // teal + a distinct dash so it reads apart from the red Police District /
-      // Police Beat styling when several Safety layers are on at once
-      style: { color: "#0B7A6B", weight: 1.5, fillColor: "#14B8A6", fillOpacity: 0.06, dashArray: "6 3" }
-    },
-    query: function (point, seq) {
-      return Promise.all([
-        loadPoliceDistricts(),
-        loadCcpsaDistrictCouncils().catch(function () { return {}; })
-      ]).then(function (results) {
-        var geojson = results[0], councils = results[1];
-        var feature = findFeatureContaining(geojson, point);
-        if (!feature) return null;
-        var props = feature.properties || {};
-        // Same zero-pad-stripping district key as the Police District card, so
-        // the roster join keys alike ("008" -> "8").
-        var number = extractDistrictNumber(props, ["district", "dist_num", "dist_number", "dist", "district_number", "district_no"]);
-        var council = number ? councils[number] : null;
-        return {
-          seq: seq,
-          number: number,
-          members: (council && council.members) || [],
-          sourceUrl: council ? council.sourceUrl : null
-        };
-      });
-    },
-    render: function (result) {
-      var fields = [{ label: "District", value: result.number ? String(result.number) : "Unknown" }];
-      var members = result.members || [];
-      members.forEach(function (m) {
-        if (!m || !m.name) return;
-        var label = m.role ? String(m.role) : "Councilor";
-        var profile = safeHttpUrl(m.profileUrl); // scheme-check the external URL before it becomes an href
-        if (profile) {
-          fields.push({ label: label, html: '<a href="' + sanitize(profile) + '" target="_blank" rel="noopener">' + sanitize(m.name) + '</a>' });
-        } else {
-          fields.push({ label: label, value: String(m.name) });
-        }
-      });
-      if (!members.length) fields.push({ label: "Councilors", value: "Not available" });
-      var councilPage = safeHttpUrl(result.sourceUrl);
-      if (councilPage) fields.push({ label: "Council page", html: '<a href="' + sanitize(councilPage) + '" target="_blank" rel="noopener">ccpsa.chicago.gov</a>' });
-      return renderFieldList(fields);
-    },
-    // hover popup: a district council is a body of three, so name the first
-    // councilor and note the rest with "+N" to keep the row to one line — the
-    // click card lists all members. Roster prefetched, keyed like the query.
-    hoverOfficial: {
-      load: loadCcpsaDistrictCouncils,
-      name: function (feature, councils) {
-        if (!councils) return null;
-        var n = extractDistrictNumber(feature.properties || {}, ["district", "dist_num", "dist_number", "dist", "district_number", "district_no"]);
-        var council = n ? councils[n] : null;
-        var members = (council && council.members) || [];
-        var names = members.filter(function (m) { return m && m.name; }).map(function (m) { return String(m.name); });
-        if (!names.length) return null;
-        return names.length > 1 ? names[0] + " +" + (names.length - 1) : names[0];
-      }
-    }
-  });
-
-  /* ---------- Police Stations (nearest 3, not point-in-polygon) ----------
-   * New layer, not in the original playbook registry — CPD's ArcGIS org
-   * (Police_District_Stations_View) surfaces station address + phone
-   * straight from source, which the Chicago Data Portal registry never had.
-   * Same nearest-N pattern as Fire Stations below. Field names NAME, ADDRESS,
-   * DISTRICT, PHONE live-verified against the FeatureServer (22 stations, one
-   * per district). loadPoliceStations is defined with the boundary loader
-   * above, since the Police District card shares it for its address/phone
-   * fallback. */
-  /* ---------- declarative nearest-N point layer (haversine, straight-line) ----------
-   * opts: id, group, label, color (marker stroke), fill (marker fill),
-   * loader (cached FeatureCollection promise), intro (card lead-in text),
-   * line(props) (formats one list item from a feature's raw properties),
-   * count (defaults 3 — keep N small so "nearest as the crow flies" stays
-   * obviously honest). Back-ported from the NYC fork, which minted it as the
-   * fifth factory (METRO_EXPANSION_PLAYBOOK §2). ---------- */
   /* ==== ENGINE:BEGIN nearest-point-factory ==== */
   function registerNearestPointLayer(opts) {
     var count = opts.count || 3;
@@ -5973,58 +4763,6 @@ function initChiExplorer() {
     });
   }
   /* ==== ENGINE:END nearest-point-factory ==== */
-
-  registerNearestPointLayer({
-    id: "police-station",
-    group: "safety",
-    label: "Police Station",
-    coverage: chicagoCoverage,
-    // distinct from Fire Station's red circleMarker — blue, matching the flag-stripe hue
-    color: "#0B5394",
-    fill: "#41B6E6",
-    loader: loadPoliceStations,
-    intro: "Nearest stations, straight-line distance:",
-    line: function (props) {
-      var name = findPropCI(props, ["name"]);
-      var district = findPropCI(props, ["district"]);
-      var address = findPropCI(props, ["address"]);
-      var phone = findPropCI(props, ["phone"]);
-      return (name ? String(name) : "Police station") +
-        (district ? " (District " + String(district) + ")" : "") +
-        (address ? " — " + String(address) : "") +
-        (phone ? " — " + String(phone) : "");
-    }
-  });
-
-  /* ---------- Fire Stations (nearest 3, not point-in-polygon) ---------- */
-  var loadFireStations = makeCachedLoader("28km-gtjn");
-
-  registerNearestPointLayer({
-    id: "fire-station",
-    group: "safety",
-    label: "Fire Station",
-    coverage: chicagoCoverage,
-    color: "#7A0B1E",
-    fill: "#C8102E",
-    loader: loadFireStations,
-    intro: "Nearest stations, straight-line distance:",
-    line: function (props) {
-      var engine = findPropCI(props, ["engine", "name", "firehouse", "company", "house"]);
-      var address = findPropCI(props, ["address", "address_1", "location_address", "adress"]);
-      return (engine ? "Engine " + String(engine) + " — " : "") +
-        (address ? String(address) : "Fire station");
-    }
-  });
-
-  /* =========================================================================
-   * THREAD 3 — SCHOOLS: Elementary / Middle / High attendance zones
-   * All three are the same point-in-polygon pattern as Thread 1/2's polygon
-   * modules, so they share one factory. Per the playbook, school-level
-   * commander/principal contacts aren't in open data — never guess a school
-   * ID into a profile URL; only link out when the dataset actually supplies
-   * an id, and degrade to name-only otherwise.
-   * ======================================================================= */
-
   /* ==== ENGINE:BEGIN int-field ==== */
   // Normalize a numeric-ish field to its integer string ("15.0" -> "15"); passes
   // non-numeric values through and null/"" to null. (Socrata sometimes serves
@@ -6115,46 +4853,6 @@ function initChiExplorer() {
     });
   }
   /* ==== ENGINE:END school-zone-factory ==== */
-
-  /* All three CPS zone levels share one dataset schema (confirmed via live
-   * samples) — one fork-side wrapper wires the keys + profile builder so the
-   * shared registerSchoolZone factory stays city-agnostic. */
-  function registerCpsZone(opts) {
-    opts.coverage = chicagoCoverage; // CPS zones apply inside the city only
-    opts.nameKeys = ["short_name", "school_nam", "school_nm", "school_name", "schoolname", "sch_name", "name"];
-    opts.idKeys = ["school_id", "sch_id", "schoolid", "school_ids"];
-    opts.gradeKeys = ["boundarygr", "grade_range", "gradelevel"];
-    opts.addressKeys = ["school_add", "address", "location_address"];
-    opts.profileHtml = schoolProfileHtml;
-    registerSchoolZone(opts);
-  }
-
-  registerCpsZone({
-    id: "cps-elementary",
-    label: "CPS Elementary School Zone",
-    // confirmed via live sample: per-school attendance boundary (school_id, short_name, grade_cat: "ES")
-    datasetId: "x72b-38qv",
-    style: { color: "#6A3FA0", weight: 1.5, fillColor: "#6A3FA0", fillOpacity: 0.06, dashArray: "4 3" }
-  });
-
-  registerCpsZone({
-    id: "cps-high",
-    label: "CPS High School Zone",
-    // confirmed via live sample: per-school attendance boundary (school_id, school_nam, grade_cat: "HS")
-    datasetId: "xg7c-d8rm",
-    style: { color: "#0F6F6F", weight: 1.5, fillColor: "#0F6F6F", fillOpacity: 0.06, dashArray: "1 3 4 3" }
-  });
-
-  registerCpsZone({
-    id: "cps-middle",
-    label: "CPS Middle School Zone",
-    // confirmed via live sample: same current attendance-boundary schema as
-    // elementary/high (school_id, school_nam, grade_cat: "MS", boundarygr),
-    // superseding the playbook's ~22-school legacy dataset (9kct-c3uq)
-    datasetId: "fyff-53xy",
-    style: { color: "#A15C00", weight: 1.5, fillColor: "#A15C00", fillOpacity: 0.06, dashArray: "6 2" }
-  });
-
   /* ==== ENGINE:BEGIN cps-network-factory ==== */
   /* ---------- CPS Network (administrative region, not a single school) ----------
    * Confirmed via live sample: each polygon covers a whole CPS "Network"
@@ -6203,258 +4901,6 @@ function initChiExplorer() {
     });
   }
   /* ==== ENGINE:END cps-network-factory ==== */
-
-  registerCpsNetwork({
-    id: "cps-network",
-    label: "CPS Network (K-8, admin office)",
-    coverage: chicagoCoverage,
-    datasetId: "pnta-kuqa",
-    style: { color: "#3D3D7A", weight: 1.5, fillColor: "#3D3D7A", fillOpacity: 0.04, dashArray: "8 4 2 4" }
-  });
-
-  registerCpsNetwork({
-    id: "cps-hs-network",
-    label: "CPS Network (High School, admin office)",
-    coverage: chicagoCoverage,
-    datasetId: "aupu-jt2g",
-    style: { color: "#7A2D3D", weight: 1.5, fillColor: "#7A2D3D", fillOpacity: 0.04, dashArray: "10 3" }
-  });
-
-  /* ---------- School Location — every school SITE, nearest 3 (not point-in-polygon) ----------
-   * CPD's ArcGIS org (services2.arcgis.com/.../Schools/FeatureServer/0) publishes
-   * ~1,016 individual school-CAMPUS footprint polygons — public, charter AND
-   * private (e.g. Cristo Rey, De LaSalle, Daystar), PK–12 — which the CPS-only
-   * attendance-zone layers above never include. Live-verified schema/count via the
-   * REST API (this org's f=geojson + CORS work, though the sandbox egress policy
-   * blocks re-checking it the way it does for the Police layers). Footprints average
-   * ~6 acres, so a click almost never lands inside one — we answer with the nearest
-   * 3 by campus centroid (same haversine pattern as Police/Fire Stations), while the
-   * overlay still draws the true footprints. Fields: SCHOOL_NAM, GRADES, ADDRESS
-   * (LINK/WEBSITE ship empty today, so surface them only if a value ever appears).
-   *
-   * School TYPE is derived from GRADES (the dataset carries no public/private
-   * field): the ~330 parochial/independent schools ship a blank GRADES band and
-   * are bucketed "Private"; the ~686 CPS public+charter schools bucket by the CPS
-   * attendance-zone convention — K-8/PK-8 = Elementary, 6-8 = Middle, anything
-   * reaching grade 9+ = High. The three CPS buckets reuse the exact colors of
-   * their matching attendance-zone layers above; Private keeps the layer's green.
-   * The card's type filter drives both the list and which footprints paint. */
-  var SCHOOL_SITE_COUNT = 3;
-  var SCHOOL_SITE_SERVICE = arcgisServiceUrl("Schools");
-  var loadSchoolSites = makeCached(function () { return loadArcGISGeoJSON(SCHOOL_SITE_SERVICE); });
-
-  var SCHOOL_CATS = ["Private", "Elem", "Middle", "High"];
-  var SCHOOL_CAT_META = {
-    // colors thematically match the CPS attendance-zone layers registered above
-    Private: { label: "Private", full: "Private",    color: "#1B7A3D" }, // the layer's own green — non-CPS
-    Elem:    { label: "Elem",    full: "Elementary", color: "#6A3FA0" }, // = CPS Elementary School Zone
-    Middle:  { label: "Middle",  full: "Middle",     color: "#A15C00" }, // = CPS Middle School Zone
-    High:    { label: "High",    full: "High",       color: "#0F6F6F" }  // = CPS High School Zone
-  };
-  // filter selection persists across point selections (a display preference for
-  // the layer, not per-result state); all types shown by default.
-  var schoolTypeFilter = { Private: true, Elem: true, Middle: true, High: true };
-
-  // one grade token -> numeric level (PK = -1, K = 0, 1..12); null if unparseable.
-  // handles bare numbers, "K"/"PK", and ordinal spellings ("10th", "1st").
-  function schoolGradeNum(tok) {
-    var t = String(tok).trim().toUpperCase().replace(/(ST|ND|RD|TH)$/, "");
-    if (!t) return null;
-    if (t === "PK" || t === "PREK" || t === "PRE-K") return -1;
-    if (t === "K") return 0;
-    var n = parseInt(t, 10);
-    return isNaN(n) ? null : n;
-  }
-  // Classify a raw GRADES string into one of SCHOOL_CATS. Blank/unparseable =>
-  // Private (no CPS-published band). GRADES arrives either comma-listed
-  // ("PK, K, 1, ..., 8") or as a dash range ("9-12", "K - 12", "10th-12th"); we
-  // only need the min and max level, so split on either delimiter and take the
-  // extremes rather than expanding the span.
-  function schoolCategory(gradesStr) {
-    var s = (gradesStr == null ? "" : String(gradesStr)).trim();
-    if (!s) return "Private";
-    var parts = s.split(/[-,\/]/);
-    var nums = [];
-    for (var i = 0; i < parts.length; i++) {
-      var n = schoolGradeNum(parts[i]);
-      if (n != null) nums.push(n);
-    }
-    if (!nums.length) return "Private";
-    var max = Math.max.apply(null, nums), min = Math.min.apply(null, nums);
-    if (max >= 9) return "High";   // reaches high school
-    if (min >= 6) return "Middle"; // 6-8 / 7-8 only
-    return "Elem";                 // includes a grade <= 5 and tops out by 8 (K-8, PK-8, K-5)
-  }
-  var schoolGradesOf = function (feature) {
-    return findPropCI((feature && feature.properties) || {}, ["grades", "grade", "grade_range", "boundarygr"]);
-  };
-
-  registerLayer({
-    id: "school-site",
-    group: "schools",
-    coverage: chicagoCoverage,
-    // deliberately NO "CPS" prefix — this set spans public, charter and private schools
-    label: "School Location (all, incl. private, nearest " + SCHOOL_SITE_COUNT + ")",
-    overlay: {
-      load: loadSchoolSites,
-      // flat base kept for fill-opacity scaling + the layer's legend color; the
-      // per-feature styler below is what actually paints each footprint by type
-      style: { color: "#1B7A3D", weight: 1.5, fillColor: "#1B7A3D", fillOpacity: 0.12, dashArray: "2 2" },
-      // color-code each footprint by school type; hide the types the card's
-      // filter has turned off (stroke + fill dropped to 0 opacity).
-      styleForFeature: function (feature) {
-        var cat = schoolCategory(schoolGradesOf(feature));
-        if (!schoolTypeFilter[cat]) return { opacity: 0, fillOpacity: 0 };
-        var color = SCHOOL_CAT_META[cat].color;
-        return { color: color, fillColor: color, opacity: 1 };
-      }
-    },
-    // hover over a footprint surfaces the school's name, type and grade range
-    hoverName: function (feature) {
-      var props = feature.properties || {};
-      var name = findPropCI(props, ["school_nam", "school", "school_name", "schoolname", "name"]);
-      var grades = String(schoolGradesOf(feature) || "").trim();
-      var meta = SCHOOL_CAT_META[schoolCategory(grades)];
-      return (name ? String(name) : "School") + " — " + meta.full + (grades ? " (" + grades + ")" : "");
-    },
-    // matching the hover dot to the footprint's type color reinforces the legend
-    hoverDotColor: function (feature) {
-      return SCHOOL_CAT_META[schoolCategory(schoolGradesOf(feature))].color;
-    },
-    query: function (point, seq) {
-      return loadSchoolSites().then(function (geojson) {
-        var features = (geojson && geojson.features) || [];
-        // several records ship " " (a single space) for grades/address/website —
-        // trim to null so the card doesn't render empty parens or dangling dashes
-        var clean = function (v) { var s = v == null ? "" : String(v).trim(); return s ? s : null; };
-        var withDistance = [];
-        for (var i = 0; i < features.length; i++) {
-          var latLng = polygonRepresentativeLatLng(features[i]);
-          if (!latLng) continue;
-          var props = features[i].properties || {};
-          var grades = clean(findPropCI(props, ["grades", "grade", "grade_range", "boundarygr"]));
-          withDistance.push({
-            name: clean(findPropCI(props, ["school_nam", "school", "school_name", "schoolname", "name"])),
-            grades: grades,
-            category: schoolCategory(grades),
-            address: clean(findPropCI(props, ["address", "school_add", "location_address"])),
-            website: clean(findPropCI(props, ["website", "link", "url"])),
-            distanceMi: haversineMiles(point.lat, point.lng, latLng.lat, latLng.lng)
-          });
-        }
-        if (!withDistance.length) return null;
-        withDistance.sort(function (a, b) { return a.distanceMi - b.distanceMi; });
-        // return the full sorted set (not just nearest 3) so the type filter can
-        // re-slice the list client-side without re-querying
-        return { seq: seq, schools: withDistance };
-      });
-    },
-    render: function (result) {
-      var wrap = document.createElement("div");
-
-      // ---- type filter — drives both the list below and the map footprints ----
-      var counts = { Private: 0, Elem: 0, Middle: 0, High: 0 };
-      result.schools.forEach(function (s) { counts[s.category]++; });
-      var filterWrap = document.createElement("div");
-      filterWrap.className = "school-filter";
-      SCHOOL_CATS.forEach(function (cat) {
-        var meta = SCHOOL_CAT_META[cat];
-        var label = document.createElement("label");
-        label.className = "school-filter-item";
-        var cb = document.createElement("input");
-        cb.type = "checkbox";
-        cb.checked = !!schoolTypeFilter[cat];
-        cb.addEventListener("change", function () {
-          schoolTypeFilter[cat] = cb.checked;
-          renderList();
-          var mod = getLayerById("school-site");
-          if (mod) restyleOverlayFeatures(mod); // repaint/hide footprints to match
-        });
-        var swatch = document.createElement("span");
-        swatch.className = "school-filter-swatch";
-        swatch.style.background = meta.color;
-        var txt = document.createElement("span");
-        txt.textContent = meta.label + " (" + counts[cat] + ")";
-        label.appendChild(cb);
-        label.appendChild(swatch);
-        label.appendChild(txt);
-        filterWrap.appendChild(label);
-      });
-      wrap.appendChild(filterWrap);
-
-      var intro = document.createElement("p");
-      intro.className = "school-list-intro";
-      intro.textContent = "Nearest schools, straight-line distance:";
-      wrap.appendChild(intro);
-
-      var ol = document.createElement("ol");
-      ol.className = "school-list";
-      wrap.appendChild(ol);
-
-      var note = document.createElement("p");
-      note.className = "school-filter-note";
-      note.textContent = "Type is inferred from the grade range. “Private” = schools with no CPS-published grade band (parochial/independent).";
-      wrap.appendChild(note);
-
-      function renderList() {
-        ol.innerHTML = "";
-        var shown = result.schools.filter(function (s) { return schoolTypeFilter[s.category]; }).slice(0, SCHOOL_SITE_COUNT);
-        if (!shown.length) {
-          var empty = document.createElement("li");
-          empty.className = "school-list-empty";
-          empty.textContent = "No schools of the selected type(s) nearby.";
-          ol.appendChild(empty);
-          return;
-        }
-        shown.forEach(function (s) {
-          var li = document.createElement("li");
-          var dot = document.createElement("span");
-          dot.className = "school-list-dot";
-          dot.style.background = SCHOOL_CAT_META[s.category].color;
-          li.appendChild(dot);
-          var name = s.name ? String(s.name) : "School";
-          var typePart = " — " + SCHOOL_CAT_META[s.category].full;
-          var gradesPart = s.grades ? " (" + String(s.grades) + ")" : "";
-          var addressPart = s.address ? " — " + String(s.address) : "";
-          li.appendChild(document.createTextNode(name + typePart + gradesPart + addressPart + " — " + s.distanceMi.toFixed(2) + " mi"));
-          var website = safeHttpUrl(s.website); // empty in current data; scheme-checked if ever populated
-          if (website) {
-            li.appendChild(document.createTextNode(" — "));
-            var a = document.createElement("a");
-            a.href = website;
-            a.target = "_blank";
-            a.rel = "noopener";
-            a.textContent = "website";
-            li.appendChild(a);
-          }
-          ol.appendChild(li);
-        });
-      }
-      renderList();
-      return wrap;
-    }
-  });
-
-  /* =========================================================================
-   * THREAD 4 — POLITICAL: Ward+Alderman, U.S. House, IL Senate/House, School Board
-   * Five layers, three different join patterns:
-   *  - Ward: Socrata polygon + Socrata roster, joined locally on ward number
-   *    (same shape as Thread 1/2/3's polygon modules, but with a second
-   *    non-geo dataset fetched once and joined client-side).
-   *  - Congress: Census TIGERweb polygon (Esri REST, not Socrata) joined on
-   *    district number to a same-origin roster built from congress-legislators
-   *    (data/app/congress-roster.json — see that layer's comment).
-   *  - IL Senate / IL House: same TIGERweb pattern, but per the playbook,
-   *    Open States has no browser CORS, so instead of a roster join this
-   *    links out to ILGA's own directory — never guessed into a per-district
-   *    URL, since the session/GA numbering isn't reliably derivable client-side.
-   *  - School Board: the KML→GeoJSON conversion from §4 of the playbook,
-   *    served from the same-origin data/app/school-board-districts.json and
-   *    fetched lazily on first toggle (see that loader's comment); no roster
-   *    endpoint exists for this newly-elected body, so this links to the
-   *    district's official board page instead.
-   * ======================================================================= */
-
   /* ---------- generic cached-promise wrapper (Socrata-geojson-specific
    * makeCachedLoader above predates this; this variant memoizes any loader
    * function, used here for the roster/geometry JSON fetches and TIGERweb) ---------- */
@@ -6510,238 +4956,6 @@ function initChiExplorer() {
     return null;
   }
   /* ==== ENGINE:END extract-district-number ==== */
-
-  /* ---------- Ward + Alderman ---------- */
-  var loadWards = makeCached(function () { return loadSocrataGeoJSON("p293-wvbd"); });
-  var loadAldermen = makeCached(function () { return loadSocrataJSON("htai-wnw4"); });
-
-  // The aldermen roster stores names "Last, First" (e.g. "La Spata, Daniel").
-  // Flip to display order "First Last" on the first comma only, leaving names
-  // without a comma untouched.
-  function formatAldermanName(name) {
-    if (!name) return name;
-    var str = String(name);
-    var i = str.indexOf(",");
-    if (i === -1) return str.trim();
-    var last = str.slice(0, i).trim();
-    var first = str.slice(i + 1).trim();
-    if (!first) return last;
-    if (!last) return first;
-    return first + " " + last;
-  }
-
-  registerLayer({
-    id: "ward",
-    group: "political",
-    label: "City Ward",
-    coverage: chicagoCoverage,
-    overlay: {
-      load: loadWards,
-      style: { color: "#0B5394", weight: 2, fillColor: "#41B6E6", fillOpacity: 0.08, dashArray: "3 2 6 2" }
-    },
-    query: function (point, seq) {
-      return Promise.all([loadWards(), loadAldermen()]).then(function (results) {
-        var geojson = results[0], roster = results[1];
-        var feature = findFeatureContaining(geojson, point);
-        if (!feature) return null;
-        var props = feature.properties || {};
-        var wardRaw = findPropCI(props, ["ward", "ward_num", "ward_number", "ward_id"]);
-        var ward = wardRaw !== null && wardRaw !== undefined ? String(wardRaw).replace(/^0+(?=\d)/, "") : null;
-
-        var aldermanRow = null;
-        if (ward && Array.isArray(roster)) {
-          aldermanRow = roster.filter(function (r) {
-            var rWard = findPropCI(r, ["ward", "ward_num", "ward_number"]);
-            return rWard !== null && rWard !== undefined && String(rWard).replace(/^0+(?=\d)/, "") === ward;
-          })[0] || null;
-        }
-        var alderman = aldermanRow ? formatAldermanName(findPropCI(aldermanRow, ["alderman", "alderman_name", "member", "name"])) : null;
-        var email = aldermanRow ? findPropCI(aldermanRow, ["email", "e_mail", "e-mail"]) : null;
-        var phone = aldermanRow ? findPropCI(aldermanRow, ["phone", "ward_office_phone", "office_phone", "telephone"]) : null;
-        var address = aldermanRow ? findPropCI(aldermanRow, ["address", "ward_office_address", "office_address", "ward_office"]) : null;
-
-        return { seq: seq, ward: ward, alderman: alderman, email: email, phone: phone, address: address };
-      });
-    },
-    render: function (result) {
-      var fields = [{ label: "Ward", value: result.ward ? String(result.ward) : "Unknown" }];
-      if (result.alderman) fields.push({ label: "Alderman", value: String(result.alderman) });
-      if (result.phone) fields.push({ label: "Office Phone", value: String(result.phone) });
-      if (result.address) fields.push({ label: "Office Address", value: String(result.address), pin: "#0B5394" });
-      if (result.email) {
-        fields.push({ label: "Email", html: '<a href="mailto:' + sanitize(result.email) + '">' + sanitize(result.email) + '</a>' });
-      }
-      return renderFieldList(fields);
-    },
-    pointOfInterest: function (result) {
-      if (!result.address) return null;
-      return { label: result.alderman ? "Ald. " + String(result.alderman) : "Ward Office", address: String(result.address) };
-    },
-    // hover popup: name the alderperson from the prefetched roster (same ward-key
-    // join as the query above, run synchronously against the cached roster).
-    hoverOfficial: {
-      load: loadAldermen,
-      name: function (feature, roster) {
-        if (!Array.isArray(roster)) return null;
-        var wardRaw = findPropCI(feature.properties || {}, ["ward", "ward_num", "ward_number", "ward_id"]);
-        if (wardRaw === null || wardRaw === undefined) return null;
-        var ward = String(wardRaw).replace(/^0+(?=\d)/, "");
-        var row = roster.filter(function (r) {
-          var w = findPropCI(r, ["ward", "ward_num", "ward_number"]);
-          return w !== null && w !== undefined && String(w).replace(/^0+(?=\d)/, "") === ward;
-        })[0];
-        return row ? formatAldermanName(findPropCI(row, ["alderman", "alderman_name", "member", "name"])) : null;
-      }
-    },
-    onToggle: function (on) {
-      // Ward Precinct is a sub-selection of a visible ward, so if the ward is
-      // turned off, cascade its precinct sub-selection off too (which restores
-      // this layer's own fill via the precinct module's onToggle(false)) —
-      // same pattern as Police District / Police Beat.
-      if (!on && state.layersOn["ward-precinct"]) {
-        var box = document.getElementById("toggle-ward-precinct");
-        if (box && box.checked) box.click();
-      }
-    }
-  });
-
-  /* ---------- Ward Precinct (sub-selection of City Ward) ----------
-   * Precincts are the smallest election-administration unit — each ward is
-   * tiled by a handful of numbered precincts. Boundaries come from the Chicago
-   * Data Portal's "Boundaries - Ward Precincts (2025-)" dataset (i8fv-xe4b),
-   * the current map approved by the Board of Election Commissioners. Registered
-   * with subOf:"ward" so its toggle nests under the ward in the sidebar and
-   * reads as a sub-selection. Turning it on flips the parent ward to
-   * outline-only (see onToggle) so the ward's boundary frames the precincts and
-   * the precinct fills read as the ward's interior subdivision — exactly how
-   * Police Beat nests under Police District. Fields ward / precinct /
-   * ward_precinct per the dataset schema. ---------- */
-  var loadWardPrecincts = makeCachedLoader("i8fv-xe4b");
-
-  registerLayer({
-    id: "ward-precinct",
-    group: "political",
-    subOf: "ward",
-    label: "Ward Precinct",
-    coverage: chicagoCoverage,
-    overlay: {
-      load: loadWardPrecincts,
-      // solid thin outline + visible fill: with the ward dropped to
-      // outline-only, the precincts carry the interior fill. Same blue family
-      // as the ward, a shade deeper so the two read as related.
-      style: { color: "#06375E", weight: 1, fillColor: "#2B8CC4", fillOpacity: 0.14, dashArray: null }
-    },
-    query: function (point, seq) {
-      return loadWardPrecincts().then(function (geojson) {
-        var feature = findFeatureContaining(geojson, point);
-        if (!feature) return null;
-        var props = feature.properties || {};
-        var precinctRaw = findPropCI(props, ["precinct", "precinct_num", "precinct_number", "precinct_no"]);
-        var precinct = precinctRaw !== null && precinctRaw !== undefined ? String(precinctRaw).replace(/^0+(?=\d)/, "") : null;
-        var wardRaw = findPropCI(props, ["ward", "ward_num", "ward_number", "ward_id"]);
-        var ward = wardRaw !== null && wardRaw !== undefined ? String(wardRaw).replace(/^0+(?=\d)/, "") : null;
-        return { seq: seq, precinct: precinct, ward: ward };
-      });
-    },
-    render: function (result) {
-      var fields = [{ label: "Precinct", value: result.precinct ? String(result.precinct) : "Unknown" }];
-      if (result.ward) fields.push({ label: "Ward", value: String(result.ward) });
-      return renderFieldList(fields);
-    },
-    onToggle: function (on) {
-      var wardRt = layerRuntime["ward"];
-      if (on) {
-        // a sub-selection needs its parent visible — turn the ward on (as the
-        // outline frame) if it isn't already. box.click() runs the normal
-        // toggle path (overlay load + query + hash sync).
-        if (!state.layersOn["ward"]) {
-          var box = document.getElementById("toggle-ward");
-          if (box && !box.checked) box.click();
-        }
-        wardRt.outlineOnly = true;
-      } else {
-        wardRt.outlineOnly = false;
-      }
-      // Restyle the already-loaded ward overlay to reflect the fill change. If
-      // it's still loading (just auto-enabled above), baseStyleFor reads
-      // outlineOnly at L.geoJSON construction time, so no restyle is needed yet.
-      var wardMod = getLayerById("ward");
-      if (wardMod && wardRt.overlayLayer) updateLayerHighlight(wardMod);
-    }
-  });
-
-  /* ---------- U.S. House (Congress) — TIGERweb boundary joined to a same-origin
-   * roster (district -> current IL representative). The roster used to be the
-   * full national legislators-current.json (~1.5 MB, all ~538 members and every
-   * term each has served) fetched from a third-party host at click time and
-   * filtered client-side down to one IL rep. It now lives in
-   * data/app/congress-roster.json (~2 KB, IL's 17 reps only), generated by
-   * scripts/build_congress_roster.py and refreshed weekly by
-   * .github/workflows/update-congress-roster.yml — so first click no longer
-   * downloads a multi-MB payload from a host we don't control. A roster-fetch
-   * failure degrades to "district number" only (best-effort .catch below),
-   * matching the ILGA chambers. ---------- */
-  // Geometry: pre-built same-origin (was a live ~1 MB-gzip TIGERweb fetch, ~5.7 s
-  // in a production profile). Legislative districts are decadal — regenerate with
-  // scripts/build_legislative_boundaries.py on redistricting. (R2-2)
-  var loadCongressDistricts = makeCached(function () { return fetchJSONWithRetry("data/app/congress-districts.json", {}, 2); });
-  var loadCongressRoster = makeCached(function () {
-    return fetchJSONWithRetry("data/app/congress-roster.json", {}, 2);
-  });
-  var CONGRESS_DISTRICT_FIELDS = ["cd119fp", "cd118fp", "cdfp", "cd"];
-
-  registerLayer({
-    id: "congress",
-    group: "political",
-    label: "U.S. House District",
-    overlay: {
-      load: loadCongressDistricts,
-      style: { color: "#14181C", weight: 2, fillColor: "#41B6E6", fillOpacity: 0.05, dashArray: "8 3" }
-    },
-    query: function (point, seq) {
-      return Promise.all([
-        loadCongressDistricts(),
-        loadCongressRoster().catch(function () { return {}; })
-      ]).then(function (results) {
-        var geojson = results[0], roster = results[1];
-        var feature = findFeatureContaining(geojson, point);
-        if (!feature) return null;
-        var props = feature.properties || {};
-        var district = extractDistrictNumber(props, CONGRESS_DISTRICT_FIELDS);
-        var rep = district != null ? roster[String(district)] : null;
-
-        return {
-          seq: seq,
-          district: district,
-          name: rep ? rep.name : null,
-          party: rep ? rep.party : null,
-          phone: rep ? rep.phone : null,
-          url: rep ? rep.url : null
-        };
-      });
-    },
-    render: function (result) {
-      var fields = [{ label: "District", value: result.district ? "IL-" + result.district : "Unknown" }];
-      if (result.name) fields.push({ label: "Representative", value: String(result.name) });
-      if (result.party) fields.push({ label: "Party", value: String(result.party) });
-      if (result.phone) fields.push({ label: "D.C. Office Phone", value: String(result.phone) });
-      var website = safeHttpUrl(result.url); // scheme-check external URLs before they become an href
-      if (website) fields.push({ label: "Website", html: '<a href="' + sanitize(website) + '" target="_blank" rel="noopener">' + sanitize(website) + '</a>' });
-      return renderFieldList(fields);
-    },
-    // hover popup: name the U.S. Representative from the prefetched roster (keyed
-    // by district number, same as the query).
-    hoverOfficial: {
-      load: loadCongressRoster,
-      name: function (feature, roster) {
-        if (!roster) return null;
-        var d = extractDistrictNumber(feature.properties || {}, CONGRESS_DISTRICT_FIELDS);
-        var rep = d != null ? roster[String(d)] : null;
-        return rep ? rep.name : null;
-      }
-    }
-  });
-
   /* ==== ENGINE:BEGIN office-helpers ==== */
   /* ---------- IL State Senate / IL State House — Open States has no browser
    * CORS (per playbook), so instead of a live roster join these look up the
@@ -6861,204 +5075,6 @@ function initChiExplorer() {
     });
   }
   /* ==== ENGINE:END chamber-factory ==== */
-
-  /* ---------- IL Senate roster (104th General Assembly), district -> current
-   * officeholder. Generated by scripts/build_il_roster.py from
-   * scripts/ilga_scraper.py's scrape of ilga.gov/Senate/Members — do not
-   * hand-edit, re-run the scripts instead (or wait for the weekly roster PR
-   * from .github/workflows/update-ilga-roster.yml). ---------- */
-  var loadIlSenateMembers = makeCached(function () {
-    return fetchJSONWithRetry("data/app/il-senate-members.json", {}, 2);
-  });
-  // Geometry: pre-built same-origin (was live TIGERweb layer 1, ~1.35 MB gzip).
-  // Regenerate with scripts/build_legislative_boundaries.py on redistricting. (R2-2)
-  var loadIlSenateDistricts = makeCached(function () {
-    return fetchJSONWithRetry("data/app/il-senate-districts.json", {}, 2);
-  });
-
-  /* ---------- IL House roster (104th General Assembly), district -> current
-   * officeholder. Generated by scripts/build_il_roster.py from
-   * scripts/ilga_scraper.py's scrape of ilga.gov/House/Members — do not
-   * hand-edit, re-run the scripts instead (or wait for the weekly roster PR
-   * from .github/workflows/update-ilga-roster.yml). ---------- */
-  var loadIlHouseMembers = makeCached(function () {
-    return fetchJSONWithRetry("data/app/il-house-members.json", {}, 2);
-  });
-  // Geometry: pre-built same-origin (was live TIGERweb layer 2, ~1.8 MB gzip).
-  // Regenerate with scripts/build_legislative_boundaries.py on redistricting. (R2-2)
-  var loadIlHouseDistricts = makeCached(function () {
-    return fetchJSONWithRetry("data/app/il-house-districts.json", {}, 2);
-  });
-
-  registerIlgaChamber({
-    id: "il-senate",
-    label: "IL State Senate District",
-    layerIndex: 1, // fallback only — loadDistricts (pre-built) is used when present
-    loadDistricts: loadIlSenateDistricts,
-    districtFields: ["sldust", "sldu"],
-    ilgaUrl: "https://www.ilga.gov/Senate/Members",
-    loadRoster: loadIlSenateMembers,
-    memberLabel: "Senator", capitolLabel: "Springfield Office",
-    profileLabel: "ILGA profile", directoryLabel: "ILGA member directory",
-    style: { color: "#4A2E8C", weight: 2, fillColor: "#4A2E8C", fillOpacity: 0.05, dashArray: "1 5" }
-  });
-
-  registerIlgaChamber({
-    id: "il-house",
-    label: "IL State House District",
-    layerIndex: 2, // fallback only — loadDistricts (pre-built) is used when present
-    loadDistricts: loadIlHouseDistricts,
-    districtFields: ["sldlst", "sldl"],
-    ilgaUrl: "https://www.ilga.gov/House/Members",
-    loadRoster: loadIlHouseMembers,
-    memberLabel: "State Representative", capitolLabel: "Springfield Office",
-    profileLabel: "ILGA profile", directoryLabel: "ILGA member directory",
-    style: { color: "#8C2E4A", weight: 2, fillColor: "#8C2E4A", fillOpacity: 0.05, dashArray: "5 1 2 1" }
-  });
-
-  /* ---------- Elected School Board District — sourced from the official
-   * ERSB_20_Sub_District_Map_FA1_SB_15 shapefile (supersedes the earlier
-   * ilsenateredistricting.com KML conversion from playbook §4), hosted
-   * locally since no Socrata/TIGERweb source exists for it. Member roster
-   * (served from data/app/school-board-members.json) comes from a CPS
-   * schools-by-ERSB-district roster, keyed by the same district number as
-   * the geometry. ---------- */
-  /* ---------- served from the same-origin data/app/school-board-districts.json,
-   * fetched lazily on first toggle — this KML-derived dataset has no
-   * queryable/CORS-enabled endpoint (unlike the live-API layers), so it is
-   * shipped as a static app-data file rather than reaching a remote host.
-   * Topology-preserving mapshaper (visvalingam, keep-shapes, 15% retain) +
-   * 6-decimal rounding of the full-precision data/school-board-districts.geojson,
-   * reproducible via `python3 scripts/build_embedded_boundaries.py` (which
-   * writes this file). Point-in-district agreement with the full-precision
-   * source: 2000/2000 random points, 0 boundaries broken (validated in that
-   * script before it writes the file). ---------- */
-  var loadSchoolBoardDistricts = makeCached(function () {
-    return fetchJSONWithRetry("data/app/school-board-districts.json", {}, 2);
-  });
-
-  /* ---------- Board member roster, keyed by district number. Derived from
-   * a CPS schools-by-ERSB-district roster (one member per district; some
-   * districts show "VACANT" per that roster, surfaced as-is rather than
-   * guessed at). ---------- */
-  var loadSchoolBoardMembers = makeCached(function () {
-    return fetchJSONWithRetry("data/app/school-board-members.json", {}, 2);
-  });
-
-  registerLayer({
-    id: "school-board",
-    group: "political",
-    label: "Elected School Board District",
-    coverage: chicagoCoverage,
-    overlay: {
-      load: loadSchoolBoardDistricts,
-      style: { color: "#2E8C6A", weight: 2, fillColor: "#2E8C6A", fillOpacity: 0.05, dashArray: "2 2" }
-    },
-    query: function (point, seq) {
-      return Promise.all([
-        loadSchoolBoardDistricts(),
-        loadSchoolBoardMembers().catch(function () { return {}; })
-      ]).then(function (results) {
-        var geojson = results[0], members = results[1];
-        var feature = findFeatureContaining(geojson, point);
-        if (!feature) return null;
-        var props = feature.properties || {};
-        var district = findPropCI(props, ["district"]);
-        var longName = findPropCI(props, ["longname"]);
-        var member = district != null ? members[String(district)] : undefined;
-        return { seq: seq, district: district, longName: longName, member: member };
-      });
-    },
-    render: function (result) {
-      var fields = [{ label: "District", value: result.district ? String(result.district) : "Unknown" }];
-      // the "1a"/"6b"-style sub-district name — candidate questionnaires and
-      // CPS materials reference districts by this scheme, not the flat number
-      if (result.longName) fields.push({ label: "Sub-district", value: String(result.longName) });
-      if (result.member) {
-        fields.push({
-          label: "Board member",
-          // plain value — renderFieldList renders values via textContent, so
-          // sanitize() here double-escaped quoted nicknames ("Jitu", "Rhymefest")
-          value: result.member === "VACANT" ? "Vacant" : String(result.member)
-        });
-      }
-      fields.push({
-        label: "Board info",
-        html: '<a href="https://www.cps.edu/about/chicago-board-of-education/" target="_blank" rel="noopener">Chicago Board of Education</a>'
-      });
-      return renderFieldList(fields);
-    },
-    // hover popup: name the board member from the prefetched roster (keyed by
-    // district number; the roster stores a bare name string, "VACANT" for empty
-    // seats — surfaced as "Vacant", same as the card).
-    hoverOfficial: {
-      load: loadSchoolBoardMembers,
-      name: function (feature, members) {
-        if (!members) return null;
-        var d = findPropCI(feature.properties || {}, ["district"]);
-        var m = d != null ? members[String(d)] : null;
-        if (!m) return null;
-        return m === "VACANT" ? "Vacant" : String(m);
-      }
-    }
-  });
-
-
-  /* =========================================================================
-   * THREAD 6 — POLITICAL (judicial & county): IL Supreme Court district +
-   * Cook County Board of Review district.
-   * Both boundary sets come from the 2021 redistricting public acts'
-   * official shapefiles (PA 102-0011 for the Supreme Court, PA 102-0012 for
-   * the Board of Review; originals kept in data/source/raw/), reprojected
-   * NAD83 -> WGS84 and topology-preserving-simplified — classification
-   * agreement with the full-precision conversions (kept in data/) was 100%
-   * across 2,000 random in-city test points. Served from the same-origin
-   * data/app/il-supreme-court-districts.json / ccbr-districts.json and
-   * fetched lazily on first toggle, the same as the school-board layer
-   * above. Neither shapefile's attribute table
-   * carries officeholder names and no live-verifiable roster source exists
-   * for either body in this build environment, so — per the playbook's
-   * "never guess" rule — both cards link to the official body instead of
-   * naming names. ---------- */
-  var loadSupremeCourtDistricts = makeCached(function () {
-    return fetchJSONWithRetry("data/app/il-supreme-court-districts.json", {}, 2);
-  });
-
-  registerPolygonLayer({
-    id: "il-supreme-court",
-    group: "political",
-    label: "IL Supreme Court District",
-    loader: loadSupremeCourtDistricts,
-    style: { color: "#8C6A2E", weight: 2, fillColor: "#8C6A2E", fillOpacity: 0.05, dashArray: "7 3" },
-    fields: [
-      { name: "district", label: "District", keys: ["districtn", "district"], primary: true },
-      // structural fact from the Illinois Constitution (art. VI), not
-      // officeholder data: District 1 is Cook County and elects three of the
-      // court's seven justices; districts 2-5 elect one each
-      { label: "Note", value: "District 1 is all of Cook County and elects three of the seven justices.",
-        when: function (r) { return String(r.district) === "1"; } },
-      { label: "Court info", html: '<a href="https://www.illinoiscourts.gov/courts/supreme-court/" target="_blank" rel="noopener">Illinois Supreme Court</a>' }
-    ]
-  });
-
-  var loadCcbrDistricts = makeCached(function () {
-    return fetchJSONWithRetry("data/app/ccbr-districts.json", {}, 2);
-  });
-
-  registerPolygonLayer({
-    id: "ccbr",
-    group: "political",
-    label: "Cook County Board of Review District",
-    coverage: cookCountyCoverage,
-    loader: loadCcbrDistricts,
-    style: { color: "#1E7A8C", weight: 2, fillColor: "#1E7A8C", fillOpacity: 0.05, dashArray: "4 4" },
-    fields: [
-      { name: "district", label: "District", keys: ["districtn", "district"], primary: true },
-      { label: "What it does", value: "Hears property-tax assessment appeals; one commissioner is elected per district." },
-      { label: "Board info", html: '<a href="https://www.cookcountyboardofreview.com/" target="_blank" rel="noopener">Cook County Board of Review</a>' }
-    ]
-  });
-
   /* ---------- Cook County Commissioner District — the one Political layer
    * sourced live from Cook County's own GIS server (`politicalBoundary`
    * MapServer, discovered via a HAR capture of the county's own "Find My
@@ -7094,124 +5110,6 @@ function initChiExplorer() {
         return geojson;
       });
   }
-
-  function loadCookCountyLayerRows(layerIndex, where) {
-    var url = COOK_COUNTY_POLITICAL_BOUNDARY + "/" + layerIndex + "/query?where=" +
-      encodeURIComponent(where || "1=1") + "&outFields=*&returnGeometry=false&f=json";
-    return fetchJSONWithRetry(url, {}, 2).then(function (data) {
-      return ((data && data.features) || []).map(function (f) { return f.attributes || {}; });
-    });
-  }
-
-  var loadCommissionerDistricts = makeCached(function () { return loadCookCountyLayerGeoJSON(9); });
-  var loadCommissionerOffices = makeCached(function () { return loadCookCountyLayerRows(26, "office='Commissioner'"); });
-  var COMMISSIONER_DISTRICT_FIELDS = ["district_int", "district_txt", "district"];
-
-  // Assemble a commissioner's display name from the electedOfficials table's
-  // split name parts, dropping any that are blank/null.
-  function commissionerName(office) {
-    return [
-      findPropCI(office, ["firstname"]),
-      findPropCI(office, ["middlename"]),
-      findPropCI(office, ["lastname"]),
-      findPropCI(office, ["suffix"])
-    ].filter(Boolean).map(function (part) { return String(part).trim(); })
-      .filter(Boolean).join(" ");
-  }
-
-  // Office address lines: street + suite on one line group, then city/state/zip.
-  function commissionerAddressLines(office) {
-    var lines = [findPropCI(office, ["addressstreet_1"]), findPropCI(office, ["addresssuite_1"])]
-      .filter(Boolean).map(String);
-    var cityStateZip = [
-      findPropCI(office, ["city1"]),
-      findPropCI(office, ["state1"]),
-      findPropCI(office, ["zip1"])
-    ].filter(function (v) { return v !== null && v !== undefined && String(v).trim() !== ""; })
-      .map(String).join(" ");
-    if (cityStateZip) lines.push(cityStateZip);
-    return lines;
-  }
-
-  registerLayer({
-    id: "commissioner",
-    group: "political",
-    label: "Cook County Commissioner District",
-    coverage: cookCountyCoverage,
-    // its district lives in district_int/district_txt, not the generic keys the
-    // hover extractor knows — name it explicitly so the popup shows the number.
-    hoverName: function (feature) {
-      return extractDistrictNumber(feature.properties || {}, COMMISSIONER_DISTRICT_FIELDS) || null;
-    },
-    overlay: {
-      load: loadCommissionerDistricts,
-      style: { color: "#B8622E", weight: 2, fillColor: "#B8622E", fillOpacity: 0.05, dashArray: "9 3 3 3" }
-    },
-    query: function (point, seq) {
-      return Promise.all([loadCommissionerDistricts(), loadCommissionerOffices()]).then(function (results) {
-        var geojson = results[0], offices = results[1];
-        var feature = findFeatureContaining(geojson, point);
-        if (!feature) return null;
-        var district = extractDistrictNumber(feature.properties || {}, COMMISSIONER_DISTRICT_FIELDS);
-
-        var office = null;
-        if (district && Array.isArray(offices)) {
-          var relateKey = ("commissionerdistrict_" + parseInt(district, 10));
-          office = offices.filter(function (row) {
-            var rowKey = findPropCI(row, ["relate_key"]);
-            return rowKey && String(rowKey).toLowerCase() === relateKey;
-          })[0] || null;
-        }
-        return { seq: seq, district: district, office: office };
-      });
-    },
-    render: function (result) {
-      var fields = [{ label: "District", value: result.district ? String(result.district) : "Unknown" }];
-      var office = result.office;
-      if (office) {
-        var name = commissionerName(office);
-        if (name) fields.push({ label: "Commissioner", value: name });
-        var addressLines = commissionerAddressLines(office);
-        if (addressLines.length) fields.push({ label: "Office Address", html: addressLines.map(sanitize).join("<br>"), pin: "#B8622E" });
-        var phone = findPropCI(office, ["phone1"]);
-        if (phone) fields.push({ label: "Phone", value: String(phone) });
-        var email = findPropCI(office, ["email1"]);
-        if (email) fields.push({ label: "Email", html: '<a href="mailto:' + sanitize(String(email)) + '">' + sanitize(String(email)) + '</a>' });
-        var website = safeHttpUrl(findPropCI(office, ["url1"])); // scheme-check before it becomes an href
-        if (website) fields.push({ label: "Website", html: '<a href="' + sanitize(website) + '" target="_blank" rel="noopener">' + sanitize(website) + '</a>' });
-      }
-      fields.push({
-        label: "Board info",
-        html: '<a href="https://maps.cookcountyil.gov/findmydistrict/" target="_blank" rel="noopener">Cook County Find My District (official)</a>'
-      });
-      return renderFieldList(fields);
-    },
-    pointOfInterest: function (result) {
-      var office = result.office;
-      if (!office) return null;
-      var name = commissionerName(office);
-      var addressLines = commissionerAddressLines(office);
-      if (!addressLines.length) return null;
-      return { label: name || "Commissioner Office", address: addressLines.join(", ") };
-    },
-    // hover popup: name the commissioner from the prefetched electedOfficials
-    // table (same relate_key join as the query, run against the cached roster).
-    hoverOfficial: {
-      load: loadCommissionerOffices,
-      name: function (feature, offices) {
-        if (!Array.isArray(offices)) return null;
-        var district = extractDistrictNumber(feature.properties || {}, COMMISSIONER_DISTRICT_FIELDS);
-        if (!district) return null;
-        var relateKey = "commissionerdistrict_" + parseInt(district, 10);
-        var office = offices.filter(function (row) {
-          var k = findPropCI(row, ["relate_key"]);
-          return k && String(k).toLowerCase() === relateKey;
-        })[0];
-        return office ? (commissionerName(office) || null) : null;
-      }
-    }
-  });
-
   /* ==== ENGINE:BEGIN hover-explorer ==== */
   /* =========================================================================
    * HOVER EXPLORER — a live popup (on by default, toggled bottom-left) that
@@ -7584,7 +5482,9 @@ function initChiExplorer() {
   // school-board geometry fetch in the 669 ms initial-navigation chain, and the
   // wash it draws is purely decorative (its own catch already skips it on any
   // error). Deferring keeps first paint free of it (R2-3).
-  whenIdle(function () { drawOutOfScopeMask(loadSchoolBoardDistricts); });
+  // SF re-core: the out-of-scope wash needs a metro tiling layer (the reference
+  // passed its school-board districts, which tile the city exactly). SF has no
+  // tiling anchor yet, so the decorative wash is disabled until one lands (Thread 1).
 
   var verifiedEl = document.getElementById("verified-date");
   verifiedEl.textContent = "July 9, 2026";
@@ -7625,14 +5525,14 @@ function initChiExplorer() {
     renderFieldList: renderFieldList
   };
   /* ==== ENGINE:END exports ==== */
-  window.ChiExplorer = EXPLORER_EXPORTS;
+  window.SFExplorer = EXPLORER_EXPORTS;
 }
 // Deferred Leaflet (above) executes before DOMContentLoaded, so L is ready by
 // the time this fires. Run immediately if the DOM is already parsed, else wait.
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initChiExplorer);
+  document.addEventListener("DOMContentLoaded", initSFExplorer);
 } else {
-  initChiExplorer();
+  initSFExplorer();
 }
 </script>
 <script>

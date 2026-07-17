@@ -39,18 +39,13 @@
 // (network, then the name-badge fallback offline), so rarely-seen markers don't
 // weigh down every install.)
 /* ==== GENERATED:BEGIN sw-metro-config ==== */
-const CACHE_NAME = "district-explorer-shell-v11";
+const CACHE_NAME = "district-explorer-shell-sf-v1";
 
 const SHELL_URLS = [
   "./",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
-  "./icons/water-taxi.png",
-  "./icons/seals/cook-county.png",
-  "./icons/seals/kane.png",
-  "./icons/seals/lake.png",
-  "./icons/seals/will.png",
   "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js",
 ];
 
@@ -59,26 +54,12 @@ const SHELL_URLS = [
 // works offline) and refresh in the background. Precached at install so
 // those layers work offline.
 const GEOMETRY_URLS = [
-  "./data/app/school-board-districts.json",
-  "./data/app/il-supreme-court-districts.json",
-  "./data/app/ccbr-districts.json",
-  "./data/app/will-county-outline.json",
-  "./data/app/congress-districts.json",
-  "./data/app/il-senate-districts.json",
-  "./data/app/il-house-districts.json",
 ];
 
 // Roster/officeholder data (also in data/app/) is refreshed by the weekly CI
 // and must never be served stale — network-first, with the cached copy only
 // as an offline fallback. Same freshness rule as the shell.
 const ROSTER_URLS = [
-  "./data/app/il-senate-members.json",
-  "./data/app/il-house-members.json",
-  "./data/app/school-board-members.json",
-  "./data/app/congress-roster.json",
-  "./data/app/cpd-district-info.json",
-  "./data/app/ccpsa-district-councils.json",
-  "./data/app/will-county-board-members.json",
 ];
 /* ==== GENERATED:END sw-metro-config ==== */
 /* ==== METRO:END sw-config ==== */

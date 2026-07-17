@@ -12,11 +12,11 @@ Chicago District Explorer: a single-file, dependency-light web app. Click a poin
 **Metro facts** (generated from `metro-worksheet.json` — edit the worksheet and run
 `python3 scripts/generate_metro_files.py`; hand-edits here fail CI):
 
-- Metro: Chicago (`chicago`) — https://chidistricts.com/
-- Geocoders: address Photon (Chicago-bounded type-ahead); unbounded Photon (whole-coverage, sibling-metro lookup); POI Nominatim (office-address pin lookup, serial >=1s queue)
-- Ground truth: 41.88250,-87.62850 (downtown Loop — inside Cook County) → school-board 12; il-supreme-court 1; ccbr 3. Negative point 41.70000,-87.10000 (Lake Michigan, Indiana waters — outside all three anchor layers).
-- Layers: 33 registered (political 11, safety 6, schools 9, geography 7); `registerLayer(` floor 15. Debug namespace `window.ChiExplorer`.
-- Scheduled workflows: `update-ilga-roster.yml` (Mon 13:00 UTC); `update-congress-roster.yml` (Mon 13:00 UTC); `update-cpd-roster.yml` (Tue 13:00 UTC); `update-ccpsa-roster.yml` (Wed 13:00 UTC); `update-will-county-board-roster.yml` (Thu 13:00 UTC); `validate-sources.yml` (1st of month 14:00 UTC).
+- Metro: San Francisco (`sf`) — https://sf.chidistricts.com/
+- Geocoders: address Photon (SF-bounded type-ahead); unbounded Photon (whole-coverage, sibling-metro lookup); POI Nominatim (office-address pin lookup, serial >=1s queue)
+- Ground truth: 37.77927,-122.41924 (SF City Hall (Civic Center) - Thread-0 placeholder anchor) → zip-code 94102; zip-code 94102; zip-code 94102. Negative point 37.83000,-122.37000 (San Francisco Bay (open water) - outside shoreline-clipped layers).
+- Layers: 1 registered (geography 1); `registerLayer(` floor 6. Debug namespace `window.SFExplorer`.
+- Scheduled workflows: `validate-sources.yml` (1st of month 14:00 UTC).
 - Source registry: `scripts/validate_sources.py` (machine-checked monthly)
 <!-- ==== GENERATED:END metro-facts ==== -->
 
