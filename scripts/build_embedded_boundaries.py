@@ -49,35 +49,33 @@ MAPSHAPER = "mapshaper@0.6.102"  # pinned for reproducible output
 #   precision: coordinate rounding on export (0.000001 = 6 decimals ~= 0.11 m)
 #   key_prop:  the property findFeatureContaining/findPropCI keys on, used only
 #              to validate point-in-district agreement below
+# SF Thread-1 offline anchors, normalized from DataSF tables (data registry in
+# docs/METRO_EXPANSION_SF_WORKSHEET.md; raw pulls in data/source/raw/). The
+# volatile officeholder fields (e.g. supervisor sup_name) are stripped from the
+# source so the decadal geometry never freezes a name — those ride a
+# network-first roster instead. key_prop is the app-facing field each layer
+# classifies on.
 LAYERS = {
-    "school-board": {
-        "source": "data/school-board-districts.geojson",
-        "out": "school-board-districts.json",
+    "supervisor-districts": {
+        "source": "data/supervisor-districts.geojson",
+        "out": "supervisor-districts.json",
         "simplify": "15%",
         "precision": "0.000001",
         "key_prop": "district",
     },
-    # The two 2021-redistricting anchors. Both were originally converted by
-    # one-off runs of this same protocol before it was generalized; registering
-    # them here means a source change (or a reproducibility check) never has to
-    # regress to a manual mapshaper run. Retain percentages are the ones the
-    # shipped copies were built with (BUILD_PLAYBOOK_1: "12% / 15%", 6-decimal),
-    # both of which agreed 100% with full precision on the 2,000-point protocol.
-    # key_prop is the uppercase attribute-table field (ID/DISTRICT/DISTRICTN);
-    # the app itself keys case-insensitively on districtn/district.
-    "il-supreme-court": {
-        "source": "data/il-supreme-court-districts.geojson",
-        "out": "il-supreme-court-districts.json",
-        "simplify": "12%",
+    "sf-neighborhoods": {
+        "source": "data/sf-neighborhoods.geojson",
+        "out": "sf-neighborhoods.json",
+        "simplify": "10%",
         "precision": "0.000001",
-        "key_prop": "DISTRICT",
+        "key_prop": "nhood",
     },
-    "ccbr": {
-        "source": "data/ccbr-districts.geojson",
-        "out": "ccbr-districts.json",
+    "police-districts": {
+        "source": "data/police-districts.geojson",
+        "out": "police-districts.json",
         "simplify": "15%",
         "precision": "0.000001",
-        "key_prop": "DISTRICT",
+        "key_prop": "district",
     },
 }
 

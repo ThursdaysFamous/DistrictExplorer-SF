@@ -85,11 +85,14 @@ MIN_REGISTER_LAYER = 6
 # count above — this per-id list is the direct module-loss guard. Emitted in
 # LAYER_AREA_RANK order; check 5 keeps the two naming the same set.
 EXPECT_LAYER_IDS = [
-    "zip-code",
+    "supervisor-district", "police-district", "zip-code", "neighborhood",
 ]
 
 # file -> (min features, max features) for the boundary layers fetched by the app.
 GEOMETRY_FILES = {
+    "supervisor-districts.json": (11, 11),
+    "sf-neighborhoods.json": (41, 41),
+    "police-districts.json": (10, 10),
 }
 
 # file -> minimum key count (officeholder rosters).

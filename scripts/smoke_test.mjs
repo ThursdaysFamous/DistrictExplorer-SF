@@ -33,11 +33,11 @@ if (VENDORED_LEAFLET) console.log("  (serving Leaflet from scripts/vendor/leafle
 
 const BASE = process.env.BASE_URL || "http://localhost:8000/";
 // ==== GENERATED:BEGIN smoke-config ====
-const POINT = "37.77927,-122.41924"; // SF City Hall (Civic Center) - Thread-0 placeholder anchor
-const OFFLINE = ["zip-code", "zip-code", "zip-code"];
-const EXPECT_DISTRICT = { "zip-code": "94102", "zip-code": "94102", "zip-code": "94102" };
-const NEGATIVE_POINT = "37.83000,-122.37000"; // San Francisco Bay (open water) - outside shoreline-clipped layers
-const EXPECT_LAYERS = 1; // Thread-0 stub: only the ZIP Code layer is registered; the count grows as SF layers land
+const POINT = "37.77927,-122.41924"; // SF City Hall (Civic Center)
+const OFFLINE = ["supervisor-district", "neighborhood", "police-district"];
+const EXPECT_DISTRICT = { "supervisor-district": "5", "neighborhood": "Tenderloin", "police-district": "NORTHERN" };
+const NEGATIVE_POINT = "37.80000,-122.35500"; // San Francisco Bay (open water east of the Embarcadero) - outside all shoreline-clipped anchors
+const EXPECT_LAYERS = 4; // Thread-1: 3 offline anchors (supervisor/police/neighborhood) + the ZIP stub
 // ==== GENERATED:END smoke-config ====
 const BOOT_TIMEOUT = 45000; // Leaflet + first paint on a cold CI runner
 const QUERY_TIMEOUT = 25000;
@@ -58,9 +58,27 @@ function routeLeaflet(page) {
   ]);
 }
 
+async function cardText(page, id) {
+  await page.waitForFunction((cid) => {
+    const el = document.getElementById("card-" + cid);
+    return el && !el.querySelector(".loading-row") &&
+      (el.querySelector(".result-fields") || el.querySelector(".state-empty") ||
+       el.classList.contains("state-empty") || el.classList.contains("state-error") || el.querySelector(".state-error"));
+  }, id, { timeout: QUERY_TIMEOUT }).catch(() => {});
+  return page.evaluate((cid) => {
+    const el = document.getElementById("card-" + cid);
+    if (!el) return { text: "(no card)", error: true, empty: false };
+    return {
+      text: el.innerText.replace(/\s+/g, " ").trim(),
+      error: el.classList.contains("state-error") || !!el.querySelector(".state-error"),
+      empty: el.classList.contains("state-empty") || !!el.querySelector(".state-empty"),
+    };
+  }, id);
+}
+
 const browser = await chromium.launch();
 try {
-  // 1. App boots on the SF map with the Thread-0 stub layer(s), SF-branded, clean console.
+  // 1. App boots on the SF map with the Thread-1 layers, SF-branded, clean console.
   {
     const context = await browser.newContext({ serviceWorkers: "block" });
     const page = await context.newPage();
@@ -101,7 +119,38 @@ try {
     await context.close();
   }
 
-  // 2. Base-map tile failure surfaces an honest, dismissible banner (engine behaviour).
+  // 2. The three offline anchors classify City Hall against the ground truth,
+  //    from same-origin data/app/*.json (deterministic — no live API).
+  {
+    const context = await browser.newContext({ serviceWorkers: "block" });
+    const page = await context.newPage();
+    await routeLeaflet(page);
+    await page.goto(`${BASE}#point=${POINT}&layers=${OFFLINE.join(",")}`, { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(() => !!window.SFExplorer, null, { timeout: BOOT_TIMEOUT });
+    for (const id of OFFLINE) {
+      const c = await cardText(page, id);
+      const want = EXPECT_DISTRICT[id];
+      check(`${id} classifies City Hall (${want})`, !c.error && c.text.includes(want), c.text.slice(0, 70));
+    }
+    await context.close();
+  }
+
+  // 2b. The negative Bay point misses every anchor — the honest "no district"
+  //     empty state (never snap to nearest), from the same static geometry.
+  {
+    const context = await browser.newContext({ serviceWorkers: "block" });
+    const page = await context.newPage();
+    await routeLeaflet(page);
+    await page.goto(`${BASE}#point=${NEGATIVE_POINT}&layers=${OFFLINE.join(",")}`, { waitUntil: "domcontentloaded" });
+    await page.waitForFunction(() => !!window.SFExplorer, null, { timeout: BOOT_TIMEOUT });
+    for (const id of OFFLINE) {
+      const c = await cardText(page, id);
+      check(`${id} reports no district at the Bay point`, c.empty && !c.error, c.text.slice(0, 70));
+    }
+    await context.close();
+  }
+
+  // 3. Base-map tile failure surfaces an honest, dismissible banner (engine behaviour).
   {
     const context = await browser.newContext({ serviceWorkers: "block" });
     const page = await context.newPage();
@@ -131,4 +180,4 @@ if (failures.length) {
   console.error(`\n${failures.length} smoke check(s) failed: ${failures.join(", ")}`);
   process.exit(1);
 }
-console.log("\nAll SF Thread-0 smoke checks passed.");
+console.log("\nAll SF Thread-1 smoke checks passed.");
