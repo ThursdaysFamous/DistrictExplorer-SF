@@ -3379,7 +3379,9 @@ function initSFExplorer() {
     "supervisor-district", // SF Board of Supervisors district (11; water-trimmed, tiles the city)
     "police-district",   // SFPD district (10)
     "zip-code",          // national ZCTA (Census TIGERweb), SF-bounded
-    "neighborhood"       // SF Analysis Neighborhood (41) - smallest polygon layer
+    "neighborhood",      // SF Analysis Neighborhood (41) - smallest polygon layer
+    "police-station",    // SFPD station house (nearest 3, straight-line; 10 stations) - point layer, topmost
+    "fire-station"       // SFFD firehouse (nearest 3, straight-line; 44 active stations) - point layer, topmost
   ];
   /* ==== GENERATED:END layer-area-rank ==== */
 
@@ -4816,6 +4818,72 @@ function initSFExplorer() {
     });
   }
   /* ==== ENGINE:END nearest-point-factory ==== */
+
+  /* =========================================================================
+   * THREAD 2 — SAFETY (point layers): Police & Fire stations, nearest 3.
+   * Police-district boundaries already registered in Thread 1. These two are
+   * the nearest-N haversine pattern (no containment test) — N stays small so
+   * "nearest as the crow flies" is honest and never implies routing.
+   * Dropped with reason (no honest SF analog in open data — never invent):
+   *   - police-beat / sector: SFPD publishes no current patrol-beat boundary
+   *     (the only "beats" dataset is Parking Control's, a different body).
+   *   - fire-battalion: SFFD organizes into battalions, but no battalion or
+   *     division boundary is published; battalion appears only inside the
+   *     live incident feed, not as a standalone polygon to classify against.
+   * ======================================================================= */
+
+  /* ---------- Police Stations (nearest 3). SFPD's 10 district station houses
+   * (DataSF "Police Stations", rwdu-9wb2). Its .geojson route serves real Point
+   * geometry, so the plain cached loader suffices — no point-loader needed. ---------- */
+  var loadPoliceStations = makeCachedLoader("rwdu-9wb2");
+
+  registerNearestPointLayer({
+    id: "police-station",
+    group: "safety",
+    // bay-blue marker, distinct from Fire Station's International-Orange one
+    color: "#124F63",
+    fill: "#1D6F8B",
+    label: "Police Station",
+    loader: loadPoliceStations,
+    intro: "Nearest stations, straight-line distance:",
+    line: function (props) {
+      var name = findPropCI(props, ["district_name", "company_name"]);
+      var address = findPropCI(props, ["address", "location_address"]);
+      var phone = findPropCI(props, ["telephone_number", "phone"]);
+      return (name ? String(name) : "Police station") +
+        (address ? " — " + String(address) : "") +
+        (phone ? " — " + String(phone) : "");
+    }
+  });
+
+  /* ---------- Fire Stations (nearest 3). SFFD's 44 active firehouses, filtered
+   * out of DataSF's City Facilities (nc68-ngbr): its .geojson route omits point
+   * geometry (coords live in latitude/longitude properties) and the dataset also
+   * carries HQ / training / a decommissioned "Old Fire Station", so we use the
+   * point loader with a WHERE that keeps only the numbered "Fire Station #N". ---------- */
+  var loadFireStations = makeSocrataPointLoader(
+    "nc68-ngbr",
+    "department_name='Fire Department' AND common_name like 'Fire Station #%'",
+    "latitude",
+    "longitude"
+  );
+
+  registerNearestPointLayer({
+    id: "fire-station",
+    group: "safety",
+    color: "#8E2A22",
+    fill: "#C0362C",
+    label: "Fire Station",
+    loader: loadFireStations,
+    intro: "Nearest stations, straight-line distance:",
+    line: function (props) {
+      var name = findPropCI(props, ["common_name"]);
+      var address = findPropCI(props, ["address"]);
+      return (name ? String(name) : "Fire station") +
+        (address ? " — " + String(address) : "");
+    }
+  });
+
   /* ==== ENGINE:BEGIN int-field ==== */
   // Normalize a numeric-ish field to its integer string ("15.0" -> "15"); passes
   // non-numeric values through and null/"" to null. (Socrata sometimes serves

@@ -1,12 +1,15 @@
-// Headless boot smoke test — SF Thread-0 (stub). Serves the real index.html and
+// Headless boot smoke test — SF Thread-2 (safety). Serves the real index.html and
 // drives it in Chromium via Playwright (.github/workflows/smoke-test.yml on every
-// PR). At Thread 0 the app registers a single stub layer (ZIP Code) whose data is
-// a live TIGERweb query — not reachable from CI/sandbox — so this asserts only the
-// network-free deliverable: the app boots on the SF map, registers EXPECT_LAYERS
-// layer(s) with no console errors, is SF-branded, and still degrades a base-map
-// tile outage to a dismissible banner. Real classification/roster/negative-point
-// checks return as SF layers with offline anchors land in later threads (which
-// re-derive this gate — docs/METRO_EXPANSION_PLAYBOOK.md §9).
+// PR). Asserts both the network-free deliverables and the offline classification:
+// the app boots on the SF map, registers EXPECT_LAYERS layers with no console
+// errors, is SF-branded, and degrades a base-map tile outage to a dismissible
+// banner; the three offline anchors (supervisor / neighborhood / police-district)
+// classify SF City Hall against the ground truth from same-origin data/app files,
+// and the negative Bay point honestly reports no district (never snaps to nearest).
+// The ZIP stub and the two nearest-3 station layers (police / fire) are live
+// DataSF/TIGERweb — not reachable from CI/sandbox — so they are asserted present
+// (registered) only; their classification lands with the live-API threads (this
+// gate is re-derived each thread — docs/METRO_EXPANSION_PLAYBOOK.md §9).
 //
 // Run locally against a static server:
 //     python3 -m http.server 8000 &
@@ -37,7 +40,7 @@ const POINT = "37.77927,-122.41924"; // SF City Hall (Civic Center)
 const OFFLINE = ["supervisor-district", "neighborhood", "police-district"];
 const EXPECT_DISTRICT = { "supervisor-district": "5", "neighborhood": "Tenderloin", "police-district": "NORTHERN" };
 const NEGATIVE_POINT = "37.80000,-122.35500"; // San Francisco Bay (open water east of the Embarcadero) - outside all shoreline-clipped anchors
-const EXPECT_LAYERS = 4; // Thread-1: 3 offline anchors (supervisor/police/neighborhood) + the ZIP stub
+const EXPECT_LAYERS = 6; // Thread-2: 3 offline anchors + ZIP stub + police/fire station points (nearest-3)
 // ==== GENERATED:END smoke-config ====
 const BOOT_TIMEOUT = 45000; // Leaflet + first paint on a cold CI runner
 const QUERY_TIMEOUT = 25000;
@@ -78,7 +81,7 @@ async function cardText(page, id) {
 
 const browser = await chromium.launch();
 try {
-  // 1. App boots on the SF map with the Thread-1 layers, SF-branded, clean console.
+  // 1. App boots on the SF map with the Thread-2 layers, SF-branded, clean console.
   {
     const context = await browser.newContext({ serviceWorkers: "block" });
     const page = await context.newPage();
@@ -112,6 +115,12 @@ try {
 
     const stubOk = await page.evaluate(() => !!document.getElementById("toggle-zip-code"));
     check("ZIP Code stub layer present", stubOk);
+
+    // The two nearest-3 station layers are live DataSF — assert they register
+    // (a toggle exists); their classification can't run without network egress.
+    const safetyPtsOk = await page.evaluate(() =>
+      !!document.getElementById("toggle-police-station") && !!document.getElementById("toggle-fire-station"));
+    check("police + fire station layers present", safetyPtsOk);
 
     check("no console errors during boot", consoleErrors.length === 0, consoleErrors.slice(0, 2).join(" | "));
 
@@ -180,4 +189,4 @@ if (failures.length) {
   console.error(`\n${failures.length} smoke check(s) failed: ${failures.join(", ")}`);
   process.exit(1);
 }
-console.log("\nAll SF Thread-1 smoke checks passed.");
+console.log("\nAll SF Thread-2 smoke checks passed.");

@@ -123,10 +123,24 @@
       "group": "geography",
       "area_rank": 4,
       "rank_note": "SF Analysis Neighborhood (41) - smallest polygon layer"
+    },
+    {
+      "id": "police-station",
+      "label": "Police Station",
+      "group": "safety",
+      "area_rank": 5,
+      "rank_note": "SFPD station house (nearest 3, straight-line; 10 stations) - point layer, topmost"
+    },
+    {
+      "id": "fire-station",
+      "label": "Fire Station",
+      "group": "safety",
+      "area_rank": 6,
+      "rank_note": "SFFD firehouse (nearest 3, straight-line; 44 active stations) - point layer, topmost"
     }
   ],
   "min_register_layer": 6,
-  "layer_count_note": "Thread-1: 3 offline anchors (supervisor/police/neighborhood) + the ZIP stub",
+  "layer_count_note": "Thread-2: 3 offline anchors + ZIP stub + police/fire station points (nearest-3)",
   "anchor_point": {
     "lat": 37.77927,
     "lng": -122.41924,
