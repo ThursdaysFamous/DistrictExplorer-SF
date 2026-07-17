@@ -97,64 +97,85 @@
   ],
   "layers": [
     {
+      "id": "congress",
+      "label": "U.S. House District",
+      "group": "political",
+      "area_rank": 1,
+      "rank_note": "U.S. House (Congressional) district via TIGERweb (CA 52; ~1 in SF) - largest, live"
+    },
+    {
+      "id": "ca-senate",
+      "label": "California State Senate District",
+      "group": "political",
+      "area_rank": 2,
+      "rank_note": "CA State Senate (SLDU) via TIGERweb (40; ~1 in SF) - live"
+    },
+    {
+      "id": "ca-assembly",
+      "label": "California State Assembly District",
+      "group": "political",
+      "area_rank": 3,
+      "rank_note": "CA State Assembly (SLDL) via TIGERweb (80; SF split into 2) - live"
+    },
+    {
       "id": "supervisor-district",
       "label": "Supervisor District",
       "group": "political",
-      "area_rank": 1,
+      "area_rank": 4,
       "rank_note": "SF Board of Supervisors district (11; water-trimmed, tiles the city)"
     },
     {
       "id": "police-district",
       "label": "Police District",
       "group": "safety",
-      "area_rank": 2,
+      "area_rank": 5,
       "rank_note": "SFPD district (10)"
     },
     {
       "id": "zip-code",
       "label": "ZIP Code",
       "group": "geography",
-      "area_rank": 3,
+      "area_rank": 6,
       "rank_note": "national ZCTA (Census TIGERweb), SF-bounded"
     },
     {
       "id": "neighborhood",
       "label": "Neighborhood",
       "group": "geography",
-      "area_rank": 4,
+      "area_rank": 7,
       "rank_note": "SF Analysis Neighborhood (41) - smallest polygon layer"
     },
     {
       "id": "elementary-attendance-area",
       "label": "Elementary Attendance Area",
       "group": "schools",
-      "area_rank": 5,
+      "area_rank": 8,
       "rank_note": "SFUSD elementary attendance area (58; lottery tiebreaker, not a guaranteed seat)"
     },
     {
       "id": "police-station",
       "label": "Police Station",
       "group": "safety",
-      "area_rank": 6,
+      "area_rank": 9,
       "rank_note": "SFPD station house (nearest 3, straight-line; 10 stations) - point layer, topmost"
     },
     {
       "id": "fire-station",
       "label": "Fire Station",
       "group": "safety",
-      "area_rank": 7,
+      "area_rank": 10,
       "rank_note": "SFFD firehouse (nearest 3, straight-line; 44 active stations) - point layer, topmost"
     },
     {
       "id": "school-site",
       "label": "School Location",
       "group": "schools",
-      "area_rank": 8,
+      "area_rank": 11,
       "rank_note": "Every active SF school (nearest 3, straight-line; 232 public/charter/private) - point layer, topmost"
     }
   ],
   "min_register_layer": 7,
-  "layer_count_note": "Thread-3: offline anchors + ZIP stub + police/fire stations + SFUSD elementary zone + school points",
+  "layer_count_note": "Thread-4: +3 legislative chambers (US House / CA Senate / CA Assembly, live TIGERweb) atop the 8 civic layers",
   "anchor_point": {
     "lat": 37.77927,
     "lng": -122.41924,

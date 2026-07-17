@@ -139,6 +139,20 @@ The elementary card carries an explicit honesty caveat — "SFUSD assigns elemen
 
 Also removed the inherited Chicago `schoolProfileHtml` helper (hardcoded `cps.edu`, unreferenced in the SF fork).
 
+**Thread 4 — political / legislative chambers (2026-07-17):**
+
+| Layer | Source | Field → district | City Hall |
+|---|---|---|---|
+| `congress` (U.S. House) | Census TIGERweb Legislative MapServer layer 0, `STATE='06'` (52 CA districts) | `CD119` + NAME fallback | ✅ District 11 |
+| `ca-senate` (CA State Senate) | TIGERweb layer 1 / SLDU, `STATE='06'` (40) | `SLDU` (`011`→11) | ✅ District 11 |
+| `ca-assembly` (CA State Assembly) | TIGERweb layer 2 / SLDL, `STATE='06'` (80) | `SLDL` (`017`→17) | ✅ District 17 |
+
+All three register through the shared `registerIlgaChamber` factory with **live TIGERweb** geometry (`loadTigerLayer`, retargeted Illinois FIPS 17 → California FIPS 06). Rosters ship as **empty placeholders**, so each card degrades to the honest "district number + official chamber directory" — no guessed names. Point-in-polygon verified against the full CA layers (single-containment at City Hall).
+
+**Thread 5 will:** pre-build the decadal geometry into same-origin `data/app/{congress,ca-senate,ca-assembly}-districts.json` (`build_legislative_boundaries.py`, `STATE='06'`, via the `opts.loadDistricts` hook — turning the ~8–9 MB statewide fetch into a ~200 ms load) and add the scraped officeholder rosters (US House / CA Senate / CA Assembly, plus the SF supervisor roster) via scraper→builder pairs + weekly workflows.
+
+**Removed dead code:** the inherited Chicago Cook County political loader (`loadCookCountyLayerGeoJSON` / `COOK_COUNTY_POLITICAL_BOUNDARY`) — a Thread-0 re-core miss (its layer registration was deleted but the helper survived, unreferenced). The Cook County Commissioner / Board of Review analogs were already dropped in Thread 0 (SF has no county board separate from the Supervisors).
+
 ## Performance parity for the SF port (see playbook §13)
 
 The reference forks' measured perf campaign splits into what SF **already has** and what SF **must re-earn** — playbook §13 is the full guide; this is the SF-specific cut.

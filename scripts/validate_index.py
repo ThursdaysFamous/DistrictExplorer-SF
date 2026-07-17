@@ -85,7 +85,8 @@ MIN_REGISTER_LAYER = 7
 # count above — this per-id list is the direct module-loss guard. Emitted in
 # LAYER_AREA_RANK order; check 5 keeps the two naming the same set.
 EXPECT_LAYER_IDS = [
-    "supervisor-district", "police-district", "zip-code", "neighborhood",
+    "congress", "ca-senate", "ca-assembly", "supervisor-district",
+    "police-district", "zip-code", "neighborhood",
     "elementary-attendance-area", "police-station", "fire-station",
     "school-site",
 ]
