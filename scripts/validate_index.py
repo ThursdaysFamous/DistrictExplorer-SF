@@ -86,6 +86,7 @@ MIN_REGISTER_LAYER = 6
 # LAYER_AREA_RANK order; check 5 keeps the two naming the same set.
 EXPECT_LAYER_IDS = [
     "supervisor-district", "police-district", "zip-code", "neighborhood",
+    "police-station", "fire-station",
 ]
 
 # file -> (min features, max features) for the boundary layers fetched by the app.

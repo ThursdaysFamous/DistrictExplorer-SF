@@ -106,6 +106,23 @@ Established from authoritative sources — **not** yet the playbook's endpoint-l
 3. SFUSD school-profile deep-link pattern.
 4. BART director-district geometry + elected roster source (candidate add).
 
+## Resolved data registry (by thread)
+
+**Thread 1 — offline anchors (2026-07-17):** `supervisor-districts` → DataSF table `hcgx-vtsb` (11); `analysis-neighborhoods` → `j2bu-swwd` (41); `police-districts` → `d4vc-q76h` (10). Each mapshaper-simplified into `data/app/` and validated on the 2,000-point protocol (≥99.5% agreement, 0 overlaps). Ground truth City Hall → Supervisor **5** / **Tenderloin** / **NORTHERN**; negative point corrected to open Bay `37.800,-122.355`.
+
+**Thread 2 — safety point layers (2026-07-17):**
+
+| Layer | Dataset | Route / loader | Fields the card reads | Verified |
+|---|---|---|---|---|
+| `police-station` (nearest 3) | DataSF **Police Stations** `rwdu-9wb2` (10 rows) | `.geojson` route serves real Point geometry → `makeCachedLoader` | `district_name`, `address`, `telephone_number` | ✅ City Hall → Tenderloin/Northern/Southern Stn |
+| `fire-station` (nearest 3) | DataSF **City Facilities** `nc68-ngbr`, `$where=department_name='Fire Department' AND common_name like 'Fire Station #%'` (44 active) | `.geojson` route omits point geometry (coords in `latitude`/`longitude` props) → `makeSocrataPointLoader` | `common_name`, `address` | ✅ City Hall → Stations #36/#3/#5 |
+
+**Safety drops (no honest SF analog in open data — never invent geometry, per §3 step 4):**
+- **police-beat / sector** — SFPD publishes no current patrol-beat boundary; the only "beats" dataset (`jc6y-96en`) is Parking Control's, a different body. Chicago's `police-beat` `subOf` layer has no SF counterpart.
+- **fire-battalion** — SFFD organizes into battalions/divisions, but no battalion or division *boundary* is published on DataSF or SF's ArcGIS; battalion appears only inside the live incident feed, not as a standalone polygon to classify against. (NYC ships `fire-battalion` because DCP publishes the boundary; SF does not.)
+
+The `nc68-ngbr` "Fire Station #%" filter excludes 12 non-station Fire-Department rows (HQ, Bureau of Equipment, Division of Training, Chief's Residence, and a decommissioned "Old Fire Station 21") — showing those as a "nearest station" would be dishonest.
+
 ## Performance parity for the SF port (see playbook §13)
 
 The reference forks' measured perf campaign splits into what SF **already has** and what SF **must re-earn** — playbook §13 is the full guide; this is the SF-specific cut.
