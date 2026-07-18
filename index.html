@@ -8,15 +8,15 @@
 <title>San Francisco District Explorer — find your districts &amp; representatives</title>
 <meta name="description" content="Click any point in San Francisco — or search an address — and see every civic district that contains it, and who represents you there." />
 <meta name="robots" content="index, follow" />
-<link rel="canonical" href="https://chidistricts.com/" />
+<link rel="canonical" href="https://sf.chidistricts.com/" />
 
 <!-- Open Graph / social share previews (Facebook, LinkedIn, iMessage, Slack…) -->
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="San Francisco District Explorer" />
 <meta property="og:title" content="San Francisco District Explorer — find your districts and representatives" />
 <meta property="og:description" content="Click the map or search any San Francisco address to see every civic district that covers it, and who represents you." />
-<meta property="og:url" content="https://chidistricts.com/" />
-<meta property="og:image" content="https://chidistricts.com/og-image.png" />
+<meta property="og:url" content="https://sf.chidistricts.com/" />
+<meta property="og:image" content="https://sf.chidistricts.com/og-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content="San Francisco District Explorer — a map of San Francisco with the question: which districts cover this point, and who represents you?" />
@@ -26,7 +26,7 @@
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="San Francisco District Explorer — find your districts and representatives" />
 <meta name="twitter:description" content="See every civic district that covers a San Francisco address, and who represents you." />
-<meta name="twitter:image" content="https://chidistricts.com/og-image.png" />
+<meta name="twitter:image" content="https://sf.chidistricts.com/og-image.png" />
 
 <!-- Structured data: help search engines understand what this tool is -->
 <script type="application/ld+json">
@@ -35,23 +35,23 @@
   "@graph": [
     {
       "@type": "WebSite",
-      "@id": "https://chidistricts.com/#website",
-      "url": "https://chidistricts.com/",
+      "@id": "https://sf.chidistricts.com/#website",
+      "url": "https://sf.chidistricts.com/",
       "name": "San Francisco District Explorer",
       "description": "Find every civic district that covers a point or address in San Francisco, and who represents you there.",
       "inLanguage": "en-US",
-      "publisher": { "@id": "https://chidistricts.com/#publisher" }
+      "publisher": { "@id": "https://sf.chidistricts.com/#publisher" }
     },
     {
       "@type": "Organization",
-      "@id": "https://chidistricts.com/#publisher",
+      "@id": "https://sf.chidistricts.com/#publisher",
       "name": "Overberg",
       "url": "https://overberg.co"
     },
     {
       "@type": "WebApplication",
       "name": "San Francisco District Explorer",
-      "url": "https://chidistricts.com/",
+      "url": "https://sf.chidistricts.com/",
       "description": "Click any point in San Francisco, or search an address, to see every civic district that contains it, and who represents you.",
       "applicationCategory": "Reference",
       "operatingSystem": "Any (modern web browser)",
@@ -59,10 +59,10 @@
       "isAccessibleForFree": true,
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
       "inLanguage": "en-US",
-      "image": "https://chidistricts.com/og-image.png",
+      "image": "https://sf.chidistricts.com/og-image.png",
       "areaServed": { "@type": "City", "name": "San Francisco", "containedInPlace": { "@type": "State", "name": "California" } },
       "keywords": "San Francisco district map, what district am I in, San Francisco supervisor district, civic districts, who represents me San Francisco",
-      "isPartOf": { "@id": "https://chidistricts.com/#website" },
+      "isPartOf": { "@id": "https://sf.chidistricts.com/#website" },
       "sameAs": "https://github.com/ThursdaysFamous/DistrictExplorer-SF"
     }
   ]
@@ -84,7 +84,8 @@
 <link rel="preconnect" href="https://a.basemaps.cartocdn.com">
 <link rel="preconnect" href="https://b.basemaps.cartocdn.com">
 <link rel="preconnect" href="https://c.basemaps.cartocdn.com">
-<link rel="dns-prefetch" href="https://data.cityofchicago.org">
+<link rel="dns-prefetch" href="https://data.sfgov.org">
+<link rel="dns-prefetch" href="https://tigerweb.geo.census.gov">
 <link rel="dns-prefetch" href="https://nominatim.openstreetmap.org">
 <link rel="dns-prefetch" href="https://photon.komoot.io">
 <!-- Fonts are self-hosted (same-origin @font-face in <style>, built by
@@ -3091,7 +3092,7 @@ function initSFExplorer() {
   /* ==== ENGINE:END metro-portal ==== */
   /* =========================================================================
    * GEOCODER — Photon search box + Nominatim POI lookups, bounded to
-   * Chicago, attributed. Fork-provider seam: geocodeAddress() /
+   * San Francisco, attributed. Fork-provider seam: geocodeAddress() /
    * geocodeUnbounded() / poiGeocodeRequest() below feed the fenced
    * geocoder-shell / geocoder-search / poi-geocode engine blocks.
    * ======================================================================= */
@@ -3165,19 +3166,19 @@ function initSFExplorer() {
     // Photon (Komoot) — an OSM-based, autocomplete-optimized geocoder. Unlike
     // Nominatim's /search, it matches partial street names as you type
     // ("1901 W Madi" resolves), which is exactly what the search box needs.
-    // Biased toward Chicago's centre and hard-bounded to the city bbox so
+    // Biased toward the metro centre and hard-bounded to the metro bbox so
     // results stay in-city. Point-selection and POI geocoding remain on
     // Nominatim; only this type-ahead box moved.
     var bbox = [METRO_BBOX.minLng, METRO_BBOX.minLat, METRO_BBOX.maxLng, METRO_BBOX.maxLat].join(",");
     var url = "https://photon.komoot.io/api/?q=" + encodeURIComponent(query) +
-      "&lang=en&limit=6&lat=41.88&lon=-87.63&bbox=" + bbox;
+      "&lang=en&limit=6&lat=" + METRO_CENTER[0] + "&lon=" + METRO_CENTER[1] + "&bbox=" + bbox;
     return fetch(url, { signal: inFlightController.signal, headers: { "Accept": "application/json" } })
       .then(function (res) { if (!res.ok) throw new Error("HTTP " + res.status); return res.json(); })
       .then(normalizePhoton);
   }
 
   /* Whole-OSM lookup for the fenced sibling-metro search fallback: the same
-   * Photon provider as the search box, minus the Chicago bias/bbox, so a
+   * Photon provider as the search box, minus the metro bias/bbox, so a
    * sibling-metro address can actually resolve. */
   function geocodeUnbounded(query, signal) {
     var url = "https://photon.komoot.io/api/?q=" + encodeURIComponent(query) + "&lang=en&limit=8";
@@ -3189,8 +3190,8 @@ function initSFExplorer() {
   /* POI provider for the fenced poi-geocode queue: Nominatim structured
    * /search, hard-bounded to the metro viewbox. Resolves {lat,lng} | null on
    * a successful lookup; rejects on transport failure so the engine won't
-   * cache the miss. Verified against the ILGA district offices and the ward
-   * roster addresses. */
+   * cache the miss. Verified against the CA legislative district-office
+   * addresses (e.g. 455 Golden Gate Ave.). */
   function poiGeocodeRequest(address) {
     var viewbox = [METRO_BBOX.minLng, METRO_BBOX.maxLat, METRO_BBOX.maxLng, METRO_BBOX.minLat].join(",");
     var url = "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&bounded=1&viewbox=" +
@@ -4488,14 +4489,10 @@ function initSFExplorer() {
   }
 
   /* ==== ENGINE:END cached-loaders ==== */
-  /* ---------- fetch a CPD-hosted ArcGIS FeatureServer layer as GeoJSON.
-   * services2.arcgis.com/t3tlzCPfmaQzSWAk is CPD's own hosted org (not the
-   * Chicago Data Portal); confirmed CORS-open (Access-Control-Allow-Origin: *)
-   * and f=geojson-capable directly, no separate Esri->GeoJSON conversion. ---------- */
-  function arcgisServiceUrl(serviceName) {
-    return "https://services2.arcgis.com/t3tlzCPfmaQzSWAk/arcgis/rest/services/" + serviceName + "/FeatureServer/0";
-  }
-
+  // (No SF layer uses the CPD-org arcgisServiceUrl seam, so this fork carries
+  // none. The Post Office layer does read a USGS National Map ArcGIS service,
+  // but fetches it directly by URL — not through the generic ArcGIS engine
+  // loaders below, which stay for cross-fork parity, unused here.)
   /* ==== ENGINE:BEGIN arcgis-loader ==== */
   function loadArcGISGeoJSON(serviceUrl) {
     // geometryPrecision=6 (~0.11 m) trims coordinate digits the server would
@@ -4715,7 +4712,7 @@ function initSFExplorer() {
     group: "geography",
     label: "ZIP Code",
     loader: loadZipCodes,
-    // dotted outline (distinct pattern from Community Area's dashed one) + different hue
+    // dotted outline (distinct pattern from the Neighborhood layer) + different hue
     style: { color: "#0B5394", weight: 1.5, fillColor: "#41B6E6", fillOpacity: 0.05, dashArray: "1 4" },
     fields: [
       { name: "zip", label: "ZIP Code", keys: ["zcta5", "zip", "zip_code", "zipcode", "zcta5ce10"], primary: true }
@@ -5286,18 +5283,23 @@ function initSFExplorer() {
       var lo = findPropCI(props, ["low_grade"]);
       var hi = findPropCI(props, ["high_grade"]);
       var addr = findPropCI(props, ["street_address", "address"]);
+      var phone = findPropCI(props, ["phone", "telephone_number"]);
       var kind = findPropCI(props, ["charter_yesno"]) ? "charter"
         : (findPropCI(props, ["public_yesno"]) === false ? "private" : "public");
       var grades = (lo && hi) ? " (grades " + String(lo) + "-" + String(hi) + ", " + kind + ")" : " (" + kind + ")";
-      return (name ? String(name) : "School") + grades + (addr ? " — " + String(addr) : "");
+      // phone matches the Police Station card's contact field (cross-group parity):
+      // the dataset carries it, so a nearest-school row surfaces it too.
+      return (name ? String(name) : "School") + grades +
+        (addr ? " — " + String(addr) : "") +
+        (phone ? " — " + String(phone) : "");
     }
   });
 
   /* ---------- generic cached-promise wrapper (Socrata-geojson-specific
    * makeCachedLoader above predates this; this variant memoizes any loader
    * function, used here for the roster/geometry JSON fetches and TIGERweb) ---------- */
-  /* ---------- fetch a Socrata dataset as plain JSON rows (not geometry) — used
-   * for roster tables like the alderman list, which have no geometry column ---------- */
+  /* ---------- fetch a Socrata dataset as plain JSON rows (not geometry) — for
+   * roster/attribute tables that have no geometry column ---------- */
   function loadSocrataJSON(datasetId) {
     var urls = [
       SOCRATA_HOST + "/resource/" + datasetId + ".json?$limit=1000",
@@ -5900,17 +5902,11 @@ function initSFExplorer() {
 
   buildGroupsUI();
   applyStateFromHash(); // restore a shared #point=…&layers=… link, if present
-  // Out-of-scope wash: the 20 ERSB school-board districts tile the City of
-  // Chicago exactly (offline anchor, topology-preserved shared edges), so
-  // their outer rings are the coverage holes. Passing the layer's own cached
-  // loader means one fetch serves both the wash and the school-board card.
-  // At idle, not on the boot critical path: PSI measured this 83 KB (20 KB gzip)
-  // school-board geometry fetch in the 669 ms initial-navigation chain, and the
-  // wash it draws is purely decorative (its own catch already skips it on any
-  // error). Deferring keeps first paint free of it (R2-3).
   // Out-of-scope wash: supervisor districts tile SF's land exactly (water-trimmed
-  // shoreline), so their dissolved outline is the coverage boundary. Deferred to
-  // idle so the fetch stays off first paint (R2-3).
+  // shoreline), so their dissolved outline is the coverage boundary. Passing the
+  // layer's own cached loader means one fetch serves both the wash and the
+  // supervisor card. Deferred to idle so the (decorative, self-catching) fetch
+  // stays off first paint (R2-3).
   whenIdle(function () { drawOutOfScopeMask(loadSupervisorDistricts); });
 
   var verifiedEl = document.getElementById("verified-date");

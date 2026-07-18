@@ -1,5 +1,5 @@
-// Chrome performance profiler for Chicago District Explorer — the reproducible
-// harness behind docs/PERFORMANCE_ANALYSIS_2026-07.md. A companion to
+// Chrome performance profiler for San Francisco District Explorer — the
+// reproducible harness. A companion to
 // smoke_test.mjs (which gates *behaviour*); this one measures *performance*.
 //
 // It drives the real index.html in headless Chromium via Playwright + the
@@ -100,7 +100,7 @@ async function wire(page) {
   await page.route(/basemaps\.cartocdn\.com/, (r) => r.fulfill({ status: 200, contentType: "image/png", body: TILE_PNG }));
   await page.route(/fonts\.googleapis\.com|fonts\.gstatic\.com/, (r) => r.fulfill({ status: 200, contentType: "text/css", body: "" }));
   await page.route(/gc\.zgo\.at|zgo\.at/, (r) => r.fulfill({ status: 200, contentType: "application/javascript", body: "" }));
-  await page.route(/data\.cityofchicago\.org|arcgis|tigerweb|census\.gov|nominatim|photon\.komoot|cookcountyil/, (r) => r.abort());
+  await page.route(/data\.sfgov\.org|tigerweb|census\.gov|nominatim|photon\.komoot/, (r) => r.abort());
 }
 
 // Boot-time observers, installed before any app script runs: capture the exact

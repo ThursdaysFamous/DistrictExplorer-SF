@@ -23,21 +23,17 @@
 /* ==== ENGINE:END sw-header ==== */
 
 /* ==== METRO:BEGIN sw-config ==== */
-// (-v3 dropped the duplicate "./index.html" shell entry; -v4 added the two
-// roster files missing from ROSTER_URLS; -v5 added the water-taxi marker
-// icon shown when a point lands on water; -v6/-v7 added the Will County
-// outline + board roster; -v8 added the Cook County seal marker icon shown
-// for a point in Cook County outside the City of Chicago; -v9 dropped
-// leaflet.css from the shell — it's now inlined in index.html (was a
-// render-blocking <link>), so the page no longer requests it; -v10 added the
-// pre-built legislative-district geometry (congress / il-senate / il-house),
-// moved off live TIGERweb to same-origin cache-first data/app files; -v11
-// precached the collar-county seal markers (Kane, Lake, Will) alongside Cook
-// (-v8) — the counties in this Chicago app's usual footprint. Five more seals
-// ship for downstate counties (Hamilton, Macon, Saline, St. Clair, Washington)
-// but are intentionally left out of the shell precache: they load on demand
-// (network, then the name-badge fallback offline), so rarely-seen markers don't
-// weigh down every install.)
+// CACHE_NAME changelog (SF fork; bump the version suffix on any list change so
+// the activate handler evicts the old cache): -sf-v1 was the initial SF shell —
+// canonical "./" + manifest + the two PWA icons + Leaflet, with the six
+// pre-built boundary files (supervisor / neighborhoods / police + the three
+// SF-clipped CA legislative chambers) precached cache-first and the officeholder
+// rosters (US House / CA Senate / CA Assembly / SF supervisors) network-first.
+// -sf-v2 added the Voting Center & Ballot Drop-off layer's early-voting-sites.json
+// to the network-first rosters (the Post Office and Library layers are live —
+// USGS National Map / DataSF — so ship no same-origin data file). SF ships no
+// on-water / county-seal marker icons (the consolidated city-county has no
+// out-of-city collar tiling), so none are precached.
 /* ==== GENERATED:BEGIN sw-metro-config ==== */
 const CACHE_NAME = "district-explorer-shell-sf-v2";
 

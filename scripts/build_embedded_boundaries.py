@@ -7,12 +7,13 @@ sibling boundary layers received.
 Why this exists: the boundary layers with no CORS-enabled endpoint are shipped
 as same-origin static files under data/app/, fetched lazily by index.html on
 first toggle (they used to be embedded inline in index.html; the P0 change moved
-them out). The full-precision conversions in data/ (e.g. school-board's 24,904
-vertices at 14-15 decimals) need simplifying before they ship; this script makes
-that simplification reproducible instead of a one-off manual step, so each
-app-data copy can be regenerated whenever its source boundary changes and never
-silently drifts from data/. All three Chicago anchors (school-board,
-il-supreme-court, ccbr) are registered in LAYERS below.
+them out). The full-precision conversions in data/ need simplifying before they
+ship; this script makes that simplification reproducible instead of a one-off
+manual step, so each app-data copy can be regenerated whenever its source
+boundary changes and never silently drifts from data/. SF's three offline
+anchors (supervisor-districts, sf-neighborhoods, police-districts) are
+registered in LAYERS below. (The SF-clipped legislative chambers are pre-built
+separately by build_legislative_boundaries.py, straight from Census TIGERweb.)
 
 Simplification uses mapshaper (the same tool the sibling layers used), which
 builds a topology and simplifies shared arcs once, so adjacent districts keep
