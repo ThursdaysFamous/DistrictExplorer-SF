@@ -1,19 +1,12 @@
-# Pinned dependencies for the scraper pipeline (playbook R10 — heuristic HTML
-# parsers are exactly the code that breaks on silent dependency drift).
-# Used by the weekly roster workflows:
-#   .github/workflows/update-ilga-roster.yml   (requests + beautifulsoup4)
-#   .github/workflows/update-cpd-roster.yml     (+ playwright for the Cloudflare
-#                                                managed-challenge fetch, R11)
-# build_congress_roster.py uses only the stdlib and needs none of these.
+# Pinned Python dependencies for this fork's tooling. Used as a constraints
+# file: `pip install -c scripts/requirements.txt <pkg>` installs <pkg> at the
+# version pinned here.
 #
-# playwright also requires a matching browser build; the CPD workflow runs
-# `python3 -m playwright install --with-deps chromium`, which fetches the
-# Chromium that matches the version pinned here.
+# SF has no HTML scrapers — its rosters are built from canonical machine-readable
+# sources (OpenStates ca.csv, unitedstates/congress-legislators, DataSF) with the
+# stdlib only, so the roster builders need nothing here. Two gates do:
+#   scripts/validate_sources.py        (requests — source-freshness gate)
+#   scripts/generate_metro_files.py    (jsonschema — worksheet validation)
+# validate_index.py deliberately stays stdlib and does NOT import either.
 requests==2.33.1
-beautifulsoup4==4.15.0
-playwright==1.61.0
-
-# Conversion 2 (docs/MECHANIZATION_PLAYBOOK.md): worksheet validation in
-# scripts/generate_metro_files.py. The generator is otherwise stdlib-only;
-# validate_index.py deliberately stays stdlib and does NOT import this.
 jsonschema==4.26.0

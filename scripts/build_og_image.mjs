@@ -7,8 +7,9 @@
 //
 // The card is self-contained (no web fonts — social crawlers render it once,
 // server-side, so it must not depend on network assets). Palette mirrors the
-// Chicago-flag values in index.html's :root; the star is the same 6-pointed
-// flag star used by the favicon. Output is written to ./og-image.png and is
+// SF values in index.html's :root (--accent #1D6F8B "flag stripe blue",
+// --accent-warm #C0362C "flag star red"); the star is the same 6-pointed flag
+// star used by the favicon. Output is written to ./og-image.png and is
 // referenced as an absolute https URL by the Open Graph / Twitter tags in
 // index.html. 1200x630 at deviceScaleFactor 1 so the pixels match the declared
 // og:image:width / og:image:height exactly.
@@ -26,31 +27,31 @@ const HTML = `<!doctype html><html><head><meta charset="utf-8"><style>
     background: #14181C; color: #fff; overflow: hidden; position: relative;
     font-family: "Liberation Sans", "Helvetica Neue", Arial, sans-serif;
   }
-  /* Chicago-flag stripe motif (light blue / white / light blue) */
+  /* SF flag-stripe motif recolored to the fork palette (bay blue / white / bay blue) */
   .stripe { position: absolute; left: 0; right: 0; height: 18px;
-    background: linear-gradient(to bottom, #41B6E6 0 30%, #fff 30% 70%, #41B6E6 70% 100%); }
+    background: linear-gradient(to bottom, #1D6F8B 0 30%, #fff 30% 70%, #1D6F8B 70% 100%); }
   .stripe.top { top: 0; } .stripe.bottom { bottom: 0; }
   .wrap { position: absolute; inset: 18px 0; display: flex; align-items: center; padding: 0 84px; gap: 56px; }
-  .star { width: 220px; height: 220px; flex: none; filter: drop-shadow(0 6px 18px rgba(200,16,46,.35)); }
+  .star { width: 220px; height: 220px; flex: none; filter: drop-shadow(0 6px 18px rgba(192,54,44,.35)); }
   .title { font-size: 92px; font-weight: 800; line-height: 0.94; letter-spacing: -1.5px;
     text-transform: uppercase; }
-  .title .lo { color: #41B6E6; }
-  .tag { margin-top: 26px; font-size: 34px; font-weight: 500; color: #D3DCE2; max-width: 640px; line-height: 1.25; }
+  .title .lo { color: #2E9BBE; }
+  .tag { margin-top: 26px; font-size: 34px; font-weight: 500; color: #D3DCE2; max-width: 660px; line-height: 1.25; }
   .chips { margin-top: 26px; font-size: 21px; letter-spacing: .3px; color: #93A0A9; }
   .url { position: absolute; bottom: 44px; right: 84px; font-size: 26px; font-weight: 700;
-    letter-spacing: .5px; color: #41B6E6; }
+    letter-spacing: .5px; color: #2E9BBE; }
 </style></head><body>
   <div class="stripe top"></div>
   <div class="wrap">
-    <svg class="star" viewBox="0 0 1200 540"><path d="${STAR}" fill="#C8102E"/></svg>
+    <svg class="star" viewBox="0 0 1200 540"><path d="${STAR}" fill="#C0362C"/></svg>
     <div>
-      <div class="title">Chicago<br><span class="lo">District Explorer</span></div>
+      <div class="title">San Francisco<br><span class="lo">District Explorer</span></div>
       <div class="tag">Which districts cover this address — and who represents you?</div>
-      <div class="chips">Wards · Police districts · Community areas · Congress · State · County · School zones</div>
+      <div class="chips">Supervisor districts · Police districts · Neighborhoods · Congress · State Legislature · Schools</div>
     </div>
   </div>
   <div class="stripe bottom"></div>
-  <div class="url">chidistricts.com</div>
+  <div class="url">sf.chidistricts.com</div>
 </body></html>`;
 
 const browser = await chromium.launch();
