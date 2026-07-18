@@ -70,10 +70,30 @@ def first_url(links):
     return m.group(0) if m else None
 
 
+# Put an embedded unit designator on its own comma-part so the app's
+# cleanPoiAddress can strip it before geocoding the district-office pin.
+# OpenStates packs the suite into the street segment ("455 Golden Gate Ave.
+# Suite 14800, San Francisco, CA 94102"), which Nominatim won't resolve — but
+# "455 Golden Gate Ave., Suite 14800, ..." geocodes once cleanPoiAddress drops
+# the suite part. Only touches a unit designator not already comma-set off; the
+# card still displays the full address (the comma just reads naturally).
+_MID_UNIT_RE = re.compile(
+    r"(?<!,)\s+(?=(?:suite|ste|room|rm|floor|fl|unit|apt|apartment|bldg|building|no\.?|#)\b\.?\s*#?\s*\d)",
+    re.I,
+)
+
+
+def normalize_address(addr):
+    s = _MID_UNIT_RE.sub(", ", str(addr).strip(), count=1)
+    s = re.sub(r"\s*,\s*", ", ", s)        # normalize comma spacing
+    s = re.sub(r"(?:,\s*){2,}", ", ", s)   # collapse repeated commas (source data has some)
+    return s.strip().strip(",").strip()
+
+
 def office(address, voice):
     lines = []
     if address:
-        lines.append(str(address).strip())
+        lines.append(normalize_address(address))
     if voice:
         lines.append("Phone: " + str(voice).strip())
     return lines

@@ -78,7 +78,7 @@ CAPABILITIES = [
 # ==== GENERATED:BEGIN validator-config ====
 # Floor, not a moving target: new layers only raise this; a drop means
 # modules were lost.
-MIN_REGISTER_LAYER = 7
+MIN_REGISTER_LAYER = 8
 
 # Every layer id that must be registered in index.html. Most modules register
 # through the factories, so deleting one would NOT lower the raw registerLayer(
@@ -106,6 +106,7 @@ ROSTER_FILES = {
     "congress-roster.json": 45,  # CA U.S. House reps (52 seats; vacancies allowed) - unitedstates/congress-legislators
     "ca-senate-members.json": 38,  # CA State Senate (40) - OpenStates
     "ca-assembly-members.json": 76,  # CA State Assembly (80) - OpenStates
+    "sf-supervisor-members.json": 11,  # SF Board of Supervisors (11) - DataSF hcgx-vtsb sup_name
 }
 # ==== GENERATED:END validator-config ====
 

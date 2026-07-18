@@ -6,16 +6,17 @@ Why this exists: unlike the roster scrapers (which re-pull the same page every
 week), several layers point at a *specific* upstream dataset that the publisher
 silently supersedes with a new one:
 
-  * Chicago Data Portal (Socrata) datasets are versioned by year. The CPS
-    attendance-boundary layers, for example, are published fresh every school
-    year under a BRAND NEW dataset id (…SY2526 → …SY2627), so the id hardcoded
-    in index.html keeps returning last year's boundaries long after a newer one
-    exists. Nothing errors; the data just quietly goes stale.
-  * The three shapefile-derived boundary layers (school board, IL Supreme
-    Court, Cook County Board of Review) were downloaded once from decennial
-    redistricting sources with no API. They change ~once a decade, so the check
-    there is provenance: is the source we cite still reachable, and a reminder
-    to re-verify.
+  * DataSF (Socrata) datasets can be versioned by year. The SFUSD School
+    Attendance Areas layer, for example, is republished each school year under
+    a BRAND NEW dataset id ("…(2024-2025)" → "…(2025-2026)"), so the id
+    hardcoded in index.html keeps returning last year's boundaries long after a
+    newer one exists. Nothing errors; the data just quietly goes stale.
+  * The pre-built boundary layers (supervisor districts, analysis neighborhoods,
+    police districts, and the three legislative chambers) are built once into
+    same-origin data/app files with no runtime API — from DataSF datasets and
+    Census TIGERweb. They change ~once a decade, so the check there is
+    provenance: is the source we cite still reachable, plus a reminder to
+    re-verify.
 
 This script does NOT edit index.html or any data file — swapping a dataset id
 is a judgement call (the "newer" dataset may have a different schema), so, like
@@ -31,7 +32,7 @@ What it checks (findings carry a severity — FAIL, WARN, or OK):
      edition than the one in use.                                         [WARN]
   3. Shapefile provenance: the cited source URL is reachable and the built
      data/app file is present.                             [WARN / FAIL if gone]
-  4. Live service endpoints (CPD ArcGIS, Census TIGERweb): reachable.      [WARN]
+  4. Live service endpoints (Census TIGERweb ZCTA): reachable.            [WARN]
 
 Exit status: 0 when nothing needs a human (OK or WARN only), 1 on any FAIL.
 Newer-edition detection is deliberately WARN, not FAIL — the current dataset
@@ -61,8 +62,12 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INDEX_HTML = os.path.join(REPO_ROOT, "index.html")
 APP_DATA_DIR = os.path.join(REPO_ROOT, "data", "app")
 
-SOCRATA_DOMAIN = "data.cityofchicago.org"
-CATALOG_API = "https://api.us.socrata.com/api/catalog/v1"
+SOCRATA_DOMAIN = "data.sfgov.org"
+# Newer-edition search hits the portal's OWN catalog, not the federated
+# api.us.socrata.com one: DataSF is not indexed by the federated catalog (it
+# returns zero for data.sfgov.org), whereas the portal-local catalog resolves
+# and indexes the year-versioned sibling editions we compare against.
+CATALOG_API = "https://%s/api/catalog/v1" % SOCRATA_DOMAIN
 HTTP_TIMEOUT = 25
 
 # ---------------------------------------------------------------------------
@@ -75,68 +80,60 @@ HTTP_TIMEOUT = 25
 # the `pattern` capture group (an int) is compared to pick the newest edition.
 # ---------------------------------------------------------------------------
 SOCRATA = [
-    {"id": "p293-wvbd", "layer": "Ward + Alderman boundary",
-     "name_contains": "Boundaries - Wards"},
-    {"id": "htai-wnw4", "layer": "Alderman / Ward Offices",
-     "name_contains": "Ward Offices"},
-    {"id": "i8fv-xe4b", "layer": "Ward Precincts",
-     "name_contains": "Boundaries - Ward Precincts"},
-    {"id": "igwz-8jzy", "layer": "Community Area",
-     "name_contains": "Boundaries - Community Areas"},
-    # ZIP Code moved off Socrata to the statewide Census ZCTA layer (no city
-    # boundary line) — the endpoint is tracked in ENDPOINTS below, not here.
-    {"id": "28km-gtjn", "layer": "Fire Stations",
-     "name_contains": "Fire Stations"},
-    {"id": "x72b-38qv", "layer": "CPS Elementary School Zone",
-     "name_contains": "Elementary School Attendance Boundaries",
-     "year_search": {"query": "Elementary School Attendance Boundaries",
-                     "pattern": r"SY(\d{4})"}},
-    {"id": "xg7c-d8rm", "layer": "CPS High School Zone",
-     "name_contains": "High School Attendance Boundaries",
-     "year_search": {"query": "High School Attendance Boundaries",
-                     "pattern": r"SY(\d{4})"}},
-    {"id": "fyff-53xy", "layer": "CPS Middle School Zone",
-     "name_contains": "Middle School Attendance Boundaries",
-     "year_search": {"query": "Middle School Attendance Boundaries",
-                     "pattern": r"SY(\d{4})"}},
-    {"id": "pnta-kuqa", "layer": "CPS Network (K-8)",
-     "name_contains": "Elementary Geographic Networks"},
-    {"id": "aupu-jt2g", "layer": "CPS Network (High School)",
-     "name_contains": "High School Geographic Networks"},
+    {"id": "rwdu-9wb2", "layer": "Police Stations (nearest-3)",
+     "name_contains": "Police Stations"},
+    {"id": "nc68-ngbr", "layer": "Fire Stations (City Facilities, nearest-3)",
+     "name_contains": "City Facilities"},
+    # ZIP Code is the statewide Census ZCTA layer (no DataSF dataset) — its
+    # endpoint is tracked in ENDPOINTS below, not here.
+    # SFUSD attendance areas rotate each school year. Caveat: the in-use dataset
+    # (e6tr-sxwg, "…(2024-2025)") is a derived view DataSF's catalog does NOT
+    # index, so the newer-edition search compares against the catalog's sibling
+    # "…School Attendance Areas <year>" editions instead. The year pattern is
+    # unparenthesized so it matches both the current "(2024-2025)" title and the
+    # bare "2023-2024" sibling form; a later indexed edition with a higher year
+    # trips a WARN for a human to re-verify against.
+    {"id": "e6tr-sxwg", "layer": "SFUSD Elementary Attendance Area",
+     "name_contains": "School Attendance Areas",
+     "year_search": {"query": "School Attendance Areas",
+                     "pattern": r"(\d{4})-\d{4}"}},
+    {"id": "7e7j-59qk", "layer": "School Location (nearest-3)",
+     "name_contains": "Schools"},
 ]
 
-# Decennial boundary layers built into same-origin data/app files: no runtime
-# API. `source_url` is the provenance we cite; `app_file` is the built file.
-# These go stale only when the underlying districts are redrawn — the check is a
+# Boundary layers built into same-origin data/app files: no runtime API.
+# `source_url` is the provenance we cite; `app_file` is the built file. These go
+# stale only when the underlying districts are redrawn — the check is a
 # reachability probe plus a standing reminder to re-verify against the source.
-# The first three are shapefile-derived; the three legislative layers are
-# pre-built from Census TIGERweb by scripts/build_legislative_boundaries.py
-# (R2-2 — they used to query TIGERweb live at ~5.7 s per first toggle).
+# The first three are mapshaper-simplified from DataSF datasets (SF's civic
+# geometry is consolidated on DataSF); the three legislative layers are pre-built
+# from Census TIGERweb by scripts/build_legislative_boundaries.py (they used to
+# query TIGERweb live at ~5.7 s per first toggle).
 PROVENANCE = [
-    {"layer": "School Board (ERSB) districts",
-     "app_file": "school-board-districts.json",
-     "source_url": "https://www.ilsenateredistricting.com/",
-     "note": "ERSB 20-subdistrict map (SB 15). Redrawn ~once a decade."},
-    {"layer": "IL Supreme Court districts",
-     "app_file": "il-supreme-court-districts.json",
-     "source_url": "https://www.illinoiscourts.gov/",
-     "note": "PA 102-0011 shapefile. Redrawn ~once a decade."},
-    {"layer": "Cook County Board of Review districts",
-     "app_file": "ccbr-districts.json",
-     "source_url": "https://www.cookcountyboardofreview.com/",
-     "note": "PA 102-0012 shapefile. Redrawn ~once a decade."},
-    {"layer": "U.S. House districts (IL)",
+    {"layer": "Supervisor districts",
+     "app_file": "supervisor-districts.json",
+     "source_url": "https://data.sfgov.org/d/hcgx-vtsb",
+     "note": "DataSF Current Supervisor Districts (hcgx-vtsb), water-trimmed. Redrawn ~once a decade."},
+    {"layer": "Analysis Neighborhoods",
+     "app_file": "sf-neighborhoods.json",
+     "source_url": "https://data.sfgov.org/d/j2bu-swwd",
+     "note": "DataSF Analysis Neighborhoods (j2bu-swwd). Revised rarely."},
+    {"layer": "Police districts",
+     "app_file": "police-districts.json",
+     "source_url": "https://data.sfgov.org/d/d4vc-q76h",
+     "note": "DataSF Current Police Districts (d4vc-q76h). Revised rarely."},
+    {"layer": "U.S. House districts (CA)",
      "app_file": "congress-districts.json",
      "source_url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer/0?f=json",
-     "note": "TIGERweb Legislative layer 0 (STATE=17), pre-built by build_legislative_boundaries.py. Redrawn ~once a decade."},
-    {"layer": "IL State Senate districts",
-     "app_file": "il-senate-districts.json",
+     "note": "TIGERweb Legislative layer 0 (STATE=06), SF-clipped, pre-built by build_legislative_boundaries.py. Redrawn ~once a decade."},
+    {"layer": "CA State Senate districts",
+     "app_file": "ca-senate-districts.json",
      "source_url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer/1?f=json",
-     "note": "TIGERweb Legislative layer 1 (2024 Upper, STATE=17), pre-built. Redrawn ~once a decade."},
-    {"layer": "IL State House districts",
-     "app_file": "il-house-districts.json",
+     "note": "TIGERweb Legislative layer 1 (Upper, STATE=06), SF-clipped, pre-built. Redrawn ~once a decade."},
+    {"layer": "CA State Assembly districts",
+     "app_file": "ca-assembly-districts.json",
      "source_url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer/2?f=json",
-     "note": "TIGERweb Legislative layer 2 (2024 Lower, STATE=17), pre-built. Redrawn ~once a decade."},
+     "note": "TIGERweb Legislative layer 2 (Lower, STATE=06), SF-clipped, pre-built. Redrawn ~once a decade."},
 ]
 
 # Live named services the app queries at runtime. These aren't year-versioned
@@ -144,26 +141,8 @@ PROVENANCE = [
 # check is reachability — a rename or retirement shows up here before users hit
 # a broken card. WARN-only: the app already isolates a down source per-card.
 ENDPOINTS = [
-    {"layer": "CPD Police District boundaries",
-     "url": "https://services2.arcgis.com/t3tlzCPfmaQzSWAk/arcgis/rest/services/Police_District_Boundary_View/FeatureServer/0?f=json"},
-    {"layer": "CPD Police District stations",
-     "url": "https://services2.arcgis.com/t3tlzCPfmaQzSWAk/arcgis/rest/services/Police_District_Stations_View/FeatureServer/0?f=json"},
-    {"layer": "CPD Police Beat boundaries",
-     "url": "https://services2.arcgis.com/t3tlzCPfmaQzSWAk/arcgis/rest/services/Police_Beat_Boundary/FeatureServer/0?f=json"},
-    {"layer": "CPS school sites",
-     "url": "https://services2.arcgis.com/t3tlzCPfmaQzSWAk/arcgis/rest/services/Schools/FeatureServer/0?f=json"},
-    {"layer": "Census TIGERweb counties (statewide county layer)",
-     "url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/State_County/MapServer?f=json"},
-    {"layer": "Census TIGERweb county subdivisions + places (township/municipality layers)",
-     "url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Places_CouSub_ConCity_SubMCD/MapServer?f=json"},
-    {"layer": "Census TIGERweb school districts (unified/secondary/elementary layers)",
-     "url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/School/MapServer?f=json"},
     {"layer": "Census TIGERweb ZCTAs (statewide ZIP Code layer)",
      "url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/PUMA_TAD_TAZ_UGA_ZCTA/MapServer?f=json"},
-    {"layer": "Census TIGERweb areal hydrography (Lake Michigan marker test)",
-     "url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Hydro/MapServer?f=json"},
-    {"layer": "Will County Board districts 2022 (current 11-district map + reps)",
-     "url": "https://services.arcgis.com/fGsbyIOAuxHnF97m/arcgis/rest/services/County_Board_Districts_2022/FeatureServer/0?f=json"},
 ]
 
 FAIL, WARN, OK = "FAIL", "WARN", "OK"
@@ -195,7 +174,7 @@ def http_get(url, want_json=True, params=None):
             url,
             params=params,
             timeout=HTTP_TIMEOUT,
-            headers={"User-Agent": "DistrictExplorer-CHI source validator (+https://chidistricts.com)"},
+            headers={"User-Agent": "DistrictExplorer-SF source validator (+https://sf.chidistricts.com)"},
         )
     except Exception as e:  # network/TLS/proxy errors are a finding, not a crash
         return False, "request failed: %s" % e
@@ -232,10 +211,12 @@ def newest_edition(cfg):
     the search is unavailable / finds nothing usable.
     """
     ys = cfg["year_search"]
+    # The portal-local catalog is already scoped to its own datasets, so it is
+    # queried WITHOUT a `domains` filter (passing one returns zero results). No
+    # `only` type filter either: SFUSD republishes attendance areas as
+    # `federated_href` entries, which a dataset/map/geospatial filter would drop.
     ok, payload = http_get(CATALOG_API, params={
-        "domains": SOCRATA_DOMAIN,
         "q": ys["query"],
-        "only": "dataset,map,geospatial",
         "limit": 200,
     })
     if not ok or not isinstance(payload, dict):
