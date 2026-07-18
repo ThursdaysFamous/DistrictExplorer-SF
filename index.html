@@ -2039,10 +2039,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
       <a href="https://data.sfgov.org" target="_blank" rel="noopener">DataSF</a>
       <a href="https://tigerweb.geo.census.gov" target="_blank" rel="noopener">U.S. Census TIGERweb</a>
       <a href="https://github.com/unitedstates/congress-legislators" target="_blank" rel="noopener">unitedstates/congress-legislators</a>
-      <a href="https://www.ilga.gov" target="_blank" rel="noopener">Illinois General Assembly</a>
-      <a href="https://www.ilsenateredistricting.com" target="_blank" rel="noopener">School board district map (ilsenateredistricting.com)</a>
-      <a href="https://www.illinoiscourts.gov" target="_blank" rel="noopener">IL Supreme Court districts (PA 102-0011 shapefile)</a>
-      <a href="https://www.cookcountyboardofreview.com" target="_blank" rel="noopener">Cook County Board of Review districts (PA 102-0012 shapefile)</a>
+      <a href="https://openstates.org" target="_blank" rel="noopener">State legislator offices © Open States</a>
+      <a href="https://www.usgs.gov/programs/national-geospatial-program/national-map" target="_blank" rel="noopener">USGS The National Map (post offices)</a>
+      <a href="https://www.sf.gov/departments--department-elections" target="_blank" rel="noopener">SF Department of Elections (voting sites)</a>
     </div>
     <!-- ==== ENGINE:BEGIN metro-links-html ==== -->
     <div class="footer-metros" id="footer-metros" hidden>
@@ -3386,7 +3385,10 @@ function initSFExplorer() {
     "elementary-attendance-area", // SFUSD elementary attendance area (58; lottery tiebreaker, not a guaranteed seat)
     "police-station",    // SFPD station house (nearest 3, straight-line; 10 stations) - point layer, topmost
     "fire-station",      // SFFD firehouse (nearest 3, straight-line; 44 active stations) - point layer, topmost
-    "school-site"        // Every active SF school (nearest 3, straight-line; 232 public/charter/private) - point layer, topmost
+    "school-site",       // Every active SF school (nearest 3, straight-line; 232 public/charter/private) - point layer, topmost
+    "post-office",       // USGS National Map post offices (nearest 3, straight-line; METRO_BBOX envelope) - point layer, topmost
+    "library",           // SFPL locations from City Facilities (nearest 3, straight-line; Main Library + 27 branches, support facility excluded) - point layer, topmost
+    "early-voting"       // hand-curated SF Dept of Elections voting center + drop boxes (nearest 3) - point layer, topmost
   ];
   /* ==== GENERATED:END layer-area-rank ==== */
 
@@ -4977,6 +4979,108 @@ function initSFExplorer() {
     }
   });
 
+  /* =========================================================================
+   * AMENITY POINT LAYERS — Post Office / Library / Voting
+   * Same nearest-N pattern as Police/Fire Stations above (haversine,
+   * straight-line, N=3).
+   * ======================================================================= */
+
+  /* ---------- Post Offices (nearest 3) — USGS National Map structures layer 38.
+   * Successor to the retired HIFLD Open post-office layer. Country-wide, so
+   * the METRO_BBOX envelope is mandatory; f=geojson serves lowercase property
+   * names (name/address/city/state/zipcode). CORS-open; public domain
+   * ("USGS The National Map"). ---------- */
+  var USGS_POST_OFFICE_LAYER = "https://carto.nationalmap.gov/arcgis/rest/services/structures/MapServer/38";
+  var loadPostOffices = makeCached(function () {
+    var url = USGS_POST_OFFICE_LAYER + "/query?geometry=" +
+      [METRO_BBOX.minLng, METRO_BBOX.minLat, METRO_BBOX.maxLng, METRO_BBOX.maxLat].join(",") +
+      "&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects" +
+      "&where=1%3D1&outFields=NAME,ADDRESS,CITY,STATE,ZIPCODE&outSR=4326&f=geojson&geometryPrecision=6";
+    return fetchJSONWithRetry(url, { timeoutMs: REMOTE_GEOJSON_TIMEOUT_MS }, 2).then(function (gj) {
+      if (!hasUsableGeometry(gj)) throw new Error("no usable geometry from USGS structures layer 38");
+      return gj;
+    });
+  });
+
+  registerNearestPointLayer({
+    id: "post-office",
+    group: "geography",
+    color: "#4B2E83",
+    fill: "#B39DDB",
+    label: "Post Office",
+    loader: loadPostOffices,
+    intro: "Nearest post offices (USGS National Map structures data), straight-line distance:",
+    line: function (props) {
+      var name = findPropCI(props, ["name"]);
+      var address = findPropCI(props, ["address"]);
+      var city = findPropCI(props, ["city"]);
+      var zip = findPropCI(props, ["zipcode", "zip"]);
+      return (name ? String(name) : "Post office") +
+        (address ? " — " + String(address) : "") +
+        (city ? ", " + String(city) : "") +
+        (zip ? " " + String(zip) : "");
+    }
+  });
+
+  /* ---------- Libraries (nearest 3) — SFPL locations carved out of DataSF's
+   * City Facilities via the fhhu-wqa7 filtered view. Like the Fire Station
+   * layer's parent dataset, its .geojson route omits point geometry, so the
+   * point loader reads the text latitude/longitude columns. dept_id 48 is the
+   * Public Library department (drops the view's ancillary leased rows); the
+   * explicit name exclusion drops SFPL's Library Support Services admin/
+   * technical-services building at 190 9th St — a dept-48 facility but not a
+   * public library location. Result: the Main Library + the 27 branches. ---------- */
+  var loadLibraries = makeSocrataPointLoader("fhhu-wqa7", "dept_id='48' AND common_name != 'Library Support Services'", "latitude", "longitude");
+
+  registerNearestPointLayer({
+    id: "library",
+    group: "geography",
+    color: "#8A5A00",
+    fill: "#F2B84B",
+    label: "Library",
+    loader: loadLibraries,
+    intro: "Nearest San Francisco Public Library locations, straight-line distance:",
+    line: function (props) {
+      var name = findPropCI(props, ["common_name", "name"]);
+      var address = findPropCI(props, ["address"]);
+      var zip = findPropCI(props, ["zip_code", "zip"]);
+      return (name ? String(name) : "Library") +
+        (address ? " — " + String(address) : "") +
+        (zip ? ", " + String(zip) : "");
+    }
+  });
+
+  /* ---------- Voting Center & Ballot Drop-off (nearest 3) ----------
+   * SF is vote-by-mail-heavy and publishes no open point dataset (DataSF has
+   * only precinct polygons), so the layer reads the hand-curated
+   * data/app/early-voting-sites.json (network-first roster) transcribed from
+   * the Department of Elections pages: the City Hall Voting Center + the
+   * City's 37 official ballot drop boxes. Refresh the file each election
+   * TOGETHER WITH the election name in the intro below — the intro is what
+   * makes a stale list visibly stale on the card (each feature's `election`
+   * property records the same label for provenance but is not rendered). ---------- */
+  var loadVotingSites = makeCached(function () {
+    return fetchJSONWithRetry("data/app/early-voting-sites.json", {}, 2);
+  });
+
+  registerNearestPointLayer({
+    id: "early-voting",
+    group: "political",
+    color: "#7A1E5C",
+    fill: "#E060A8",
+    label: "Voting Center & Ballot Drop-off",
+    loader: loadVotingSites,
+    intro: "Official SF voting center and 24/7 ballot drop-off sites, as published by the Department of Elections for the June 2, 2026 primary (the Department describes the 37 drop boxes as recurring; boxes open ~29 days before each election — confirm current sites at sf.gov/return-your-ballot):",
+    line: function (props) {
+      var name = findPropCI(props, ["name"]);
+      var type = findPropCI(props, ["type"]);
+      var address = findPropCI(props, ["address"]);
+      return (name ? String(name) : "Voting site") +
+        (type === "drop-box" ? " (ballot drop-off)" : (type === "voting-center" ? " (voting center)" : "")) +
+        (address ? " — " + String(address) : "");
+    }
+  });
+
   /* ==== ENGINE:BEGIN int-field ==== */
   // Normalize a numeric-ish field to its integer string ("15.0" -> "15"); passes
   // non-numeric values through and null/"" to null. (Socrata sometimes serves
@@ -5810,7 +5914,7 @@ function initSFExplorer() {
   whenIdle(function () { drawOutOfScopeMask(loadSupervisorDistricts); });
 
   var verifiedEl = document.getElementById("verified-date");
-  verifiedEl.textContent = "July 9, 2026";
+  verifiedEl.textContent = "July 18, 2026";
 
   /* ==== ENGINE:BEGIN metro-links ==== */
   (function renderMetroLinks() {

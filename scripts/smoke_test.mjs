@@ -43,7 +43,7 @@ const POINT = "37.77927,-122.41924"; // SF City Hall (Civic Center)
 const OFFLINE = ["supervisor-district", "neighborhood", "police-district"];
 const EXPECT_DISTRICT = { "supervisor-district": "5", "neighborhood": "Tenderloin", "police-district": "NORTHERN" };
 const NEGATIVE_POINT = "37.74000,-122.59000"; // Open Pacific west of Ocean Beach, beyond CA state waters - outside every layer, including the water-inclusive TIGERweb legislative chambers
-const EXPECT_LAYERS = 11; // Thread-5: legislative chambers now pre-built SF-clipped geometry (data/app); supervisor-district is a bespoke roster-joined registerLayer; 11 layers total
+const EXPECT_LAYERS = 14; // Thread-5: legislative chambers now pre-built SF-clipped geometry (data/app); supervisor-district is a bespoke roster-joined registerLayer; 11 layers total; + 3 amenity nearest-point layers (post-office, library, early-voting) = 14
 // ==== GENERATED:END smoke-config ====
 const BOOT_TIMEOUT = 45000; // Leaflet + first paint on a cold CI runner
 const QUERY_TIMEOUT = 25000;

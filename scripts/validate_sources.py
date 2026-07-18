@@ -99,6 +99,8 @@ SOCRATA = [
                      "pattern": r"(\d{4})-\d{4}"}},
     {"id": "7e7j-59qk", "layer": "School Location (nearest-3)",
      "name_contains": "Schools"},
+    {"id": "fhhu-wqa7", "layer": "Library locations (nearest-3)",
+     "name_contains": "City Facilities - Public Library"},
 ]
 
 # Boundary layers built into same-origin data/app files: no runtime API.
@@ -134,6 +136,10 @@ PROVENANCE = [
      "app_file": "ca-assembly-districts.json",
      "source_url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer/2?f=json",
      "note": "TIGERweb Legislative layer 2 (Lower, STATE=06), SF-clipped, pre-built. Redrawn ~once a decade."},
+    {"layer": "Voting center & ballot drop-off sites (SF Dept of Elections)",
+     "app_file": "early-voting-sites.json",
+     "source_url": "https://www.sf.gov/return-your-ballot",
+     "note": "Hand-transcribed per election (full source list in the file's metadata). Refresh when the Department posts the next election's locations."},
 ]
 
 # Live named services the app queries at runtime. These aren't year-versioned
@@ -143,6 +149,8 @@ PROVENANCE = [
 ENDPOINTS = [
     {"layer": "Census TIGERweb ZCTAs (statewide ZIP Code layer)",
      "url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/PUMA_TAD_TAZ_UGA_ZCTA/MapServer?f=json"},
+    {"layer": "USGS National Map structures — post offices (layer 38)",
+     "url": "https://carto.nationalmap.gov/arcgis/rest/services/structures/MapServer/38?f=json"},
 ]
 
 FAIL, WARN, OK = "FAIL", "WARN", "OK"

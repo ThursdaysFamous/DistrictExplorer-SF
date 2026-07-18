@@ -172,10 +172,31 @@
       "group": "schools",
       "area_rank": 11,
       "rank_note": "Every active SF school (nearest 3, straight-line; 232 public/charter/private) - point layer, topmost"
+    },
+    {
+      "id": "post-office",
+      "label": "Post Office",
+      "group": "geography",
+      "area_rank": 12,
+      "rank_note": "USGS National Map post offices (nearest 3, straight-line; METRO_BBOX envelope) - point layer, topmost"
+    },
+    {
+      "id": "library",
+      "label": "Library",
+      "group": "geography",
+      "area_rank": 13,
+      "rank_note": "SFPL locations from City Facilities (nearest 3, straight-line; Main Library + 27 branches, support facility excluded) - point layer, topmost"
+    },
+    {
+      "id": "early-voting",
+      "label": "Voting Center & Ballot Drop-off",
+      "group": "political",
+      "area_rank": 14,
+      "rank_note": "hand-curated SF Dept of Elections voting center + drop boxes (nearest 3) - point layer, topmost"
     }
   ],
   "min_register_layer": 8,
-  "layer_count_note": "Thread-5: legislative chambers now pre-built SF-clipped geometry (data/app); supervisor-district is a bespoke roster-joined registerLayer; 11 layers total",
+  "layer_count_note": "Thread-5: legislative chambers now pre-built SF-clipped geometry (data/app); supervisor-district is a bespoke roster-joined registerLayer; 11 layers total; + 3 amenity nearest-point layers (post-office, library, early-voting) = 14",
   "anchor_point": {
     "lat": 37.77927,
     "lng": -122.41924,
@@ -253,11 +274,16 @@
         "file": "sf-supervisor-members.json",
         "min_keys": 11,
         "note": "SF Board of Supervisors (11) - DataSF hcgx-vtsb sup_name"
+      },
+      {
+        "file": "early-voting-sites.json",
+        "min_keys": 3,
+        "note": "GeoJSON FeatureCollection (type/metadata/features - key floor is shape-only); hand-curated per election from sf.gov Dept of Elections pages, network-first so a new election's list is never served stale"
       }
     ]
   },
   "sw": {
-    "cache_name": "district-explorer-shell-sf-v1",
+    "cache_name": "district-explorer-shell-sf-v2",
     "shell_urls": [
       "./",
       "./manifest.webmanifest",
