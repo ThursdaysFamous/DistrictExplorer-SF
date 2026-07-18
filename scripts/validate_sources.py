@@ -6,16 +6,17 @@ Why this exists: unlike the roster scrapers (which re-pull the same page every
 week), several layers point at a *specific* upstream dataset that the publisher
 silently supersedes with a new one:
 
-  * Chicago Data Portal (Socrata) datasets are versioned by year. The CPS
-    attendance-boundary layers, for example, are published fresh every school
-    year under a BRAND NEW dataset id (…SY2526 → …SY2627), so the id hardcoded
-    in index.html keeps returning last year's boundaries long after a newer one
-    exists. Nothing errors; the data just quietly goes stale.
-  * The three shapefile-derived boundary layers (school board, IL Supreme
-    Court, Cook County Board of Review) were downloaded once from decennial
-    redistricting sources with no API. They change ~once a decade, so the check
-    there is provenance: is the source we cite still reachable, and a reminder
-    to re-verify.
+  * DataSF (Socrata) datasets can be versioned by year. The SFUSD School
+    Attendance Areas layer, for example, is republished each school year under
+    a BRAND NEW dataset id ("…(2024-2025)" → "…(2025-2026)"), so the id
+    hardcoded in index.html keeps returning last year's boundaries long after a
+    newer one exists. Nothing errors; the data just quietly goes stale.
+  * The pre-built boundary layers (supervisor districts, analysis neighborhoods,
+    police districts, and the three legislative chambers) are built once into
+    same-origin data/app files with no runtime API — from DataSF datasets and
+    Census TIGERweb. They change ~once a decade, so the check there is
+    provenance: is the source we cite still reachable, plus a reminder to
+    re-verify.
 
 This script does NOT edit index.html or any data file — swapping a dataset id
 is a judgement call (the "newer" dataset may have a different schema), so, like
@@ -31,7 +32,7 @@ What it checks (findings carry a severity — FAIL, WARN, or OK):
      edition than the one in use.                                         [WARN]
   3. Shapefile provenance: the cited source URL is reachable and the built
      data/app file is present.                             [WARN / FAIL if gone]
-  4. Live service endpoints (CPD ArcGIS, Census TIGERweb): reachable.      [WARN]
+  4. Live service endpoints (Census TIGERweb ZCTA): reachable.            [WARN]
 
 Exit status: 0 when nothing needs a human (OK or WARN only), 1 on any FAIL.
 Newer-edition detection is deliberately WARN, not FAIL — the current dataset
@@ -62,9 +63,11 @@ INDEX_HTML = os.path.join(REPO_ROOT, "index.html")
 APP_DATA_DIR = os.path.join(REPO_ROOT, "data", "app")
 
 SOCRATA_DOMAIN = "data.sfgov.org"
-# DataSF is not federated into api.us.socrata.com (searches there return 0
-# rows) — use the portal's own catalog API for newer-edition detection.
-CATALOG_API = "https://data.sfgov.org/api/catalog/v1"
+# Newer-edition search hits the portal's OWN catalog, not the federated
+# api.us.socrata.com one: DataSF is not indexed by the federated catalog (it
+# returns zero for data.sfgov.org), whereas the portal-local catalog resolves
+# and indexes the year-versioned sibling editions we compare against.
+CATALOG_API = "https://%s/api/catalog/v1" % SOCRATA_DOMAIN
 HTTP_TIMEOUT = 25
 
 # ---------------------------------------------------------------------------
@@ -77,55 +80,62 @@ HTTP_TIMEOUT = 25
 # the `pattern` capture group (an int) is compared to pick the newest edition.
 # ---------------------------------------------------------------------------
 SOCRATA = [
-    # ZIP Code lives on the Census ZCTA layer (no DataSF boundary line) — the
-    # endpoint is tracked in ENDPOINTS below, not here.
-    {"id": "rwdu-9wb2", "layer": "Police Stations (nearest N)",
+    {"id": "rwdu-9wb2", "layer": "Police Stations (nearest-3)",
      "name_contains": "Police Stations"},
-    {"id": "nc68-ngbr", "layer": "Fire Stations (City Facilities filter)",
+    {"id": "nc68-ngbr", "layer": "Fire Stations (City Facilities, nearest-3)",
      "name_contains": "City Facilities"},
-    {"id": "fhhu-wqa7", "layer": "Library locations (nearest N)",
-     "name_contains": "City Facilities - Public Library"},
-    {"id": "7e7j-59qk", "layer": "School sites (nearest N)",
-     "name_contains": "Schools"},
+    # ZIP Code is the statewide Census ZCTA layer (no DataSF dataset) — its
+    # endpoint is tracked in ENDPOINTS below, not here.
+    # SFUSD attendance areas rotate each school year. Caveat: the in-use dataset
+    # (e6tr-sxwg, "…(2024-2025)") is a derived view DataSF's catalog does NOT
+    # index, so the newer-edition search compares against the catalog's sibling
+    # "…School Attendance Areas <year>" editions instead. The year pattern is
+    # unparenthesized so it matches both the current "(2024-2025)" title and the
+    # bare "2023-2024" sibling form; a later indexed edition with a higher year
+    # trips a WARN for a human to re-verify against.
     {"id": "e6tr-sxwg", "layer": "SFUSD Elementary Attendance Area",
-     "name_contains": "SFUSD School Attendance Areas",
-     "year_search": {"query": "SFUSD School Attendance Areas",
-                     "pattern": r"\((\d{4})-\d{4}\)"}},
+     "name_contains": "School Attendance Areas",
+     "year_search": {"query": "School Attendance Areas",
+                     "pattern": r"(\d{4})-\d{4}"}},
+    {"id": "7e7j-59qk", "layer": "School Location (nearest-3)",
+     "name_contains": "Schools"},
+    {"id": "fhhu-wqa7", "layer": "Library locations (nearest-3)",
+     "name_contains": "City Facilities - Public Library"},
 ]
 
 # Boundary layers built into same-origin data/app files: no runtime API.
-# `source_url` is the provenance we cite; `app_file` is the built file. These
-# go stale only when the underlying districts are redrawn — the check is a
+# `source_url` is the provenance we cite; `app_file` is the built file. These go
+# stale only when the underlying districts are redrawn — the check is a
 # reachability probe plus a standing reminder to re-verify against the source.
-# The first three are DataSF pulls simplified by build_embedded_boundaries.py
-# (raw pulls in data/source/raw/); the three legislative layers are pre-built
-# from Census TIGERweb by scripts/build_legislative_boundaries.py. The
-# early-voting file is hand-curated per election (no open point dataset).
+# The first three are mapshaper-simplified from DataSF datasets (SF's civic
+# geometry is consolidated on DataSF); the three legislative layers are pre-built
+# from Census TIGERweb by scripts/build_legislative_boundaries.py (they used to
+# query TIGERweb live at ~5.7 s per first toggle).
 PROVENANCE = [
-    {"layer": "Supervisor Districts",
+    {"layer": "Supervisor districts",
      "app_file": "supervisor-districts.json",
-     "source_url": "https://data.sfgov.org/api/views/hcgx-vtsb.json",
-     "note": "DataSF 'Supervisor Districts' (hcgx-vtsb, 2022 remap). Redrawn ~once a decade."},
+     "source_url": "https://data.sfgov.org/d/hcgx-vtsb",
+     "note": "DataSF Current Supervisor Districts (hcgx-vtsb), water-trimmed. Redrawn ~once a decade."},
     {"layer": "Analysis Neighborhoods",
      "app_file": "sf-neighborhoods.json",
-     "source_url": "https://data.sfgov.org/api/views/j2bu-swwd.json",
-     "note": "DataSF 'Analysis Neighborhoods' (j2bu-swwd). Stable planning geography."},
-    {"layer": "SFPD Police Districts",
+     "source_url": "https://data.sfgov.org/d/j2bu-swwd",
+     "note": "DataSF Analysis Neighborhoods (j2bu-swwd). Revised rarely."},
+    {"layer": "Police districts",
      "app_file": "police-districts.json",
-     "source_url": "https://data.sfgov.org/api/views/d4vc-q76h.json",
-     "note": "DataSF 'Current Police Districts' (d4vc-q76h). Administrative — can change without a census."},
+     "source_url": "https://data.sfgov.org/d/d4vc-q76h",
+     "note": "DataSF Current Police Districts (d4vc-q76h). Revised rarely."},
     {"layer": "U.S. House districts (CA)",
      "app_file": "congress-districts.json",
      "source_url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer/0?f=json",
-     "note": "TIGERweb Legislative layer 0 (STATE=06), pre-built by build_legislative_boundaries.py. Redrawn ~once a decade."},
+     "note": "TIGERweb Legislative layer 0 (STATE=06), SF-clipped, pre-built by build_legislative_boundaries.py. Redrawn ~once a decade."},
     {"layer": "CA State Senate districts",
      "app_file": "ca-senate-districts.json",
      "source_url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer/1?f=json",
-     "note": "TIGERweb Legislative layer 1 (Upper, STATE=06), pre-built. Redrawn ~once a decade."},
+     "note": "TIGERweb Legislative layer 1 (Upper, STATE=06), SF-clipped, pre-built. Redrawn ~once a decade."},
     {"layer": "CA State Assembly districts",
      "app_file": "ca-assembly-districts.json",
      "source_url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer/2?f=json",
-     "note": "TIGERweb Legislative layer 2 (Lower, STATE=06), pre-built. Redrawn ~once a decade."},
+     "note": "TIGERweb Legislative layer 2 (Lower, STATE=06), SF-clipped, pre-built. Redrawn ~once a decade."},
     {"layer": "Voting center & ballot drop-off sites (SF Dept of Elections)",
      "app_file": "early-voting-sites.json",
      "source_url": "https://www.sf.gov/return-your-ballot",
@@ -137,10 +147,8 @@ PROVENANCE = [
 # check is reachability — a rename or retirement shows up here before users hit
 # a broken card. WARN-only: the app already isolates a down source per-card.
 ENDPOINTS = [
-    {"layer": "Census TIGERweb ZCTAs (ZIP Code layer)",
+    {"layer": "Census TIGERweb ZCTAs (statewide ZIP Code layer)",
      "url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/PUMA_TAD_TAZ_UGA_ZCTA/MapServer?f=json"},
-    {"layer": "Census TIGERweb Legislative service (runtime queries)",
-     "url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer?f=json"},
     {"layer": "USGS National Map structures — post offices (layer 38)",
      "url": "https://carto.nationalmap.gov/arcgis/rest/services/structures/MapServer/38?f=json"},
 ]
@@ -174,7 +182,7 @@ def http_get(url, want_json=True, params=None):
             url,
             params=params,
             timeout=HTTP_TIMEOUT,
-            headers={"User-Agent": "DistrictExplorer-CHI source validator (+https://chidistricts.com)"},
+            headers={"User-Agent": "DistrictExplorer-SF source validator (+https://sf.chidistricts.com)"},
         )
     except Exception as e:  # network/TLS/proxy errors are a finding, not a crash
         return False, "request failed: %s" % e
@@ -211,10 +219,12 @@ def newest_edition(cfg):
     the search is unavailable / finds nothing usable.
     """
     ys = cfg["year_search"]
+    # The portal-local catalog is already scoped to its own datasets, so it is
+    # queried WITHOUT a `domains` filter (passing one returns zero results). No
+    # `only` type filter either: SFUSD republishes attendance areas as
+    # `federated_href` entries, which a dataset/map/geospatial filter would drop.
     ok, payload = http_get(CATALOG_API, params={
-        "domains": SOCRATA_DOMAIN,
         "q": ys["query"],
-        "only": "dataset,map,geospatial",
         "limit": 200,
     })
     if not ok or not isinstance(payload, dict):

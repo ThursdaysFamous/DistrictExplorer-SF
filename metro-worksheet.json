@@ -195,8 +195,8 @@
       "rank_note": "hand-curated SF Dept of Elections voting center + drop boxes (nearest 3) - point layer, topmost"
     }
   ],
-  "min_register_layer": 7,
-  "layer_count_note": "Thread-5: legislative chambers now pre-built SF-clipped geometry (data/app); 11 layers total; + 3 amenity nearest-point layers (post-office, library, early-voting) = 14",
+  "min_register_layer": 8,
+  "layer_count_note": "Thread-5: legislative chambers now pre-built SF-clipped geometry (data/app); supervisor-district is a bespoke roster-joined registerLayer; 11 layers total; + 3 amenity nearest-point layers (post-office, library, early-voting) = 14",
   "anchor_point": {
     "lat": 37.77927,
     "lng": -122.41924,
@@ -271,6 +271,11 @@
         "note": "CA State Assembly (80) - OpenStates"
       },
       {
+        "file": "sf-supervisor-members.json",
+        "min_keys": 11,
+        "note": "SF Board of Supervisors (11) - DataSF hcgx-vtsb sup_name"
+      },
+      {
         "file": "early-voting-sites.json",
         "min_keys": 3,
         "note": "GeoJSON FeatureCollection (type/metadata/features - key floor is shape-only); hand-curated per election from sf.gov Dept of Elections pages, network-first so a new election's list is never served stale"
@@ -289,7 +294,7 @@
   },
   "data_sources": {
     "registry": "scripts/validate_sources.py",
-    "note": "Inherited from the reference; the SF source manifest is rebuilt in the pipeline thread (Thread 5)."
+    "note": "SF source manifest (Thread 5): 4 live DataSF datasets (rwdu-9wb2, nc68-ngbr, e6tr-sxwg year-versioned, 7e7j-59qk), 6 pre-built boundary files (3 DataSF anchors + 3 TIGERweb CA chambers), 1 live endpoint (Census ZCTA). Newer-edition search uses the portal-local catalog (data.sfgov.org is absent from the federated api.us.socrata.com)."
   },
   "workflows": [
     {
@@ -301,6 +306,11 @@
       "file": "update-ca-legislature-roster.yml",
       "purpose": "CA State Senate + Assembly roster refresh (OpenStates)",
       "schedule": "Tue 13:00 UTC"
+    },
+    {
+      "file": "update-sf-supervisor-roster.yml",
+      "purpose": "SF Board of Supervisors roster refresh (DataSF hcgx-vtsb)",
+      "schedule": "Wed 13:00 UTC"
     },
     {
       "file": "validate-sources.yml",

@@ -4132,8 +4132,15 @@ function initSFExplorer() {
   }
   function setCardError(mod, message, seq) {
     var body = layerRuntime[mod.id].cardBody;
-    body.className = "layer-card-body state-error";
     body.innerHTML = "";
+    // A layer that declares a live data source (mod.dataSource) degrades to a
+    // calm, honest "the outage is upstream, not this tool" card rather than the
+    // generic red error — see renderSourceUnavailable. Both failure paths route
+    // here (the overlay-load catch and the query catch), so declaring the field
+    // covers a boundary-load and a query failure alike. A layer that declares
+    // nothing takes exactly the pre-existing generic path.
+    if (mod.dataSource) { renderSourceUnavailable(mod, body); return; }
+    body.className = "layer-card-body state-error";
     var p = document.createElement("p");
     p.style.margin = "0 0 6px";
     p.textContent = message || "Couldn't load this layer.";
@@ -4147,6 +4154,40 @@ function initSFExplorer() {
     body.appendChild(p);
     body.appendChild(retry);
   }
+
+  // Graceful degradation for a layer whose live data source is unreachable. A
+  // layer opts in with mod.dataSource = { label, lookup?: { url, text, label } };
+  // without it setCardError renders the generic message. Metro-agnostic: every
+  // city-specific string (the provider name, the official-lookup URL/label)
+  // comes from the layer's own declaration, so this block stays byte-identical
+  // across forks. Reuses the shared renderFieldList + sanitize helpers and the
+  // same onLayerToggled-based Retry as the generic error card.
+  function renderSourceUnavailable(mod, body) {
+    var ds = mod.dataSource || {};
+    body.className = "layer-card-body"; // calm notice, not the red state-error
+    var notice = document.createElement("p");
+    notice.style.margin = "0 0 10px";
+    notice.style.color = "var(--slate)";
+    notice.style.lineHeight = "1.45";
+    notice.textContent = (ds.label ? ds.label + " — the source for this layer — isn't responding right now."
+                                   : "This layer's live data source isn't responding right now.") +
+      " This is an outage on the data provider's end, not this tool, and it doesn't affect the other layers.";
+    body.appendChild(notice);
+    if (ds.lookup && ds.lookup.url) {
+      body.appendChild(renderFieldList([{
+        label: ds.lookup.label || "In the meantime",
+        html: '<a href="' + sanitize(ds.lookup.url) + '" target="_blank" rel="noopener">' +
+          sanitize(ds.lookup.text || ds.lookup.url) + "</a>"
+      }]));
+    }
+    var retry = document.createElement("button");
+    retry.type = "button";
+    retry.className = "retry-btn"; // styled by the shared .layer-card-body .retry-btn rule
+    retry.textContent = "Retry";
+    retry.addEventListener("click", function () { onLayerToggled(mod); });
+    body.appendChild(retry);
+  }
+
   function setCardEmpty(mod) {
     var body = layerRuntime[mod.id].cardBody;
     body.className = "layer-card-body state-empty";
@@ -4690,16 +4731,63 @@ function initSFExplorer() {
   var loadSupervisorDistricts = makeCached(function () {
     return fetchJSONWithRetry("data/app/supervisor-districts.json", {}, 2);
   });
-  registerPolygonLayer({
+  // Supervisor roster (district -> current supervisor), scraped from DataSF into a
+  // same-origin file (build_sf_supervisor_roster.py) and joined by district
+  // number. The volatile name is kept out of the decadal boundary geometry and
+  // served here (network-first) instead. A missing district or a roster-fetch
+  // failure degrades to the Board link — the name is never guessed. This is a
+  // bespoke registerLayer (not registerPolygonLayer) because the polygon factory
+  // has no roster-join hook.
+  var loadSupervisorRoster = makeCached(function () {
+    return fetchJSONWithRetry("data/app/sf-supervisor-members.json", {}, 2);
+  });
+  var SF_BOARD_HTML = '<a href="https://sfbos.org/" target="_blank" rel="noopener">San Francisco Board of Supervisors</a>';
+  function supervisorDistrictNum(props) {
+    return findPropCI(props || {}, ["district", "sup_dist_num", "sup_dist", "sup_dist_pad"]);
+  }
+  registerLayer({
     id: "supervisor-district",
     group: "political",
     label: "Supervisor District",
-    loader: loadSupervisorDistricts,
-    style: { color: "#8E2A22", weight: 2, fillColor: "#C0362C", fillOpacity: 0.06 },
-    fields: [
-      { name: "district", label: "Supervisor District", keys: ["district", "sup_dist", "sup_dist_pad", "sup_dist_num"], primary: true },
-      { label: "Represented by", html: '<a href="https://sfbos.org/" target="_blank" rel="noopener">San Francisco Board of Supervisors</a>' }
-    ]
+    // hover popup: the current supervisor's name (prefetched roster) under the
+    // district-number row, matching the card headline.
+    hoverName: function (feature) {
+      var d = supervisorDistrictNum(feature.properties);
+      return d != null ? String(d) : null;
+    },
+    hoverOfficial: {
+      load: loadSupervisorRoster,
+      name: function (feature, roster) {
+        if (!roster) return null;
+        var d = supervisorDistrictNum(feature.properties);
+        var m = d != null ? roster[String(d)] : null;
+        return m ? m.name : null;
+      }
+    },
+    overlay: {
+      load: loadSupervisorDistricts,
+      style: { color: "#8E2A22", weight: 2, fillColor: "#C0362C", fillOpacity: 0.06 }
+    },
+    query: function (point, seq) {
+      return Promise.all([
+        loadSupervisorDistricts(),
+        loadSupervisorRoster().catch(function () { return {}; })
+      ]).then(function (results) {
+        var feature = findFeatureContaining(results[0], point);
+        if (!feature) return null;
+        var district = supervisorDistrictNum(feature.properties);
+        var member = district != null ? results[1][String(district)] : null;
+        return { seq: seq, district: district, member: member || null };
+      });
+    },
+    render: function (result) {
+      var fields = [{ label: "Supervisor District", value: result.district ? String(result.district) : "Unknown" }];
+      if (result.member && result.member.name) {
+        fields.push({ label: "Supervisor", value: String(result.member.name) });
+      }
+      fields.push({ label: "Represented by", html: SF_BOARD_HTML });
+      return renderFieldList(fields);
+    }
   });
 
   var loadSfNeighborhoods = makeCached(function () {
