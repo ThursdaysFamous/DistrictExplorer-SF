@@ -39,7 +39,7 @@
 // (network, then the name-badge fallback offline), so rarely-seen markers don't
 // weigh down every install.)
 /* ==== GENERATED:BEGIN sw-metro-config ==== */
-const CACHE_NAME = "district-explorer-shell-sf-v1";
+const CACHE_NAME = "district-explorer-shell-sf-v2";
 
 const SHELL_URLS = [
   "./",
@@ -69,6 +69,7 @@ const ROSTER_URLS = [
   "./data/app/congress-roster.json",
   "./data/app/ca-senate-members.json",
   "./data/app/ca-assembly-members.json",
+  "./data/app/early-voting-sites.json",
 ];
 /* ==== GENERATED:END sw-metro-config ==== */
 /* ==== METRO:END sw-config ==== */

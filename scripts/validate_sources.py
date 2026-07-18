@@ -61,8 +61,10 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INDEX_HTML = os.path.join(REPO_ROOT, "index.html")
 APP_DATA_DIR = os.path.join(REPO_ROOT, "data", "app")
 
-SOCRATA_DOMAIN = "data.cityofchicago.org"
-CATALOG_API = "https://api.us.socrata.com/api/catalog/v1"
+SOCRATA_DOMAIN = "data.sfgov.org"
+# DataSF is not federated into api.us.socrata.com (searches there return 0
+# rows) — use the portal's own catalog API for newer-edition detection.
+CATALOG_API = "https://data.sfgov.org/api/catalog/v1"
 HTTP_TIMEOUT = 25
 
 # ---------------------------------------------------------------------------
@@ -75,68 +77,59 @@ HTTP_TIMEOUT = 25
 # the `pattern` capture group (an int) is compared to pick the newest edition.
 # ---------------------------------------------------------------------------
 SOCRATA = [
-    {"id": "p293-wvbd", "layer": "Ward + Alderman boundary",
-     "name_contains": "Boundaries - Wards"},
-    {"id": "htai-wnw4", "layer": "Alderman / Ward Offices",
-     "name_contains": "Ward Offices"},
-    {"id": "i8fv-xe4b", "layer": "Ward Precincts",
-     "name_contains": "Boundaries - Ward Precincts"},
-    {"id": "igwz-8jzy", "layer": "Community Area",
-     "name_contains": "Boundaries - Community Areas"},
-    # ZIP Code moved off Socrata to the statewide Census ZCTA layer (no city
-    # boundary line) — the endpoint is tracked in ENDPOINTS below, not here.
-    {"id": "28km-gtjn", "layer": "Fire Stations",
-     "name_contains": "Fire Stations"},
-    {"id": "x72b-38qv", "layer": "CPS Elementary School Zone",
-     "name_contains": "Elementary School Attendance Boundaries",
-     "year_search": {"query": "Elementary School Attendance Boundaries",
-                     "pattern": r"SY(\d{4})"}},
-    {"id": "xg7c-d8rm", "layer": "CPS High School Zone",
-     "name_contains": "High School Attendance Boundaries",
-     "year_search": {"query": "High School Attendance Boundaries",
-                     "pattern": r"SY(\d{4})"}},
-    {"id": "fyff-53xy", "layer": "CPS Middle School Zone",
-     "name_contains": "Middle School Attendance Boundaries",
-     "year_search": {"query": "Middle School Attendance Boundaries",
-                     "pattern": r"SY(\d{4})"}},
-    {"id": "pnta-kuqa", "layer": "CPS Network (K-8)",
-     "name_contains": "Elementary Geographic Networks"},
-    {"id": "aupu-jt2g", "layer": "CPS Network (High School)",
-     "name_contains": "High School Geographic Networks"},
+    # ZIP Code lives on the Census ZCTA layer (no DataSF boundary line) — the
+    # endpoint is tracked in ENDPOINTS below, not here.
+    {"id": "rwdu-9wb2", "layer": "Police Stations (nearest N)",
+     "name_contains": "Police Stations"},
+    {"id": "nc68-ngbr", "layer": "Fire Stations (City Facilities filter)",
+     "name_contains": "City Facilities"},
+    {"id": "fhhu-wqa7", "layer": "Library locations (nearest N)",
+     "name_contains": "City Facilities - Public Library"},
+    {"id": "7e7j-59qk", "layer": "School sites (nearest N)",
+     "name_contains": "Schools"},
+    {"id": "e6tr-sxwg", "layer": "SFUSD Elementary Attendance Area",
+     "name_contains": "SFUSD School Attendance Areas",
+     "year_search": {"query": "SFUSD School Attendance Areas",
+                     "pattern": r"\((\d{4})-\d{4}\)"}},
 ]
 
-# Decennial boundary layers built into same-origin data/app files: no runtime
-# API. `source_url` is the provenance we cite; `app_file` is the built file.
-# These go stale only when the underlying districts are redrawn — the check is a
+# Boundary layers built into same-origin data/app files: no runtime API.
+# `source_url` is the provenance we cite; `app_file` is the built file. These
+# go stale only when the underlying districts are redrawn — the check is a
 # reachability probe plus a standing reminder to re-verify against the source.
-# The first three are shapefile-derived; the three legislative layers are
-# pre-built from Census TIGERweb by scripts/build_legislative_boundaries.py
-# (R2-2 — they used to query TIGERweb live at ~5.7 s per first toggle).
+# The first three are DataSF pulls simplified by build_embedded_boundaries.py
+# (raw pulls in data/source/raw/); the three legislative layers are pre-built
+# from Census TIGERweb by scripts/build_legislative_boundaries.py. The
+# early-voting file is hand-curated per election (no open point dataset).
 PROVENANCE = [
-    {"layer": "School Board (ERSB) districts",
-     "app_file": "school-board-districts.json",
-     "source_url": "https://www.ilsenateredistricting.com/",
-     "note": "ERSB 20-subdistrict map (SB 15). Redrawn ~once a decade."},
-    {"layer": "IL Supreme Court districts",
-     "app_file": "il-supreme-court-districts.json",
-     "source_url": "https://www.illinoiscourts.gov/",
-     "note": "PA 102-0011 shapefile. Redrawn ~once a decade."},
-    {"layer": "Cook County Board of Review districts",
-     "app_file": "ccbr-districts.json",
-     "source_url": "https://www.cookcountyboardofreview.com/",
-     "note": "PA 102-0012 shapefile. Redrawn ~once a decade."},
-    {"layer": "U.S. House districts (IL)",
+    {"layer": "Supervisor Districts",
+     "app_file": "supervisor-districts.json",
+     "source_url": "https://data.sfgov.org/api/views/hcgx-vtsb.json",
+     "note": "DataSF 'Supervisor Districts' (hcgx-vtsb, 2022 remap). Redrawn ~once a decade."},
+    {"layer": "Analysis Neighborhoods",
+     "app_file": "sf-neighborhoods.json",
+     "source_url": "https://data.sfgov.org/api/views/j2bu-swwd.json",
+     "note": "DataSF 'Analysis Neighborhoods' (j2bu-swwd). Stable planning geography."},
+    {"layer": "SFPD Police Districts",
+     "app_file": "police-districts.json",
+     "source_url": "https://data.sfgov.org/api/views/d4vc-q76h.json",
+     "note": "DataSF 'Current Police Districts' (d4vc-q76h). Administrative — can change without a census."},
+    {"layer": "U.S. House districts (CA)",
      "app_file": "congress-districts.json",
      "source_url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer/0?f=json",
-     "note": "TIGERweb Legislative layer 0 (STATE=17), pre-built by build_legislative_boundaries.py. Redrawn ~once a decade."},
-    {"layer": "IL State Senate districts",
-     "app_file": "il-senate-districts.json",
+     "note": "TIGERweb Legislative layer 0 (STATE=06), pre-built by build_legislative_boundaries.py. Redrawn ~once a decade."},
+    {"layer": "CA State Senate districts",
+     "app_file": "ca-senate-districts.json",
      "source_url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer/1?f=json",
-     "note": "TIGERweb Legislative layer 1 (2024 Upper, STATE=17), pre-built. Redrawn ~once a decade."},
-    {"layer": "IL State House districts",
-     "app_file": "il-house-districts.json",
+     "note": "TIGERweb Legislative layer 1 (Upper, STATE=06), pre-built. Redrawn ~once a decade."},
+    {"layer": "CA State Assembly districts",
+     "app_file": "ca-assembly-districts.json",
      "source_url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer/2?f=json",
-     "note": "TIGERweb Legislative layer 2 (2024 Lower, STATE=17), pre-built. Redrawn ~once a decade."},
+     "note": "TIGERweb Legislative layer 2 (Lower, STATE=06), pre-built. Redrawn ~once a decade."},
+    {"layer": "Voting center & ballot drop-off sites (SF Dept of Elections)",
+     "app_file": "early-voting-sites.json",
+     "source_url": "https://www.sf.gov/return-your-ballot",
+     "note": "Hand-transcribed per election (full source list in the file's metadata). Refresh when the Department posts the next election's locations."},
 ]
 
 # Live named services the app queries at runtime. These aren't year-versioned
@@ -144,26 +137,12 @@ PROVENANCE = [
 # check is reachability — a rename or retirement shows up here before users hit
 # a broken card. WARN-only: the app already isolates a down source per-card.
 ENDPOINTS = [
-    {"layer": "CPD Police District boundaries",
-     "url": "https://services2.arcgis.com/t3tlzCPfmaQzSWAk/arcgis/rest/services/Police_District_Boundary_View/FeatureServer/0?f=json"},
-    {"layer": "CPD Police District stations",
-     "url": "https://services2.arcgis.com/t3tlzCPfmaQzSWAk/arcgis/rest/services/Police_District_Stations_View/FeatureServer/0?f=json"},
-    {"layer": "CPD Police Beat boundaries",
-     "url": "https://services2.arcgis.com/t3tlzCPfmaQzSWAk/arcgis/rest/services/Police_Beat_Boundary/FeatureServer/0?f=json"},
-    {"layer": "CPS school sites",
-     "url": "https://services2.arcgis.com/t3tlzCPfmaQzSWAk/arcgis/rest/services/Schools/FeatureServer/0?f=json"},
-    {"layer": "Census TIGERweb counties (statewide county layer)",
-     "url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/State_County/MapServer?f=json"},
-    {"layer": "Census TIGERweb county subdivisions + places (township/municipality layers)",
-     "url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Places_CouSub_ConCity_SubMCD/MapServer?f=json"},
-    {"layer": "Census TIGERweb school districts (unified/secondary/elementary layers)",
-     "url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/School/MapServer?f=json"},
-    {"layer": "Census TIGERweb ZCTAs (statewide ZIP Code layer)",
+    {"layer": "Census TIGERweb ZCTAs (ZIP Code layer)",
      "url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/PUMA_TAD_TAZ_UGA_ZCTA/MapServer?f=json"},
-    {"layer": "Census TIGERweb areal hydrography (Lake Michigan marker test)",
-     "url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Hydro/MapServer?f=json"},
-    {"layer": "Will County Board districts 2022 (current 11-district map + reps)",
-     "url": "https://services.arcgis.com/fGsbyIOAuxHnF97m/arcgis/rest/services/County_Board_Districts_2022/FeatureServer/0?f=json"},
+    {"layer": "Census TIGERweb Legislative service (runtime queries)",
+     "url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/Legislative/MapServer?f=json"},
+    {"layer": "USGS National Map structures — post offices (layer 38)",
+     "url": "https://carto.nationalmap.gov/arcgis/rest/services/structures/MapServer/38?f=json"},
 ]
 
 FAIL, WARN, OK = "FAIL", "WARN", "OK"
