@@ -4130,8 +4130,15 @@ function initSFExplorer() {
   }
   function setCardError(mod, message, seq) {
     var body = layerRuntime[mod.id].cardBody;
-    body.className = "layer-card-body state-error";
     body.innerHTML = "";
+    // A layer that declares a live data source (mod.dataSource) degrades to a
+    // calm, honest "the outage is upstream, not this tool" card rather than the
+    // generic red error — see renderSourceUnavailable. Both failure paths route
+    // here (the overlay-load catch and the query catch), so declaring the field
+    // covers a boundary-load and a query failure alike. A layer that declares
+    // nothing takes exactly the pre-existing generic path.
+    if (mod.dataSource) { renderSourceUnavailable(mod, body); return; }
+    body.className = "layer-card-body state-error";
     var p = document.createElement("p");
     p.style.margin = "0 0 6px";
     p.textContent = message || "Couldn't load this layer.";
@@ -4145,6 +4152,40 @@ function initSFExplorer() {
     body.appendChild(p);
     body.appendChild(retry);
   }
+
+  // Graceful degradation for a layer whose live data source is unreachable. A
+  // layer opts in with mod.dataSource = { label, lookup?: { url, text, label } };
+  // without it setCardError renders the generic message. Metro-agnostic: every
+  // city-specific string (the provider name, the official-lookup URL/label)
+  // comes from the layer's own declaration, so this block stays byte-identical
+  // across forks. Reuses the shared renderFieldList + sanitize helpers and the
+  // same onLayerToggled-based Retry as the generic error card.
+  function renderSourceUnavailable(mod, body) {
+    var ds = mod.dataSource || {};
+    body.className = "layer-card-body"; // calm notice, not the red state-error
+    var notice = document.createElement("p");
+    notice.style.margin = "0 0 10px";
+    notice.style.color = "var(--slate)";
+    notice.style.lineHeight = "1.45";
+    notice.textContent = (ds.label ? ds.label + " — the source for this layer — isn't responding right now."
+                                   : "This layer's live data source isn't responding right now.") +
+      " This is an outage on the data provider's end, not this tool, and it doesn't affect the other layers.";
+    body.appendChild(notice);
+    if (ds.lookup && ds.lookup.url) {
+      body.appendChild(renderFieldList([{
+        label: ds.lookup.label || "In the meantime",
+        html: '<a href="' + sanitize(ds.lookup.url) + '" target="_blank" rel="noopener">' +
+          sanitize(ds.lookup.text || ds.lookup.url) + "</a>"
+      }]));
+    }
+    var retry = document.createElement("button");
+    retry.type = "button";
+    retry.className = "retry-btn"; // styled by the shared .layer-card-body .retry-btn rule
+    retry.textContent = "Retry";
+    retry.addEventListener("click", function () { onLayerToggled(mod); });
+    body.appendChild(retry);
+  }
+
   function setCardEmpty(mod) {
     var body = layerRuntime[mod.id].cardBody;
     body.className = "layer-card-body state-empty";
