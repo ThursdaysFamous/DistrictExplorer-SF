@@ -3387,7 +3387,7 @@ function initSFExplorer() {
     "fire-station",      // SFFD firehouse (nearest 3, straight-line; 44 active stations) - point layer, topmost
     "school-site",       // Every active SF school (nearest 3, straight-line; 232 public/charter/private) - point layer, topmost
     "post-office",       // USGS National Map post offices (nearest 3, straight-line; METRO_BBOX envelope) - point layer, topmost
-    "library",           // SFPL locations from City Facilities (nearest 3, straight-line; 29 dept_id=48 rows) - point layer, topmost
+    "library",           // SFPL locations from City Facilities (nearest 3, straight-line; Main Library + 27 branches, support facility excluded) - point layer, topmost
     "early-voting"       // hand-curated SF Dept of Elections voting center + drop boxes (nearest 3) - point layer, topmost
   ];
   /* ==== GENERATED:END layer-area-rank ==== */
@@ -4938,9 +4938,11 @@ function initSFExplorer() {
    * City Facilities via the fhhu-wqa7 filtered view. Like the Fire Station
    * layer's parent dataset, its .geojson route omits point geometry, so the
    * point loader reads the text latitude/longitude columns. dept_id 48 is the
-   * Public Library department — it excludes the view's ancillary leased
-   * non-library rows. ---------- */
-  var loadLibraries = makeSocrataPointLoader("fhhu-wqa7", "dept_id='48'", "latitude", "longitude");
+   * Public Library department (drops the view's ancillary leased rows); the
+   * explicit name exclusion drops SFPL's Library Support Services admin/
+   * technical-services building at 190 9th St — a dept-48 facility but not a
+   * public library location. Result: the Main Library + the 27 branches. ---------- */
+  var loadLibraries = makeSocrataPointLoader("fhhu-wqa7", "dept_id='48' AND common_name != 'Library Support Services'", "latitude", "longitude");
 
   registerNearestPointLayer({
     id: "library",
@@ -4965,9 +4967,10 @@ function initSFExplorer() {
    * only precinct polygons), so the layer reads the hand-curated
    * data/app/early-voting-sites.json (network-first roster) transcribed from
    * the Department of Elections pages: the City Hall Voting Center + the
-   * City's 37 official ballot drop boxes. Refresh the file each election —
-   * the card names the election the sites belong to via each feature's
-   * `election` property, so a stale file is visibly stale. ---------- */
+   * City's 37 official ballot drop boxes. Refresh the file each election
+   * TOGETHER WITH the election name in the intro below — the intro is what
+   * makes a stale list visibly stale on the card (each feature's `election`
+   * property records the same label for provenance but is not rendered). ---------- */
   var loadVotingSites = makeCached(function () {
     return fetchJSONWithRetry("data/app/early-voting-sites.json", {}, 2);
   });
@@ -4979,7 +4982,7 @@ function initSFExplorer() {
     fill: "#E060A8",
     label: "Voting Center & Ballot Drop-off",
     loader: loadVotingSites,
-    intro: "Official SF voting center and 24/7 ballot drop-off sites, hand-transcribed from the Department of Elections (drop boxes open ~29 days before each election — confirm current sites at sf.gov/return-your-ballot):",
+    intro: "Official SF voting center and 24/7 ballot drop-off sites, as published by the Department of Elections for the June 2, 2026 primary (the Department describes the 37 drop boxes as recurring; boxes open ~29 days before each election — confirm current sites at sf.gov/return-your-ballot):",
     line: function (props) {
       var name = findPropCI(props, ["name"]);
       var type = findPropCI(props, ["type"]);

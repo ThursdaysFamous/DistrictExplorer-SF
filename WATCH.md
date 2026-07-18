@@ -39,12 +39,13 @@ won't. Record the run in the runbook's drill-evidence habit and stamp the date a
 
 | When | What | Last done |
 |---|---|---|
-| ~1 month before each election, when sf.gov posts the election's drop-box / voting-center locations | Refresh `data/app/early-voting-sites.json` (hand-transcribe the official list from sf.gov/return-your-ballot + the Voter Information Pamphlet, geocode, verify pins against the Department's own locations map), update the `source_url` in `scripts/validate_sources.py` PROVENANCE if the page moved, and bump `sw.cache_name` in `metro-worksheet.json` + regenerate | 2026-07 (initial — June 2026 primary list; the Department describes the 37 drop boxes in recurring terms) |
+| ~1 month before each election, when sf.gov posts the election's drop-box / voting-center locations | Refresh `data/app/early-voting-sites.json` (hand-transcribe the official list from sf.gov/return-your-ballot + the Voter Information Pamphlet, geocode, verify pins against the Department's own locations map), update the election name in the `early-voting` layer's `intro` in `index.html`, update the `source_url` in `scripts/validate_sources.py` PROVENANCE if the page moved, and bump `sw.cache_name` in `metro-worksheet.json` + regenerate | 2026-07 (initial — June 2026 primary list; the Department describes the 37 drop boxes in recurring terms) |
 
-The layer's honesty depends on this row: each feature carries the election label it was
-published for, so a stale file is visibly stale rather than silently wrong — but refresh it
-anyway. The transcription is manual (no open point dataset exists on DataSF — re-check the
-catalog each cycle in case that changes).
+The layer's honesty depends on this row: the card **intro** names the election the shipped
+list was published for, so a stale file is visibly stale rather than silently wrong — but
+refresh it anyway (each feature also carries an `election` property for provenance; it is
+not rendered). The transcription is manual (no open point dataset exists on DataSF —
+re-check the catalog each cycle in case that changes).
 
 ---
 

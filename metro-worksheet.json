@@ -185,7 +185,7 @@
       "label": "Library",
       "group": "geography",
       "area_rank": 13,
-      "rank_note": "SFPL locations from City Facilities (nearest 3, straight-line; 29 dept_id=48 rows) - point layer, topmost"
+      "rank_note": "SFPL locations from City Facilities (nearest 3, straight-line; Main Library + 27 branches, support facility excluded) - point layer, topmost"
     },
     {
       "id": "early-voting",
