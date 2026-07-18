@@ -69,6 +69,7 @@ const ROSTER_URLS = [
   "./data/app/congress-roster.json",
   "./data/app/ca-senate-members.json",
   "./data/app/ca-assembly-members.json",
+  "./data/app/sf-supervisor-members.json",
 ];
 /* ==== GENERATED:END sw-metro-config ==== */
 /* ==== METRO:END sw-config ==== */
