@@ -167,7 +167,19 @@ The three chambers moved from live TIGERweb to same-origin, cache-first `data/ap
 
 **Negative-point moved (§7):** the TIGERweb chambers are **water-inclusive** — they cover the SF Bay — so the old Bay negative point (37.80, -122.355) now falls *inside* a district and `validate_index`'s "negative point misses every anchor geometry" gate rejected it. Moved to the **open Pacific west of Ocean Beach, beyond CA state waters** (37.74, -122.59), which misses every layer including the chambers (the SF analog of CHI's Indiana-waters negative point).
 
-**Still pending in Thread 5:** the officeholder rosters (US House / CA Senate / CA Assembly / SF supervisors) via scraper→builder pairs + weekly workflows, and the SF source-freshness manifest (`validate_sources.py`).
+**Thread 5 (pipeline, part 2) — officeholder rosters (2026-07-18):**
+
+| Roster | Source | Builder | Count | City Hall |
+|---|---|---|---|---|
+| `congress-roster.json` | unitedstates/congress-legislators | `build_congress_roster.py` (filter CA) | 51 (52 seats, 1 vacant) | Rep. Nancy Pelosi (D) |
+| `ca-senate-members.json` | OpenStates `ca.csv` | `build_ca_legislature_roster.py` (upper) | 40 | Sen. Scott Wiener (D) |
+| `ca-assembly-members.json` | OpenStates `ca.csv` | `build_ca_legislature_roster.py` (lower) | 80 | Asm. Matt Haney (D) |
+
+Each chamber's `loadRoster` now fetches its same-origin roster and joins by district number (the `registerIlgaChamber` path). **Names are never guessed:** a vacant district or a fetch failure degrades to "district number + chamber directory". Refreshed weekly by `update-congress-roster.yml` (Mon) and `update-ca-legislature-roster.yml` (Tue), each opening a PR for a human look before it ships. The chambers now render + are smoke-tested with the officeholder, fully offline.
+
+**Pipeline cleanup:** removed the inherited Chicago roster pipeline that doesn't apply to SF and would otherwise run weekly and inject Chicago rosters — 8 scripts (`ilga_scraper` / `build_il_roster` / `cpd_district_scraper` / `build_cpd_roster` / `ccpsa_scraper` / `build_ccpsa_roster` / `will_county_board_scraper` / `build_will_county_board_roster`) and 4 workflows (`update-{ilga,cpd,ccpsa,will-county-board}-roster.yml`).
+
+**Still pending in Thread 5:** the **SF supervisor name** — its layer is a `registerPolygonLayer`, which has no roster-join hook (only static/property fields), so wiring the DataSF `sup_name` needs a bespoke layer conversion, unlike the factory-based chambers — and the **SF source-freshness manifest** (`validate_sources.py` still carries the inherited CHI manifest).
 
 ## Performance parity for the SF port (see playbook §13)
 

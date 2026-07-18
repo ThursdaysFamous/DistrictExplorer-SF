@@ -1,0 +1,461 @@
+{
+  "1": {
+    "name": "James Gallagher",
+    "party": "Republican",
+    "url": null,
+    "capitolOffice": [
+      "408 Cannon House Office Building Washington DC 20515-0501",
+      "Phone: 202-225-3076"
+    ]
+  },
+  "2": {
+    "name": "Jared Huffman",
+    "party": "Democrat",
+    "url": "https://huffman.house.gov",
+    "capitolOffice": [
+      "2330 Rayburn House Office Building Washington DC 20515-0502",
+      "Phone: 202-225-5161"
+    ]
+  },
+  "3": {
+    "name": "Kevin Kiley",
+    "party": "Independent",
+    "url": "https://kiley.house.gov",
+    "capitolOffice": [
+      "2445 Rayburn House Office Building Washington DC 20515-0503",
+      "Phone: 202-225-2523"
+    ]
+  },
+  "4": {
+    "name": "Mike Thompson",
+    "party": "Democrat",
+    "url": "https://mikethompson.house.gov",
+    "capitolOffice": [
+      "268 Cannon House Office Building Washington DC 20515-0504",
+      "Phone: 202-225-3311"
+    ]
+  },
+  "5": {
+    "name": "Tom McClintock",
+    "party": "Republican",
+    "url": "https://mcclintock.house.gov",
+    "capitolOffice": [
+      "2256 Rayburn House Office Building Washington DC 20515-0505",
+      "Phone: 202-225-2511"
+    ]
+  },
+  "6": {
+    "name": "Ami Bera",
+    "party": "Democrat",
+    "url": "https://bera.house.gov",
+    "capitolOffice": [
+      "172 Cannon House Office Building Washington DC 20515-0506",
+      "Phone: 202-225-5716"
+    ]
+  },
+  "7": {
+    "name": "Doris O. Matsui",
+    "party": "Democrat",
+    "url": "https://matsui.house.gov",
+    "capitolOffice": [
+      "2206 Rayburn House Office Building Washington DC 20515-0507",
+      "Phone: 202-225-7163"
+    ]
+  },
+  "8": {
+    "name": "John Garamendi",
+    "party": "Democrat",
+    "url": "https://garamendi.house.gov",
+    "capitolOffice": [
+      "2428 Rayburn House Office Building Washington DC 20515-0508",
+      "Phone: 202-225-1880"
+    ]
+  },
+  "9": {
+    "name": "Josh Harder",
+    "party": "Democrat",
+    "url": "https://harder.house.gov",
+    "capitolOffice": [
+      "209 Cannon House Office Building Washington DC 20515-0509",
+      "Phone: 202-225-4540"
+    ]
+  },
+  "10": {
+    "name": "Mark DeSaulnier",
+    "party": "Democrat",
+    "url": "https://desaulnier.house.gov",
+    "capitolOffice": [
+      "2134 Rayburn House Office Building Washington DC 20515-0510",
+      "Phone: 202-225-2095"
+    ]
+  },
+  "11": {
+    "name": "Nancy Pelosi",
+    "party": "Democrat",
+    "url": "https://pelosi.house.gov",
+    "capitolOffice": [
+      "1236 Longworth House Office Building Washington DC 20515-0511",
+      "Phone: 202-225-4965"
+    ]
+  },
+  "12": {
+    "name": "Lateefah Simon",
+    "party": "Democrat",
+    "url": "https://simon.house.gov",
+    "capitolOffice": [
+      "1023 Longworth House Office Building Washington DC 20515-0512",
+      "Phone: 202-225-2661"
+    ]
+  },
+  "13": {
+    "name": "Adam Gray",
+    "party": "Democrat",
+    "url": "https://gray.house.gov",
+    "capitolOffice": [
+      "1230 Longworth House Office Building Washington DC 20515-0513",
+      "Phone: 202-225-1947"
+    ]
+  },
+  "15": {
+    "name": "Kevin Mullin",
+    "party": "Democrat",
+    "url": "https://kevinmullin.house.gov",
+    "capitolOffice": [
+      "1404 Longworth House Office Building Washington DC 20515-0515",
+      "Phone: 202-225-3531"
+    ]
+  },
+  "16": {
+    "name": "Sam T. Liccardo",
+    "party": "Democrat",
+    "url": "https://liccardo.house.gov",
+    "capitolOffice": [
+      "1117 Longworth House Office Building Washington DC 20515-0516",
+      "Phone: 202-225-8104"
+    ]
+  },
+  "17": {
+    "name": "Ro Khanna",
+    "party": "Democrat",
+    "url": "https://khanna.house.gov",
+    "capitolOffice": [
+      "306 Cannon House Office Building Washington DC 20515-0517",
+      "Phone: 202-225-2631"
+    ]
+  },
+  "18": {
+    "name": "Zoe Lofgren",
+    "party": "Democrat",
+    "url": "https://lofgren.house.gov",
+    "capitolOffice": [
+      "1401 Longworth House Office Building Washington DC 20515-0518",
+      "Phone: 202-225-3072"
+    ]
+  },
+  "19": {
+    "name": "Jimmy Panetta",
+    "party": "Democrat",
+    "url": "https://panetta.house.gov",
+    "capitolOffice": [
+      "200 Cannon House Office Building Washington DC 20515-0519",
+      "Phone: 202-225-2861"
+    ]
+  },
+  "20": {
+    "name": "Vince Fong",
+    "party": "Republican",
+    "url": "https://fong.house.gov",
+    "capitolOffice": [
+      "243 Cannon House Office Building Washington DC 20515-0520",
+      "Phone: 202-225-2915"
+    ]
+  },
+  "21": {
+    "name": "Jim Costa",
+    "party": "Democrat",
+    "url": "https://costa.house.gov",
+    "capitolOffice": [
+      "2081 Rayburn House Office Building Washington DC 20515-0521",
+      "Phone: 202-225-3341"
+    ]
+  },
+  "22": {
+    "name": "David G. Valadao",
+    "party": "Republican",
+    "url": "https://valadao.house.gov",
+    "capitolOffice": [
+      "2465 Rayburn House Office Building Washington DC 20515-0522",
+      "Phone: 202-225-4695"
+    ]
+  },
+  "23": {
+    "name": "Jay Obernolte",
+    "party": "Republican",
+    "url": "https://obernolte.house.gov",
+    "capitolOffice": [
+      "2433 Rayburn House Office Building Washington DC 20515-0523",
+      "Phone: 202-225-5861"
+    ]
+  },
+  "24": {
+    "name": "Salud O. Carbajal",
+    "party": "Democrat",
+    "url": "https://carbajal.house.gov",
+    "capitolOffice": [
+      "2331 Rayburn House Office Building Washington DC 20515-0524",
+      "Phone: 202-225-3601"
+    ]
+  },
+  "25": {
+    "name": "Raul Ruiz",
+    "party": "Democrat",
+    "url": "https://ruiz.house.gov",
+    "capitolOffice": [
+      "2342 Rayburn House Office Building Washington DC 20515-0525",
+      "Phone: 202-225-5330"
+    ]
+  },
+  "26": {
+    "name": "Julia Brownley",
+    "party": "Democrat",
+    "url": "https://juliabrownley.house.gov",
+    "capitolOffice": [
+      "2262 Rayburn House Office Building Washington DC 20515-0526",
+      "Phone: 202-225-5811"
+    ]
+  },
+  "27": {
+    "name": "George Whitesides",
+    "party": "Democrat",
+    "url": "https://whitesides.house.gov",
+    "capitolOffice": [
+      "1504 Longworth House Office Building Washington DC 20515-0527",
+      "Phone: 202-225-1956"
+    ]
+  },
+  "28": {
+    "name": "Judy Chu",
+    "party": "Democrat",
+    "url": "https://chu.house.gov",
+    "capitolOffice": [
+      "2423 Rayburn House Office Building Washington DC 20515-0528",
+      "Phone: 202-225-5464"
+    ]
+  },
+  "29": {
+    "name": "Luz M. Rivas",
+    "party": "Democrat",
+    "url": "https://rivas.house.gov",
+    "capitolOffice": [
+      "1319 Longworth House Office Building Washington DC 20515-0529",
+      "Phone: 202-225-6131"
+    ]
+  },
+  "30": {
+    "name": "Laura Friedman",
+    "party": "Democrat",
+    "url": "https://friedman.house.gov",
+    "capitolOffice": [
+      "1517 Longworth House Office Building Washington DC 20515-0530",
+      "Phone: 202-225-4176"
+    ]
+  },
+  "31": {
+    "name": "Gilbert Ray Cisneros, Jr.",
+    "party": "Democrat",
+    "url": "https://cisneros.house.gov",
+    "capitolOffice": [
+      "2463 Rayburn House Office Building Washington DC 20515-0531",
+      "Phone: 202-225-5256"
+    ]
+  },
+  "32": {
+    "name": "Brad Sherman",
+    "party": "Democrat",
+    "url": "https://sherman.house.gov",
+    "capitolOffice": [
+      "2365 Rayburn House Office Building Washington DC 20515-0532",
+      "Phone: 202-225-5911"
+    ]
+  },
+  "33": {
+    "name": "Pete Aguilar",
+    "party": "Democrat",
+    "url": "https://aguilar.house.gov",
+    "capitolOffice": [
+      "108 Cannon House Office Building Washington DC 20515-0533",
+      "Phone: 202-225-3201"
+    ]
+  },
+  "34": {
+    "name": "Jimmy Gomez",
+    "party": "Democrat",
+    "url": "https://gomez.house.gov",
+    "capitolOffice": [
+      "506 Cannon House Office Building Washington DC 20515-0534",
+      "Phone: 202-225-6235"
+    ]
+  },
+  "35": {
+    "name": "Norma J. Torres",
+    "party": "Democrat",
+    "url": "https://torres.house.gov",
+    "capitolOffice": [
+      "2227 Rayburn House Office Building Washington DC 20515-0535",
+      "Phone: 202-225-6161"
+    ]
+  },
+  "36": {
+    "name": "Ted Lieu",
+    "party": "Democrat",
+    "url": "https://lieu.house.gov",
+    "capitolOffice": [
+      "2454 Rayburn House Office Building Washington DC 20515-0536",
+      "Phone: 202-225-3976"
+    ]
+  },
+  "37": {
+    "name": "Sydney Kamlager-Dove",
+    "party": "Democrat",
+    "url": "https://kamlager-dove.house.gov",
+    "capitolOffice": [
+      "144 Cannon House Office Building Washington DC 20515-0537",
+      "Phone: 202-225-7084"
+    ]
+  },
+  "38": {
+    "name": "Linda T. Sánchez",
+    "party": "Democrat",
+    "url": "https://lindasanchez.house.gov",
+    "capitolOffice": [
+      "2309 Rayburn House Office Building Washington DC 20515-0538",
+      "Phone: 202-225-6676"
+    ]
+  },
+  "39": {
+    "name": "Mark Takano",
+    "party": "Democrat",
+    "url": "https://takano.house.gov",
+    "capitolOffice": [
+      "2078 Rayburn House Office Building Washington DC 20515-0539",
+      "Phone: 202-225-2305"
+    ]
+  },
+  "40": {
+    "name": "Young Kim",
+    "party": "Republican",
+    "url": "https://youngkim.house.gov",
+    "capitolOffice": [
+      "2439 Rayburn House Office Building Washington DC 20515-0540",
+      "Phone: 202-225-4111"
+    ]
+  },
+  "41": {
+    "name": "Ken Calvert",
+    "party": "Republican",
+    "url": "https://calvert.house.gov",
+    "capitolOffice": [
+      "2205 Rayburn House Office Building Washington DC 20515-0541",
+      "Phone: 202-225-1986"
+    ]
+  },
+  "42": {
+    "name": "Robert Garcia",
+    "party": "Democrat",
+    "url": "https://robertgarcia.house.gov",
+    "capitolOffice": [
+      "109 Cannon House Office Building Washington DC 20515-0542",
+      "Phone: 202-225-7924"
+    ]
+  },
+  "43": {
+    "name": "Maxine Waters",
+    "party": "Democrat",
+    "url": "https://waters.house.gov",
+    "capitolOffice": [
+      "2221 Rayburn House Office Building Washington DC 20515-0543",
+      "Phone: 202-225-2201"
+    ]
+  },
+  "44": {
+    "name": "Nanette Diaz Barragán",
+    "party": "Democrat",
+    "url": "https://barragan.house.gov",
+    "capitolOffice": [
+      "2312 Rayburn House Office Building Washington DC 20515-0544",
+      "Phone: 202-225-8220"
+    ]
+  },
+  "45": {
+    "name": "Derek Tran",
+    "party": "Democrat",
+    "url": "https://tran.house.gov",
+    "capitolOffice": [
+      "1127 Longworth House Office Building Washington DC 20515-0545",
+      "Phone: 202-225-2415"
+    ]
+  },
+  "46": {
+    "name": "J. Luis Correa",
+    "party": "Democrat",
+    "url": "https://correa.house.gov",
+    "capitolOffice": [
+      "2082 Rayburn House Office Building Washington DC 20515-0546",
+      "Phone: 202-225-2965"
+    ]
+  },
+  "47": {
+    "name": "Dave Min",
+    "party": "Democrat",
+    "url": "https://min.house.gov",
+    "capitolOffice": [
+      "1034 Longworth House Office Building Washington DC 20515-0547",
+      "Phone: 202-225-5611"
+    ]
+  },
+  "48": {
+    "name": "Darrell Issa",
+    "party": "Republican",
+    "url": "https://issa.house.gov",
+    "capitolOffice": [
+      "2108 Rayburn House Office Building Washington DC 20515-0548",
+      "Phone: 202-225-5672"
+    ]
+  },
+  "49": {
+    "name": "Mike Levin",
+    "party": "Democrat",
+    "url": "https://levin.house.gov",
+    "capitolOffice": [
+      "2352 Rayburn House Office Building Washington DC 20515-0549",
+      "Phone: 202-225-3906"
+    ]
+  },
+  "50": {
+    "name": "Scott H. Peters",
+    "party": "Democrat",
+    "url": "https://scottpeters.house.gov",
+    "capitolOffice": [
+      "2369 Rayburn House Office Building Washington DC 20515-0550",
+      "Phone: 202-225-0508"
+    ]
+  },
+  "51": {
+    "name": "Sara Jacobs",
+    "party": "Democrat",
+    "url": "https://sarajacobs.house.gov",
+    "capitolOffice": [
+      "2348 Rayburn House Office Building Washington DC 20515-0551",
+      "Phone: 202-225-2040"
+    ]
+  },
+  "52": {
+    "name": "Juan Vargas",
+    "party": "Democrat",
+    "url": "https://vargas.house.gov",
+    "capitolOffice": [
+      "2467 Rayburn House Office Building Washington DC 20515-0552",
+      "Phone: 202-225-8045"
+    ]
+  }
+}
