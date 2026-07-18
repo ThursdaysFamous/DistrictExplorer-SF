@@ -18,7 +18,7 @@
 //      R2-5/R2-6 already flatten it? Decides whether canvas is worth the port.
 //
 // Like smoke_test.mjs it depends only on the app shell + the three same-origin
-// no-API layers (school-board, il-supreme-court, ccbr) — never the live
+// no-API layers (supervisor-district, neighborhood, police-district) — never the live
 // district APIs, which are flaky/blocked in CI and the sandbox. It serves the
 // repo itself over a tiny gzip server (so transfer sizes mirror GitHub Pages)
 // and, when scripts/vendor/leaflet is present (see vendor_leaflet.sh), serves
@@ -50,9 +50,9 @@ const BOOT_RUNS = Number(process.env.BOOT_RUNS || 7);
 // hand — this analysis tool isn't a generate_metro_files.py target, so no
 // GENERATED region here). If the worksheet's anchor point/offline layers change,
 // update these to match.
-const POINT = "41.88250,-87.62850"; // downtown Loop — inside all three no-API layers
-const OFFLINE = ["school-board", "il-supreme-court", "ccbr"];
-const POINT2 = "41.99000,-87.66000"; // school-board D4 — the point-move target
+const POINT = "37.77927,-122.41924"; // SF City Hall — inside all three offline anchors
+const OFFLINE = ["supervisor-district", "neighborhood", "police-district"];
+const POINT2 = "37.79550,-122.39370"; // Ferry Building (Supervisor District 3) — the point-move target
 
 const VDIR = join(REPO, "scripts", "vendor", "leaflet");
 const LEAFLET = existsSync(join(VDIR, "leaflet.js")) && existsSync(join(VDIR, "leaflet.css"))
@@ -104,13 +104,13 @@ async function wire(page) {
 }
 
 // Boot-time observers, installed before any app script runs: capture the exact
-// moment the app assigns window.ChiExplorer (end of the boot IIFE) and collect
+// moment the app assigns window.SFExplorer (end of the boot IIFE) and collect
 // long tasks; expose a card-ready waiter for the interaction phases.
 const INIT = `
   window.__lt = [];
   try { new PerformanceObserver((l) => { for (const e of l.getEntries()) window.__lt.push({ start: e.startTime, dur: e.duration }); }).observe({ type: "longtask", buffered: true }); } catch (e) {}
   window.__readyTs = null;
-  (function () { var _chi; Object.defineProperty(window, "ChiExplorer", { configurable: true,
+  (function () { var _chi; Object.defineProperty(window, "SFExplorer", { configurable: true,
     get: function () { return _chi; },
     set: function (v) { if (window.__readyTs === null) window.__readyTs = performance.now(); _chi = v; } }); })();
   window.__waitCards = async function (ids) {
@@ -221,22 +221,22 @@ try {
     await page.waitForTimeout(1500);
     const firstClassify = await profileInteraction(page, cdp, async (a) => {
       const [lat, lng] = a.point.split(",").map(Number); const t0 = performance.now();
-      window.ChiExplorer.setSelectedPoint(lat, lng); await window.__waitCards(a.ids); return performance.now() - t0;
+      window.SFExplorer.setSelectedPoint(lat, lng); await window.__waitCards(a.ids); return performance.now() - t0;
     }, { point: POINT, ids: OFFLINE });
     const pointMove = await profileInteraction(page, cdp, async (a) => {
       const [lat, lng] = a.point.split(",").map(Number); const t0 = performance.now();
-      window.ChiExplorer.setSelectedPoint(lat, lng);
-      const el = document.getElementById("card-school-board");
+      window.SFExplorer.setSelectedPoint(lat, lng);
+      const el = document.getElementById("card-supervisor-district");
       for (let i = 0; i < 300; i++) { if (el && !el.querySelector(".loading-row")) break; await new Promise((r) => setTimeout(r, 20)); }
       return performance.now() - t0;
     }, { point: POINT2 });
     // steady-state hops, all downtown (in-coverage) so no coverage-miss async skew
     const hops = [];
-    for (const p of [POINT, "41.8900,-87.6300", "41.8750,-87.6250", "41.8950,-87.6350", "41.8800,-87.6280", POINT]) {
+    for (const p of [POINT, "37.7825,-122.4180", "37.7770,-122.4160", "37.7850,-122.4120", "37.7795,-122.4240", POINT]) {
       const ms = await page.evaluate(async (pt) => {
         const [lat, lng] = pt.split(",").map(Number); const t0 = performance.now();
-        window.ChiExplorer.setSelectedPoint(lat, lng);
-        const el = document.getElementById("card-school-board");
+        window.SFExplorer.setSelectedPoint(lat, lng);
+        const el = document.getElementById("card-supervisor-district");
         for (let i = 0; i < 300; i++) { if (el && !el.querySelector(".loading-row")) break; await new Promise((r) => setTimeout(r, 16)); }
         return performance.now() - t0;
       }, p);
@@ -257,15 +257,15 @@ try {
     await page.waitForFunction(() => window.__readyTs !== null, null, { timeout: 45000 });
     await page.waitForTimeout(400);
     const coldToggle = await profileInteraction(page, cdp, async () => {
-      const box = document.getElementById("toggle-school-board"); const t0 = performance.now(); box.click();
-      const el = document.getElementById("card-school-board");
+      const box = document.getElementById("toggle-supervisor-district"); const t0 = performance.now(); box.click();
+      const el = document.getElementById("card-supervisor-district");
       for (let i = 0; i < 400; i++) { if (el && !el.querySelector(".loading-row") && document.querySelectorAll("#map path").length > 2) break; await new Promise((r) => setTimeout(r, 10)); }
       return performance.now() - t0;
     }, null);
     const offT = [], onT = [];
     for (let i = 0; i < 5; i++) {
-      offT.push(r2(await page.evaluate(async () => { const b = document.getElementById("toggle-school-board"); const t0 = performance.now(); b.click(); await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))); return performance.now() - t0; })));
-      onT.push(r2(await page.evaluate(async () => { const b = document.getElementById("toggle-school-board"); const t0 = performance.now(); b.click(); for (let i = 0; i < 200; i++) { if (document.querySelectorAll("#map path").length > 2) break; await new Promise((r) => setTimeout(r, 8)); } return performance.now() - t0; })));
+      offT.push(r2(await page.evaluate(async () => { const b = document.getElementById("toggle-supervisor-district"); const t0 = performance.now(); b.click(); await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))); return performance.now() - t0; })));
+      onT.push(r2(await page.evaluate(async () => { const b = document.getElementById("toggle-supervisor-district"); const t0 = performance.now(); b.click(); for (let i = 0; i < 200; i++) { if (document.querySelectorAll("#map path").length > 2) break; await new Promise((r) => setTimeout(r, 8)); } return performance.now() - t0; })));
     }
     results.toggle = { coldToggleOn_wallMs: coldToggle.wallMs, coldToggleOn_cpuActiveMs: coldToggle.cpuActiveMs, coldToggleOn_topFns: coldToggle.top,
       warmToggleOff_ms: { median: r2(median(offT)), runs: offT }, warmToggleOn_ms: { median: r2(median(onT)), runs: onT } };
@@ -301,7 +301,7 @@ try {
         svgEls: document.querySelectorAll("#map svg").length, highlights: hi.length, highlightFilterPx: filterPx, dropShadowRules: ds };
     });
     const panRun = () => pageB.evaluate(async () => {
-      const frames = []; let last = performance.now(); const map = window.ChiExplorer && window.ChiExplorer.map;
+      const frames = []; let last = performance.now(); const map = window.SFExplorer && window.SFExplorer.map;
       return await new Promise((resolve) => { let n = 0;
         function step() { const now = performance.now(); frames.push(now - last); last = now; if (map) map.panBy([6, 4], { animate: false }); if (++n < 60) requestAnimationFrame(step); else resolve(frames.slice(2)); }
         requestAnimationFrame(() => { last = performance.now(); requestAnimationFrame(step); }); });
@@ -334,8 +334,8 @@ try {
   // is justified; a flat profile => R2-5/R2-6 already handled it.
   console.log(`\n[5/5] Pan/zoom reproject (canvas gate) …`);
   {
-    const MANY = ["school-board", "il-supreme-court", "ccbr", "congress", "il-senate", "il-house"];
-    const LEGIS = ["congress", "il-senate", "il-house"];
+    const MANY = ["supervisor-district", "neighborhood", "police-district", "congress", "ca-senate", "ca-assembly"];
+    const LEGIS = ["congress", "ca-senate", "ca-assembly"];
     const ctx = await newCtx(browser); const page = await bootPage(ctx); const cdp = await ctx.newCDPSession(page);
     await page.goto(`${BASE}#point=${POINT}&layers=${MANY.join(",")}`, { waitUntil: "domcontentloaded" });
     await page.waitForFunction(() => window.__readyTs !== null, null, { timeout: 45000 });
@@ -348,18 +348,18 @@ try {
     // whether Leaflet reproject (_update / project / _updatePath / pointsToPath)
     // leads the work — the signal that canvas would remove.
     const panProf = await profileInteraction(page, cdp, async () => {
-      const map = window.ChiExplorer.map; const t0 = performance.now();
+      const map = window.SFExplorer.map; const t0 = performance.now();
       for (let i = 0; i < 40; i++) { map.panBy([8, 5], { animate: false }); await new Promise((r) => requestAnimationFrame(r)); }
       return performance.now() - t0;
     }, null);
     const zoomProf = await profileInteraction(page, cdp, async () => {
-      const map = window.ChiExplorer.map; const z0 = map.getZoom(); const t0 = performance.now();
+      const map = window.SFExplorer.map; const z0 = map.getZoom(); const t0 = performance.now();
       for (let i = 0; i < 6; i++) { map.setZoom(z0 + 1, { animate: false }); map.setZoom(z0, { animate: false }); await new Promise((r) => requestAnimationFrame(r)); }
       return performance.now() - t0;
     }, null);
 
     const panFrames = () => page.evaluate(async () => {
-      const map = window.ChiExplorer.map; const frames = []; let last = performance.now();
+      const map = window.SFExplorer.map; const frames = []; let last = performance.now();
       return await new Promise((resolve) => { let n = 0;
         function step() { const now = performance.now(); frames.push(now - last); last = now; map.panBy([6, 4], { animate: false }); if (++n < 50) requestAnimationFrame(step); else resolve(frames.slice(2)); }
         requestAnimationFrame(() => { last = performance.now(); requestAnimationFrame(step); }); });
