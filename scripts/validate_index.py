@@ -3,8 +3,8 @@
 Post-rewrite sanity gate for the app and its generated data files.
 
 The weekly roster workflows regenerate the officeholder rosters under
-data/app/*.json (scripts/build_il_roster.py, build_cpd_roster.py) and open a
-PR. Those builders validate their *input* (they refuse an incomplete roster),
+data/app/*.json (scripts/build_congress_roster.py, build_ca_legislature_roster.py)
+and open a PR. Those builders validate their *input* (they refuse an incomplete roster),
 but this script is the *output*-side gate: run it after any regeneration and
 before opening a PR to confirm the app and its data are still coherent.
 
@@ -72,9 +72,9 @@ CAPABILITIES = [
 # The constants below are GENERATED from metro-worksheet.json (Conversion 2 —
 # edit the worksheet, run scripts/generate_metro_files.py). Fork history worth
 # keeping by hand: this fork's registerLayer floor arithmetic is 1 function
-# definition + 9 direct registerLayer() calls + 5 factory bodies; it was
-# lowered 16 -> 15 when police-station/fire-station moved onto the
-# registerNearestPointLayer factory (-2 direct calls, +1 body).
+# definition + 5 factory bodies (registerPolygonLayer / registerNearestPointLayer
+# / registerSchoolZone / registerCpsNetwork / registerIlgaChamber) + 1 bespoke
+# registerLayer() call (the elementary-attendance-area block) = 7.
 # ==== GENERATED:BEGIN validator-config ====
 # Floor, not a moving target: new layers only raise this; a drop means
 # modules were lost.
@@ -103,6 +103,9 @@ GEOMETRY_FILES = {
 
 # file -> minimum key count (officeholder rosters).
 ROSTER_FILES = {
+    "congress-roster.json": 45,  # CA U.S. House reps (52 seats; vacancies allowed) - unitedstates/congress-legislators
+    "ca-senate-members.json": 38,  # CA State Senate (40) - OpenStates
+    "ca-assembly-members.json": 76,  # CA State Assembly (80) - OpenStates
 }
 # ==== GENERATED:END validator-config ====
 

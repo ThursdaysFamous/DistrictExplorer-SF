@@ -5286,10 +5286,10 @@ function initSFExplorer() {
    *     same-origin cache-first load. The engine falls back to live
    *     loadTigerLayer(layerIndex) if a fork ships no file, so layerIndex stays
    *     as the documented fallback.
-   *   - Rosters (Thread 5, still pending): officeholder names ride a scraped,
-   *     same-origin data/app/*-members.json roster. Until those land, loadRoster
-   *     is an empty placeholder and each card honestly shows the district number +
-   *     the official chamber directory — no guessed names.
+   *   - Rosters (Thread 5): officeholder names ride scraped, same-origin
+   *     data/app/*-members.json rosters, joined by district number. A vacant
+   *     district or a roster-fetch failure degrades to "district number + chamber
+   *     directory" — the factory's empty-member path, so a name is never guessed.
    * ======================================================================= */
 
   // Pre-built, SF-clipped legislative geometry (data/app), fetched cache-first on
@@ -5298,10 +5298,12 @@ function initSFExplorer() {
   var loadCaSenateDistricts = makeCached(function () { return fetchJSONWithRetry("data/app/ca-senate-districts.json", {}, 2); });
   var loadCaAssemblyDistricts = makeCached(function () { return fetchJSONWithRetry("data/app/ca-assembly-districts.json", {}, 2); });
 
-  // Roster placeholder: an empty roster makes each chamber card degrade to
-  // "district number + directory link" — the factory's designed empty path. A
-  // later thread replaces each loadRoster with a fetch of a scraped roster.
-  var loadEmptyRoster = makeCached(function () { return Promise.resolve({}); });
+  // Scraped, same-origin officeholder rosters (data/app), fetched lazily on first
+  // click and joined by district number. Refreshed weekly by the update-*-roster
+  // workflows; built by build_congress_roster.py / build_ca_legislature_roster.py.
+  var loadCongressRoster = makeCached(function () { return fetchJSONWithRetry("data/app/congress-roster.json", {}, 2); });
+  var loadCaSenateMembers = makeCached(function () { return fetchJSONWithRetry("data/app/ca-senate-members.json", {}, 2); });
+  var loadCaAssemblyMembers = makeCached(function () { return fetchJSONWithRetry("data/app/ca-assembly-members.json", {}, 2); });
 
   registerIlgaChamber({
     id: "congress",
@@ -5310,7 +5312,7 @@ function initSFExplorer() {
     loadDistricts: loadCongressDistricts,
     districtFields: ["cd119", "cd118", "cdfp", "cd"],
     directoryUrl: "https://www.house.gov/representatives",
-    loadRoster: loadEmptyRoster,
+    loadRoster: loadCongressRoster,
     memberLabel: "Representative", capitolLabel: "Washington Office",
     profileLabel: "Member profile", directoryLabel: "House member directory",
     style: { color: "#14181C", weight: 2, fillColor: "#1D6F8B", fillOpacity: 0.05, dashArray: "8 3" }
@@ -5323,7 +5325,7 @@ function initSFExplorer() {
     loadDistricts: loadCaSenateDistricts,
     districtFields: ["sldu", "sldust"],
     directoryUrl: "https://www.senate.ca.gov/senators",
-    loadRoster: loadEmptyRoster,
+    loadRoster: loadCaSenateMembers,
     memberLabel: "State Senator", capitolLabel: "Capitol Office",
     profileLabel: "Senator profile", directoryLabel: "CA Senate directory",
     style: { color: "#4A2E8C", weight: 2, fillColor: "#4A2E8C", fillOpacity: 0.05, dashArray: "1 5" }
@@ -5336,7 +5338,7 @@ function initSFExplorer() {
     loadDistricts: loadCaAssemblyDistricts,
     districtFields: ["sldl", "sldlst"],
     directoryUrl: "https://www.assembly.ca.gov/assemblymembers",
-    loadRoster: loadEmptyRoster,
+    loadRoster: loadCaAssemblyMembers,
     memberLabel: "Assemblymember", capitolLabel: "Capitol Office",
     profileLabel: "Member profile", directoryLabel: "CA Assembly directory",
     style: { color: "#8C2E4A", weight: 2, fillColor: "#8C2E4A", fillOpacity: 0.05, dashArray: "5 1 2 1" }

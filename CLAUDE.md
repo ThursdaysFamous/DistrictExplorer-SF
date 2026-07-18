@@ -16,7 +16,7 @@ Chicago District Explorer: a single-file, dependency-light web app. Click a poin
 - Geocoders: address Photon (SF-bounded type-ahead); unbounded Photon (whole-coverage, sibling-metro lookup); POI Nominatim (office-address pin lookup, serial >=1s queue)
 - Ground truth: 37.77927,-122.41924 (SF City Hall (Civic Center)) → supervisor-district 5; neighborhood Tenderloin; police-district NORTHERN. Negative point 37.74000,-122.59000 (Open Pacific west of Ocean Beach, beyond CA state waters - outside every layer, including the water-inclusive TIGERweb legislative chambers).
 - Layers: 11 registered (political 4, safety 3, schools 2, geography 2); `registerLayer(` floor 7. Debug namespace `window.SFExplorer`.
-- Scheduled workflows: `validate-sources.yml` (1st of month 14:00 UTC).
+- Scheduled workflows: `update-congress-roster.yml` (Mon 13:00 UTC); `update-ca-legislature-roster.yml` (Tue 13:00 UTC); `validate-sources.yml` (1st of month 14:00 UTC).
 - Source registry: `scripts/validate_sources.py` (machine-checked monthly)
 <!-- ==== GENERATED:END metro-facts ==== -->
 

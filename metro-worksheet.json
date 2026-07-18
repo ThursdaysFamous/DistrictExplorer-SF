@@ -233,7 +233,23 @@
         "max_features": 8
       }
     ],
-    "rosters": []
+    "rosters": [
+      {
+        "file": "congress-roster.json",
+        "min_keys": 45,
+        "note": "CA U.S. House reps (52 seats; vacancies allowed) - unitedstates/congress-legislators"
+      },
+      {
+        "file": "ca-senate-members.json",
+        "min_keys": 38,
+        "note": "CA State Senate (40) - OpenStates"
+      },
+      {
+        "file": "ca-assembly-members.json",
+        "min_keys": 76,
+        "note": "CA State Assembly (80) - OpenStates"
+      }
+    ]
   },
   "sw": {
     "cache_name": "district-explorer-shell-sf-v1",
@@ -251,8 +267,18 @@
   },
   "workflows": [
     {
+      "file": "update-congress-roster.yml",
+      "purpose": "CA U.S. House roster refresh (unitedstates/congress-legislators)",
+      "schedule": "Mon 13:00 UTC"
+    },
+    {
+      "file": "update-ca-legislature-roster.yml",
+      "purpose": "CA State Senate + Assembly roster refresh (OpenStates)",
+      "schedule": "Tue 13:00 UTC"
+    },
+    {
       "file": "validate-sources.yml",
-      "purpose": "source freshness (SF manifest lands in the pipeline thread)",
+      "purpose": "source freshness (SF manifest re-derivation still pending)",
       "schedule": "1st of month 14:00 UTC"
     }
   ],

@@ -1,24 +1,21 @@
 #!/usr/bin/env python3
 """
-Build the IL U.S. House roster (district -> current officeholder) as a
-same-origin app-data file, so the congress card no longer downloads the full
-national roster to every browser.
+Build the CA U.S. House roster (district -> current officeholder) as a
+same-origin app-data file, so the congress card joins a ~10 KB roster instead of
+downloading the full national roster to every browser.
 
-index.html used to fetch unitedstates/congress-legislators'
-legislators-current.json (~1.5 MB, all ~538 members with every term each has
-ever served) at click time and filter it client-side for the one matching IL
-representative — using a few hundred bytes of a multi-megabyte payload. This
-script does that filtering once at build time and writes IL's 17 reps to
-data/app/congress-roster.json (~3 KB), which index.html fetches lazily on first
-click (same-origin, no CORS, no third-party host dependency at runtime).
-
-The source is the canonical single legislators-current.json file. This script
-downloads it (stdlib urllib, no extra dependencies) unless a local path is
-given, resolves the current officeholder per IL congressional district, and
-writes the roster JSON. A weekly GitHub Action
+index.html's congress layer fetches data/app/congress-roster.json lazily on
+first click and joins it to the pre-built CA House geometry by district number.
+This script resolves the current officeholder per CA congressional district from
+the canonical unitedstates/congress-legislators legislators-current.json and
+writes that roster (~10 KB), shaped for the registerIlgaChamber factory
+({district -> {name, party, url, capitolOffice:[lines]}}). A weekly GitHub Action
 (.github/workflows/update-congress-roster.yml) reruns this and opens a PR when
-the roster changes, so officeholder data still gets a human look before it
-ships.
+the roster changes, so officeholder data still gets a human look before it ships.
+
+Honesty: names are never guessed. A district whose seat is vacant simply doesn't
+appear in the roster, and the card falls back to "district number + House member
+directory" — the factory's empty-member path.
 
 Usage:
     python3 build_congress_roster.py [legislators-current.json] [output_dir]
@@ -34,11 +31,13 @@ import sys
 import urllib.request
 
 SOURCE_URL = "https://unitedstates.github.io/congress-legislators/legislators-current.json"
+STATE = "CA"
 
-# IL currently has 17 U.S. House districts. Refuse to overwrite the roster with
-# anything short of a full delegation — a truncated source download or an
-# upstream schema change should fail loudly, not ship a roster with holes.
-EXPECTED_DISTRICTS = 17
+# CA has 52 U.S. House districts. Refuse to overwrite the roster with a
+# suspiciously short result (a truncated download or an upstream schema change
+# should fail loudly), but allow for transient vacancies — a resigned/deceased
+# member's seat legitimately has no current officeholder until a special election.
+EXPECTED_DISTRICTS = 50
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_OUT_DIR = os.path.join(REPO_ROOT, "data", "app")
@@ -62,6 +61,18 @@ def rep_name(legislator):
     return last or first
 
 
+def capitol_office(term):
+    # The DC ("Washington") office — the one the source carries per term. Emit a
+    # clean list of lines (address, phone) the factory renders under the
+    # chamber's capitolLabel; drop empties so a partial record still renders.
+    lines = []
+    if term.get("address"):
+        lines.append(str(term["address"]))
+    if term.get("phone"):
+        lines.append("Phone: " + str(term["phone"]))
+    return lines
+
+
 def resolve_roster(legislators):
     # The current officeholder is the person whose most recent term is the seat
     # we're keying on — congress-legislators lists terms chronologically, so the
@@ -72,17 +83,20 @@ def resolve_roster(legislators):
         if not terms:
             continue
         term = terms[-1]
-        if term.get("type") != "rep" or term.get("state") != "IL":
+        if term.get("type") != "rep" or term.get("state") != STATE:
             continue
         district = term.get("district")
         if district is None:
             continue
-        roster[str(district)] = {
+        member = {
             "name": rep_name(legislator),
             "party": term.get("party"),
-            "phone": term.get("phone"),
             "url": term.get("url"),
         }
+        cap = capitol_office(term)
+        if cap:
+            member["capitolOffice"] = cap
+        roster[str(district)] = member
     return roster
 
 
@@ -110,9 +124,9 @@ def main():
 
     if len(roster) < EXPECTED_DISTRICTS:
         print(
-            f"WARNING: resolved {len(roster)}/{EXPECTED_DISTRICTS} IL U.S. House "
-            "districts — refusing to overwrite the roster with an incomplete "
-            "delegation",
+            f"WARNING: resolved {len(roster)} CA U.S. House districts "
+            f"(expected >= {EXPECTED_DISTRICTS}) — refusing to overwrite the "
+            "roster with an incomplete delegation",
             file=sys.stderr,
         )
         sys.exit(1)

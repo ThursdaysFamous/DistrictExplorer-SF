@@ -1,4 +1,4 @@
-// Headless boot smoke test — SF Thread-5 (pipeline: pre-built legislative geometry).
+// Headless boot smoke test — SF Thread-5 (pipeline: legislative geometry + rosters).
 // Serves the real index.html and drives it in Chromium via Playwright
 // (.github/workflows/smoke-test.yml on every PR). Asserts both the network-free
 // deliverables and the offline classification: the app boots on the SF map,
@@ -7,12 +7,12 @@
 // anchors (supervisor / neighborhood / police-district) classify SF City Hall
 // against the ground truth from same-origin data/app files, and the negative Bay
 // point honestly reports no district (never snaps to nearest); the three
-// legislative chambers (U.S. House / CA Senate / CA Assembly) now classify City
-// Hall from pre-built, SF-clipped same-origin geometry too. The ZIP stub and the
-// station + schools layers remain live DataSF/TIGERweb — not reachable from
-// CI/sandbox — so they are asserted present (registered) only; their
-// classification lands with the roster thread (this gate is re-derived each
-// thread — docs/METRO_EXPANSION_PLAYBOOK.md §9).
+// legislative chambers (U.S. House / CA Senate / CA Assembly) classify City Hall
+// from pre-built, SF-clipped same-origin geometry AND name the officeholder from
+// a scraped same-origin roster. The ZIP stub and the station + schools layers
+// remain live DataSF/TIGERweb — not reachable from CI/sandbox — so they are
+// asserted present (registered) only (this gate is re-derived each thread —
+// docs/METRO_EXPANSION_PLAYBOOK.md §9).
 //
 // Run locally against a static server:
 //     python3 -m http.server 8000 &
@@ -168,13 +168,19 @@ try {
   }
 
   // 2c. The three legislative chambers classify City Hall from pre-built,
-  //     SF-clipped same-origin geometry (data/app) — deterministic, no live API.
+  //     SF-clipped same-origin geometry (data/app), and now name the officeholder
+  //     from the scraped same-origin roster (data/app/*-members.json / roster).
   //     They use water-inclusive TIGERweb boundaries, so — unlike the
   //     shoreline-clipped anchors — they legitimately DO contain the negative Bay
   //     point (§7); they are checked positive-only here, deliberately not in the
-  //     negative-point block above.
+  //     negative-point block above. The specific names change week to week, so we
+  //     assert the member's ROLE label (proof a roster row joined), not a name.
   {
-    const CHAMBERS = { "congress": "11", "ca-senate": "11", "ca-assembly": "17" };
+    const CHAMBERS = {
+      "congress": { district: "11", role: "Representative" },
+      "ca-senate": { district: "11", role: "State Senator" },
+      "ca-assembly": { district: "17", role: "Assemblymember" },
+    };
     const ids = Object.keys(CHAMBERS);
     const context = await browser.newContext({ serviceWorkers: "block" });
     const page = await context.newPage();
@@ -183,8 +189,9 @@ try {
     await page.waitForFunction(() => !!window.SFExplorer, null, { timeout: BOOT_TIMEOUT });
     for (const id of ids) {
       const c = await cardText(page, id);
-      const want = CHAMBERS[id];
-      check(`${id} classifies City Hall (District ${want})`, !c.error && c.text.includes(want), c.text.slice(0, 70));
+      const { district, role } = CHAMBERS[id];
+      check(`${id} classifies City Hall (District ${district}) + names its ${role}`,
+        !c.error && c.text.includes(district) && c.text.includes(role), c.text.slice(0, 90));
     }
     await context.close();
   }
