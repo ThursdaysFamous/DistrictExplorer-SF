@@ -22,6 +22,18 @@ name: Engine bump
 on:
   repository_dispatch:
     types: [engine-release]
+  # Manual fallback for when the CHI fan-out can't reach this fork — a
+  # fan-out list gap or a dispatch PAT not yet scoped to this repo (exactly
+  # how engine-v1.0.6 had to arrive here). Same payload, as inputs; the env
+  # expressions below fall back from client_payload to inputs.
+  workflow_dispatch:
+    inputs:
+      engine_version:
+        description: "Engine version (engine-vX.Y.Z, as tagged on CHI)"
+        required: true
+      sha256:
+        description: "Bundle sha256 (from the release's engine.manifest.json)"
+        required: true
 
 permissions:
   contents: write
@@ -35,8 +47,8 @@ jobs:
 
       - name: Update engine.lock.json from the dispatch payload
         env:
-          ENGINE_VERSION: ${{ github.event.client_payload.engine_version }}
-          ENGINE_SHA256: ${{ github.event.client_payload.sha256 }}
+          ENGINE_VERSION: ${{ github.event.client_payload.engine_version || inputs.engine_version }}
+          ENGINE_SHA256: ${{ github.event.client_payload.sha256 || inputs.sha256 }}
         run: |
           if [ -z "$ENGINE_VERSION" ] || [ -z "$ENGINE_SHA256" ]; then
             echo "::error::dispatch payload is missing engine_version and/or sha256"
@@ -105,7 +117,7 @@ jobs:
         if: steps.diff.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-          ENGINE_VERSION: ${{ github.event.client_payload.engine_version }}
+          ENGINE_VERSION: ${{ github.event.client_payload.engine_version || inputs.engine_version }}
         run: |
           branch="bot/engine-bump"
           git config user.name "github-actions[bot]"
@@ -114,8 +126,14 @@ jobs:
           git add engine.lock.json scripts/apply_engine.py scripts/check_engine_parity.py scripts/generate_metro_files.py schema/metro-worksheet.schema.json index.html sw.js
           git commit -m "Bump engine to $ENGINE_VERSION"
           git push -u origin "$branch" --force
-          if [ -z "$(gh pr list --head "$branch" --state open --json number --jq '.[].number')" ]; then
+          existing="$(gh pr list --head "$branch" --state open --json number --jq '.[].number')"
+          if [ -z "$existing" ]; then
             gh pr create --title "Bump engine to $ENGINE_VERSION" \
               --body "Automated engine bump from the Chicago repo's \`engine-release\` dispatch (\`docs/MECHANIZATION_PLAYBOOK.md\` Conversion 1). Updates \`engine.lock.json\`, refreshes the shared scripts from the release assets, and splices the hash-verified ENGINE blocks into \`index.html\`/\`sw.js\`. The static and behaviour gates passed on the bumped tree in the dispatch run. Review before merging — this changes the shared engine this fork deploys." \
               --base main --head "$branch"
+          else
+            # the force-push above already re-pointed the open PR at the new
+            # bump — retitle it so it names the version it now carries (a
+            # reused bot branch once left a v1.0.5 title on a v1.0.6 bump)
+            gh pr edit "$existing" --title "Bump engine to $ENGINE_VERSION"
           fi
