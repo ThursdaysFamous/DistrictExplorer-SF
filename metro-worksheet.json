@@ -313,7 +313,7 @@
   },
   "data_sources": {
     "registry": "scripts/validate_sources.py",
-    "note": "SF source manifest (Thread 5): 4 live DataSF datasets (rwdu-9wb2, nc68-ngbr, e6tr-sxwg year-versioned, 7e7j-59qk), 6 pre-built boundary files (3 DataSF anchors + 3 TIGERweb CA chambers), 1 live endpoint (Census ZCTA). Newer-edition search uses the portal-local catalog (data.sfgov.org is absent from the federated api.us.socrata.com)."
+    "note": "SF source manifest: 5 live DataSF datasets (rwdu-9wb2, nc68-ngbr, e6tr-sxwg year-versioned, 7e7j-59qk, jg6x-23ig year-searched), 6 pre-built boundary files (3 DataSF anchors + 3 TIGERweb CA chambers), live endpoints (Census ZCTA, BART ArcGIS). Newer-edition search uses the portal-local catalog (data.sfgov.org is absent from the federated api.us.socrata.com)."
   },
   "workflows": [
     {
@@ -333,7 +333,7 @@
     },
     {
       "file": "validate-sources.yml",
-      "purpose": "source freshness (SF manifest re-derivation still pending)",
+      "purpose": "source freshness (SF manifest re-derived; full networked run 0 FAIL / 0 WARN)",
       "schedule": "1st of month 14:00 UTC"
     }
   ],
