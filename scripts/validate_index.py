@@ -85,10 +85,10 @@ MIN_REGISTER_LAYER = 8
 # count above — this per-id list is the direct module-loss guard. Emitted in
 # LAYER_AREA_RANK order; check 5 keeps the two naming the same set.
 EXPECT_LAYER_IDS = [
-    "congress", "ca-senate", "ca-assembly", "supervisor-district",
-    "police-district", "zip-code", "neighborhood",
-    "elementary-attendance-area", "police-station", "fire-station",
-    "school-site", "post-office", "library", "early-voting",
+    "congress", "ca-senate", "ca-assembly", "bart-director",
+    "election-precinct", "supervisor-district", "police-district", "zip-code",
+    "neighborhood", "elementary-attendance-area", "police-station",
+    "fire-station", "school-site", "post-office", "library", "early-voting",
 ]
 
 # file -> (min features, max features) for the boundary layers fetched by the app.
@@ -108,6 +108,7 @@ ROSTER_FILES = {
     "ca-assembly-members.json": 76,  # CA State Assembly (80) - OpenStates
     "sf-supervisor-members.json": 11,  # SF Board of Supervisors (11) - DataSF hcgx-vtsb sup_name
     "early-voting-sites.json": 3,  # GeoJSON FeatureCollection (type/metadata/features - key floor is shape-only); hand-curated per election from sf.gov Dept of Elections pages, network-first so a new election's list is never served stale
+    "bart-directors.json": 9,  # 9 BART directors keyed by district, hand-verified against bart.gov/about/bod (staggered 4-year terms; re-verify after each even-year November - see WATCH.md)
 }
 # ==== GENERATED:END validator-config ====
 

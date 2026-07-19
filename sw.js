@@ -35,7 +35,7 @@
 // on-water / county-seal marker icons (the consolidated city-county has no
 // out-of-city collar tiling), so none are precached.
 /* ==== GENERATED:BEGIN sw-metro-config ==== */
-const CACHE_NAME = "district-explorer-shell-sf-v2";
+const CACHE_NAME = "district-explorer-shell-sf-v3";
 
 const SHELL_URLS = [
   "./",
@@ -67,6 +67,7 @@ const ROSTER_URLS = [
   "./data/app/ca-assembly-members.json",
   "./data/app/sf-supervisor-members.json",
   "./data/app/early-voting-sites.json",
+  "./data/app/bart-directors.json",
 ];
 /* ==== GENERATED:END sw-metro-config ==== */
 /* ==== METRO:END sw-config ==== */

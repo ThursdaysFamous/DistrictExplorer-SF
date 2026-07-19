@@ -101,6 +101,13 @@ SOCRATA = [
      "name_contains": "Schools"},
     {"id": "fhhu-wqa7", "layer": "Library locations (nearest-3)",
      "name_contains": "City Facilities - Public Library"},
+    # Precincts are redrawn with each supervisor redistricting (~decadal); the
+    # successor will carry a new "Defined <year>" title, which the year-search
+    # watches for (next expected ~2032).
+    {"id": "jg6x-23ig", "layer": "Election Precinct",
+     "name_contains": "Map of Election Precincts",
+     "year_search": {"query": "Map of Election Precincts",
+                     "pattern": r"Defined (\d{4})"}},
 ]
 
 # Boundary layers built into same-origin data/app files: no runtime API.
@@ -140,6 +147,13 @@ PROVENANCE = [
      "app_file": "early-voting-sites.json",
      "source_url": "https://www.sf.gov/return-your-ballot",
      "note": "Hand-transcribed per election (full source list in the file's metadata). Refresh when the Department posts the next election's locations."},
+    {"layer": "BART Director roster",
+     "app_file": "bart-directors.json",
+     "source_url": "https://www.bart.gov/about/bod",
+     "note": "Hand-verified 2026-07-19; staggered 4-year terms (SF districts 7/8 "
+             "next on the Nov 2026 ballot — see WATCH.md). bart.gov 403s "
+             "non-browser clients, so a reachability WARN here is expected, "
+             "not drift."},
 ]
 
 # Live named services the app queries at runtime. These aren't year-versioned
@@ -151,6 +165,8 @@ ENDPOINTS = [
      "url": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/PUMA_TAD_TAZ_UGA_ZCTA/MapServer?f=json"},
     {"layer": "USGS National Map structures — post offices (layer 38)",
      "url": "https://carto.nationalmap.gov/arcgis/rest/services/structures/MapServer/38?f=json"},
+    {"layer": "BART Director districts (BART's ArcGIS org, 2022 Plan E2)",
+     "url": "https://services.arcgis.com/sqS7RNuF1BQinj5N/ArcGIS/rest/services/Board_of_Directors_District_Boundary_Viewer_Base_Data_WFL1/FeatureServer/2?f=json"},
 ]
 
 FAIL, WARN, OK = "FAIL", "WARN", "OK"
