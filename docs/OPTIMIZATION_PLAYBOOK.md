@@ -1,5 +1,11 @@
 # Optimization & Refinement Playbook — San Francisco
 
+> **Historical measurement record.** Every count and figure below is a measurement as of
+> **2026-07-18**, when the app had 14 layers, 11 `data/app/` files, and 5 rosters. The app
+> has since grown (16 layers / 12 files / 6 rosters as of 2026-07-19 — Election Precinct +
+> BART Director). Current facts live in `CLAUDE.md`; a re-measurement gets a new dated
+> section, it doesn't overwrite this one.
+
 **Fork:** ThursdaysFamous/DistrictExplorer-SF · **Date:** 2026-07-18 · **Scope:** `index.html` (14 layers), `sw.js`, `data/app/` payloads, boot + interaction compute.
 
 This is **San Francisco's own optimization pass**, measured against this working tree — not the Chicago reference record. (Chicago's campaign is archived in that repo; the engine-level wins it shipped are byte-identical here and are noted below where SF inherits them.) Every number here was produced by re-running the profiler, not carried over.

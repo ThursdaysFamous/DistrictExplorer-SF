@@ -31,9 +31,12 @@
 // rosters (US House / CA Senate / CA Assembly / SF supervisors) network-first.
 // -sf-v2 added the Voting Center & Ballot Drop-off layer's early-voting-sites.json
 // to the network-first rosters (the Post Office and Library layers are live —
-// USGS National Map / DataSF — so ship no same-origin data file). SF ships no
-// on-water / county-seal marker icons (the consolidated city-county has no
-// out-of-city collar tiling), so none are precached.
+// USGS National Map / DataSF — so ship no same-origin data file). -sf-v3 added
+// the BART Director roster (bart-directors.json) to the network-first list when
+// the bart-director + election-precinct layers shipped (both geometries are
+// live-fetched — BART ArcGIS / DataSF — so no new precached boundary files).
+// SF ships no on-water / county-seal marker icons (the consolidated city-county
+// has no out-of-city collar tiling), so none are precached.
 /* ==== GENERATED:BEGIN sw-metro-config ==== */
 const CACHE_NAME = "district-explorer-shell-sf-v3";
 
