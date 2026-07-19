@@ -17,6 +17,8 @@ Pick a point. The app runs a point-in-district lookup across every layer you hav
 | Group | Layer | What you get |
 |---|---|---|
 | **Political** | Supervisor District | District number (1–11), current supervisor, link to the Board of Supervisors. San Francisco is a consolidated city-county, so the Board is both the city council and the county board. |
+| | Election Precinct | Precinct number (2022 map; a sub-selection of Supervisor District — toggling it drops the district to an outline and fills it with precincts) + a link to look up your assigned polling place |
+| | BART Director District | District (1–9; districts 7–9 cover SF), the elected BART Director + board role, bart.gov profile — the regional transit board is elected by district |
 | | U.S. House District | District, representative, party, D.C. office + phone, member profile |
 | | California State Senate District | District, state senator, party, district + Capitol offices, senate.ca.gov page |
 | | California State Assembly District | District, assemblymember, party, offices, assembly.ca.gov page |
@@ -63,13 +65,14 @@ Stable core + pluggable layer modules, all inside `index.html`. The full contrac
 
 | Source | Used for |
 |---|---|
-| [DataSF](https://data.sfgov.org) (Socrata) | Supervisor districts + roster, analysis neighborhoods, police districts, police + fire stations, SFUSD attendance areas, school + library locations |
+| [DataSF](https://data.sfgov.org) (Socrata) | Supervisor districts + roster, election precincts, analysis neighborhoods, police districts, police + fire stations, SFUSD attendance areas, school + library locations |
 | [U.S. Census TIGERweb](https://tigerweb.geo.census.gov) | ZIP Code (ZCTA) at runtime, plus the pre-built U.S. House / CA State Senate / CA State Assembly boundaries (SF-clipped, `STATE='06'`) |
 | [USGS The National Map](https://www.usgs.gov/programs/national-geospatial-program/national-map) | Post office locations (nearest 3) |
 | [SF Department of Elections](https://www.sf.gov/departments--department-elections) (hand-curated per election) | Voting center + ballot drop-off sites (`data/app/early-voting-sites.json`) |
 | [unitedstates/congress-legislators](https://github.com/unitedstates/congress-legislators) (rebuilt weekly by CI) | U.S. House roster — CA reps, `data/app/congress-roster.json` |
 | [OpenStates](https://openstates.org) (rebuilt weekly by CI) | CA State Senate + Assembly rosters (`data/app/ca-{senate,assembly}-members.json`) |
 | DataSF *Current Supervisor Districts* (`hcgx-vtsb`, rebuilt weekly by CI) | SF Board of Supervisors roster (`data/app/sf-supervisor-members.json`) |
+| [BART](https://www.bart.gov/about/bod) (geometry from BART's own ArcGIS org; roster hand-verified per election cycle) | BART Director districts + directors (`data/app/bart-directors.json`) |
 | [Nominatim / Photon / OpenStreetMap](https://www.openstreetmap.org/copyright) | Address search + district-office map pins |
 
 The offline boundary layers in `data/app/` are topology-preserving simplifications (mapshaper) of the source data; the full-precision GeoJSON conversions are kept in `data/`. The simplified copies agreed with full precision on ≥99.5% of 2,000 random in-city test points.

@@ -2043,6 +2043,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
       <a href="https://openstates.org" target="_blank" rel="noopener">State legislator offices © Open States</a>
       <a href="https://www.usgs.gov/programs/national-geospatial-program/national-map" target="_blank" rel="noopener">USGS The National Map (post offices)</a>
       <a href="https://www.sf.gov/departments--department-elections" target="_blank" rel="noopener">SF Department of Elections (voting sites)</a>
+      <a href="https://www.bart.gov/about/bod" target="_blank" rel="noopener">BART Board of Directors (director districts)</a>
     </div>
     <!-- ==== ENGINE:BEGIN metro-links-html ==== -->
     <div class="footer-metros" id="footer-metros" hidden>
@@ -3379,6 +3380,8 @@ function initSFExplorer() {
     "congress",          // U.S. House (Congressional) district, pre-built SF-clipped TIGERweb (6 in window; CA-11 in SF) - largest
     "ca-senate",         // CA State Senate (SLDU), pre-built SF-clipped TIGERweb (4 in window; SD-11 in SF)
     "ca-assembly",       // CA State Assembly (SLDL), pre-built SF-clipped TIGERweb (8 in window; SF split AD-17/19)
+    "bart-director",     // 9 elected BART Board districts, 2022 Plan E2 (districts 7/8/9 cover SF; spans 3 counties) - smaller than the assembly slices
+    "election-precinct", // 514 election precincts (2022 map) - subOf supervisor-district, ranks just before its parent so the outline frames the fills
     "supervisor-district", // SF Board of Supervisors district (11; water-trimmed, tiles the city)
     "police-district",   // SFPD district (10)
     "zip-code",          // national ZCTA (Census TIGERweb), SF-bounded
@@ -4783,6 +4786,145 @@ function initSFExplorer() {
         fields.push({ label: "Supervisor", value: String(result.member.name) });
       }
       fields.push({ label: "Represented by", html: SF_BOARD_HTML });
+      return renderFieldList(fields);
+    }
+  });
+
+  /* ---------- Election Precinct (514, 2022 map) — DataSF `jg6x-23ig`.
+   * The resource route serves this map-type view without geometry; the
+   * engine's three-route Socrata loader falls through to the api/v3
+   * query.geojson route, which serves the full MultiPolygons (verified).
+   * A sub-selection of Supervisor District, same as Chicago's ward-precinct:
+   * toggling it drops the parent to outline-only so the precinct fills read
+   * inside the supervisor frame. The card links the official polling-place
+   * lookup — precincts are ASSIGNED, so the honest offer is "look yours up",
+   * never a guess. ---------- */
+  var loadElectionPrecincts = makeCachedLoader("jg6x-23ig");
+  var SF_POLLSITE_HTML = '<a href="https://www.sf.gov/vote-in-person" target="_blank" rel="noopener">Look up your assigned polling place (SF Elections)</a>';
+
+  registerLayer({
+    id: "election-precinct",
+    group: "political",
+    subOf: "supervisor-district",
+    label: "Election Precinct",
+    hoverName: function (feature) {
+      var p = findPropCI(feature.properties || {}, ["prec_2022", "precname", "precinct"]);
+      return (p == null || p === "") ? null : String(p);
+    },
+    overlay: {
+      load: loadElectionPrecincts,
+      // solid thin outline + visible fill: with the supervisor district
+      // dropped to outline-only, the precincts carry the interior fill.
+      // Same red family as the parent, a shade deeper so the two read as
+      // related (the Chicago ward/ward-precinct rule).
+      style: { color: "#6E1F19", weight: 1, fillColor: "#C0362C", fillOpacity: 0.12, dashArray: null }
+    },
+    query: function (point, seq) {
+      return loadElectionPrecincts().then(function (geojson) {
+        var feature = findFeatureContaining(geojson, point);
+        if (!feature) return null;
+        var props = feature.properties || {};
+        var precinct = findPropCI(props, ["prec_2022", "precname", "precinct"]);
+        var supe = findPropCI(props, ["supe22", "supervisor", "supe"]);
+        return {
+          seq: seq,
+          precinct: precinct != null ? String(precinct) : null,
+          supervisorDistrict: supe != null ? String(supe) : null
+        };
+      });
+    },
+    render: function (result) {
+      var fields = [{ label: "Precinct", value: result.precinct ? String(result.precinct) : "Unknown" }];
+      if (result.supervisorDistrict) fields.push({ label: "Supervisor District", value: String(result.supervisorDistrict) });
+      fields.push({ label: "Where you vote", html: SF_POLLSITE_HTML });
+      return renderFieldList(fields);
+    },
+    onToggle: function (on) {
+      var supeRt = layerRuntime["supervisor-district"];
+      if (on) {
+        // a sub-selection needs its parent visible — turn the supervisor
+        // district on (as the outline frame) if it isn't already. box.click()
+        // runs the normal toggle path (overlay load + query + hash sync).
+        if (!state.layersOn["supervisor-district"]) {
+          var box = document.getElementById("toggle-supervisor-district");
+          if (box && !box.checked) box.click();
+        }
+        supeRt.outlineOnly = true;
+      } else {
+        supeRt.outlineOnly = false;
+      }
+      // Restyle the already-loaded parent overlay to reflect the fill change.
+      // If it's still loading (just auto-enabled above), baseStyleFor reads
+      // outlineOnly at L.geoJSON construction time, so no restyle is needed yet.
+      var supeMod = getLayerById("supervisor-district");
+      if (supeMod && supeRt.overlayLayer) updateLayerHighlight(supeMod);
+    }
+  });
+
+  /* ---------- BART Director District (9) — the regional transit board is
+   * elected by district; districts 7, 8, and 9 cover San Francisco (2022
+   * Plan E2 map, in place until the post-2030-census redistricting).
+   * Geometry: BART's own ArcGIS org (the base data behind bart.gov's
+   * District Boundary Viewer), fetched live — 9 polygons, CORS-open.
+   * Roster: hand-verified data/app/bart-directors.json (bart.gov 403s
+   * non-browser clients and serves no CORS JSON, so no live scrape —
+   * operator-maintained; staggered 4-year terms, re-verified after each
+   * even-year November per WATCH.md). ---------- */
+  var BART_DISTRICTS_SERVICE = "https://services.arcgis.com/sqS7RNuF1BQinj5N/ArcGIS/rest/services/Board_of_Directors_District_Boundary_Viewer_Base_Data_WFL1/FeatureServer/2";
+  var loadBartDistricts = makeCached(function () { return loadArcGISGeoJSON(BART_DISTRICTS_SERVICE); });
+  var loadBartDirectors = makeCached(function () {
+    return fetchJSONWithRetry("data/app/bart-directors.json", {}, 2);
+  });
+  var BART_BOARD_HTML = '<a href="https://www.bart.gov/about/bod" target="_blank" rel="noopener">BART Board of Directors</a>';
+  function bartDistrictNum(props) {
+    return findPropCI(props || {}, ["district"]);
+  }
+
+  registerLayer({
+    id: "bart-director",
+    group: "political",
+    label: "BART Director District",
+    hoverName: function (feature) {
+      var d = bartDistrictNum(feature.properties);
+      return d != null ? String(d) : null;
+    },
+    hoverOfficial: {
+      load: loadBartDirectors,
+      name: function (feature, roster) {
+        if (!roster) return null;
+        var d = bartDistrictNum(feature.properties);
+        var m = d != null ? roster[String(d)] : null;
+        return m ? m.name : null;
+      }
+    },
+    overlay: {
+      load: loadBartDistricts,
+      style: { color: "#005E7C", weight: 2, fillColor: "#0099D8", fillOpacity: 0.05, dashArray: "6 3" }
+    },
+    query: function (point, seq) {
+      return Promise.all([
+        loadBartDistricts(),
+        loadBartDirectors().catch(function () { return {}; })
+      ]).then(function (results) {
+        var feature = findFeatureContaining(results[0], point);
+        if (!feature) return null;
+        var district = bartDistrictNum(feature.properties);
+        var member = district != null ? results[1][String(district)] : null;
+        return { seq: seq, district: district, member: member || null };
+      });
+    },
+    render: function (result) {
+      var fields = [{ label: "BART Director District", value: result.district != null ? String(result.district) : "Unknown" }];
+      if (result.member && result.member.name) {
+        fields.push({
+          label: "Director",
+          value: String(result.member.name) + (result.member.role ? " (" + String(result.member.role) + ")" : "")
+        });
+        if (result.member.url && safeHttpUrl(result.member.url)) {
+          fields.push({ label: "Profile", html: '<a href="' + sanitize(String(result.member.url)) + '" target="_blank" rel="noopener">' + sanitize(String(result.member.name)) + " — bart.gov</a>" });
+        }
+      }
+      fields.push({ label: "Elected board", html: BART_BOARD_HTML });
       return renderFieldList(fields);
     }
   });
