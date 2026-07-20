@@ -5172,7 +5172,7 @@ function initSFExplorer() {
     var url = USGS_POST_OFFICE_LAYER + "/query?geometry=" +
       [METRO_BBOX.minLng, METRO_BBOX.minLat, METRO_BBOX.maxLng, METRO_BBOX.maxLat].join(",") +
       "&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects" +
-      "&where=1%3D1&outFields=NAME,ADDRESS,CITY,STATE,ZIPCODE&outSR=4326&f=geojson&geometryPrecision=6";
+      "&where=1%3D1&outFields=NAME,ADDRESS,CITY,ZIPCODE&outSR=4326&f=geojson&geometryPrecision=6";
     return fetchJSONWithRetry(url, { timeoutMs: REMOTE_GEOJSON_TIMEOUT_MS }, 2).then(function (gj) {
       if (!hasUsableGeometry(gj)) throw new Error("no usable geometry from USGS structures layer 38");
       return gj;
@@ -5252,9 +5252,14 @@ function initSFExplorer() {
       var name = findPropCI(props, ["name"]);
       var type = findPropCI(props, ["type"]);
       var address = findPropCI(props, ["address"]);
+      // Card convention: surface the district identifier the source carries —
+      // drop-box features name their supervisor district (the voting center,
+      // serving the whole city, has none).
+      var supe = findPropCI(props, ["supervisorial_district"]);
       return (name ? String(name) : "Voting site") +
         (type === "drop-box" ? " (ballot drop-off)" : (type === "voting-center" ? " (voting center)" : "")) +
-        (address ? " — " + String(address) : "");
+        (address ? " — " + String(address) : "") +
+        (supe ? " — Supervisor District " + String(supe) : "");
     }
   });
 
