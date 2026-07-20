@@ -5376,8 +5376,9 @@ function initSFExplorer() {
       render: function (result) {
         var fields = [{ label: "Network", value: result.network ? String(result.network) : "Unknown" }];
         if (result.chief) fields.push({ label: "Network Chief", value: String(result.chief) });
-        if (result.phone) fields.push({ label: "Phone", value: String(result.phone) });
+        // Card convention: office location before contact.
         if (result.address) fields.push({ label: "Office Address", value: String(result.address), pin: opts.style.color });
+        if (result.phone) fields.push({ label: "Phone", value: String(result.phone) });
         return renderFieldList(fields);
       },
       pointOfInterest: function (result) {
@@ -5627,8 +5628,11 @@ function initSFExplorer() {
         // case, which previously emitted href="" (a self-link).
         var memberUrl = member && member.url ? safeHttpUrl(member.url) : null;
         var profileUrl = memberUrl || opts.directoryUrl || opts.ilgaUrl;
+        // Label follows the actual href: only a roster-supplied member URL gets
+        // the per-member label — a directory fallback must not masquerade as
+        // the member's own page (rosters without url fields hit this daily).
         fields.push({
-          label: member ? (opts.profileLabel || "Member profile") : (opts.directoryLabel || "Member directory"),
+          label: memberUrl ? (opts.profileLabel || "Member profile") : (opts.directoryLabel || "Member directory"),
           html: '<a href="' + sanitize(profileUrl) + '" target="_blank" rel="noopener">' + sanitize(profileUrl) + '</a>'
         });
         return renderFieldList(fields);
