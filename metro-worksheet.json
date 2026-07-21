@@ -59,8 +59,6 @@
       }
     }
   ],
-  "highlight_class": "sf-region-highlight",
-  "poi_pin_class": "sf-poi-pin",
   "hover_number_keys": [
     [
       "zip",
