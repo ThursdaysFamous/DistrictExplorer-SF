@@ -5599,8 +5599,8 @@ function initSFExplorer() {
     // A TIGERweb legislative chamber (Congress / State Senate / State Assembly)
     // joined to a same-origin roster keyed by district number. opts: { id, label,
     // layerIndex, districtFields, loadRoster, memberLabel, style, directoryUrl,
-    // profileLabel?, directoryLabel?, capitolLabel? }. Member rows are
-    // { name, party?, url?, districtOffice?, capitolOffice? }; office fields only
+    // profileLabel?, directoryLabel?, capitolLabel?, districtPrefix? }. Member
+    // rows are { name, party?, url?, districtOffice?, capitolOffice? }; office fields only
     // render when the roster supplies them (empty placeholder -> just the link).
     // Metro-provided geometry loader wins; forks that haven't pre-built their
     // chamber geometry fall back to the live TIGERweb fetch by layer index,
@@ -5632,7 +5632,11 @@ function initSFExplorer() {
         });
       },
       render: function (result) {
-        var fields = [{ label: "District", value: result.district ? String(result.district) : "Unknown" }];
+        // opts.districtPrefix (e.g. "IL-") state-qualifies the district number in
+        // the header where the concept reads that way (congress); "" for the ILGA
+        // chambers, whose districts are bare numbers.
+        var districtLabel = result.district ? (opts.districtPrefix || "") + String(result.district) : "Unknown";
+        var fields = [{ label: "District", value: districtLabel }];
         var member = result.member;
         if (member) {
           fields.push({ label: opts.memberLabel, value: String(member.name) });
