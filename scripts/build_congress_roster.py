@@ -9,7 +9,8 @@ first click and joins it to the pre-built CA House geometry by district number.
 This script resolves the current officeholder per CA congressional district from
 the canonical unitedstates/congress-legislators legislators-current.json and
 writes that roster (~10 KB), shaped for the registerIlgaChamber factory
-({district -> {name, party, url, capitolOffice:[lines]}}). A weekly GitHub Action
+({district -> {name, party, url, capitolOffice:[lines], districtOffice:[lines]}}).
+A weekly GitHub Action
 (.github/workflows/update-congress-roster.yml) reruns this and opens a PR when
 the roster changes, so officeholder data still gets a human look before it ships.
 
@@ -31,6 +32,7 @@ import sys
 import urllib.request
 
 SOURCE_URL = "https://unitedstates.github.io/congress-legislators/legislators-current.json"
+DISTRICT_OFFICES_URL = "https://unitedstates.github.io/congress-legislators/legislators-district-offices.json"
 STATE = "CA"
 
 # CA has 52 U.S. House districts. Refuse to overwrite the roster with a
@@ -73,7 +75,56 @@ def capitol_office(term):
     return lines
 
 
-def resolve_roster(legislators):
+def load_district_offices(path):
+    """bioguide -> [office, ...] for each member. Best-effort: a fetch failure
+    yields {} so the roster still ships with D.C. offices only."""
+    try:
+        if path:
+            with open(path) as f:
+                data = json.load(f)
+        else:
+            with urllib.request.urlopen(DISTRICT_OFFICES_URL, timeout=60) as resp:
+                data = json.load(resp)
+    except Exception as exc:  # network / parse — non-fatal
+        print(f"WARNING: district offices unavailable ({exc}); shipping D.C. "
+              "offices only", file=sys.stderr)
+        return {}
+    out = {}
+    for member in data:
+        bioguide = (member.get("id") or {}).get("bioguide")
+        if bioguide:
+            out[bioguide] = member.get("offices") or []
+    return out
+
+
+def district_office_lines(office):
+    """Address lines for one local office — street (+ suite/building), city/ST zip,
+    phone — in the order officeAddressForGeocode expects (it drops the phone line
+    and geocodes the rest to drop the map pin). Fields are coerced to str: the
+    source occasionally types suite/zip as a bare number."""
+    def s(v):
+        return "" if v is None else str(v)
+    lines = []
+    street = s(office.get("address"))
+    if street:
+        if office.get("suite"):
+            street += ", " + s(office.get("suite"))
+        lines.append(street)
+    if office.get("building"):
+        lines.append(s(office.get("building")))
+    if office.get("city") and office.get("state"):
+        line = s(office.get("city")) + ", " + s(office.get("state"))
+        if office.get("zip"):
+            line += " " + s(office.get("zip"))
+        lines.append(line)
+    elif office.get("zip"):
+        lines.append(s(office.get("zip")))
+    if office.get("phone"):
+        lines.append("Phone: " + s(office.get("phone")))
+    return lines
+
+
+def resolve_roster(legislators, offices_by_bioguide):
     # The current officeholder is the person whose most recent term is the seat
     # we're keying on — congress-legislators lists terms chronologically, so the
     # last term is the current one for anyone in legislators-current.json.
@@ -96,6 +147,11 @@ def resolve_roster(legislators):
         cap = capitol_office(term)
         if cap:
             member["capitolOffice"] = cap
+        member_offices = offices_by_bioguide.get((legislator.get("id") or {}).get("bioguide")) or []
+        if member_offices:
+            district_lines = district_office_lines(member_offices[0])
+            if district_lines:
+                member["districtOffice"] = district_lines
         roster[str(district)] = member
     return roster
 
@@ -119,8 +175,17 @@ def main():
     src_path = sys.argv[1] if len(sys.argv) >= 2 else None
     out_dir = sys.argv[2] if len(sys.argv) == 3 else DEFAULT_OUT_DIR
 
+    # If a local legislators-current.json was passed, look for a cached
+    # district-offices file next to it so a fully-offline build is possible.
+    do_path = None
+    if src_path:
+        sibling = os.path.join(os.path.dirname(src_path), "legislators-district-offices.json")
+        if os.path.exists(sibling):
+            do_path = sibling
+
     legislators = load_source(src_path)
-    roster = resolve_roster(legislators)
+    offices = load_district_offices(do_path)
+    roster = resolve_roster(legislators, offices)
 
     if len(roster) < EXPECTED_DISTRICTS:
         print(
