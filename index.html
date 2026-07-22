@@ -2699,6 +2699,12 @@ function initSFExplorer() {
     state.selectedPoint = { lat: lat, lng: lng };
     state.sequence += 1;
 
+    // Aggregate "where are people looking" signal — one GoatCounter hit per point
+    // selection (map click, address search, geolocate, or a shared/permalink load),
+    // coordinates coarsened to ~1km (2 decimals) so it maps interest, never an
+    // address. Cookieless and identity-free (GoatCounter), like every event here.
+    trackEvent("select", lat.toFixed(2) + "," + lng.toFixed(2));
+
     if (selectedMarker) map.removeLayer(selectedMarker);
     selectedMarker = L.marker([lat, lng], { icon: starDivIcon, alt: "Selected point" }).addTo(map);
     selectPointMarker(state.selectedPoint, state.sequence, selectedMarker);
