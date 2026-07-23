@@ -200,8 +200,20 @@ try {
     for (const id of ids) {
       const c = await cardText(page, id);
       const { district, role } = CHAMBERS[id];
-      check(`${id} classifies City Hall (District ${district}) + names its ${role}`,
-        !c.error && c.text.includes(district) && c.text.includes(role), c.text.slice(0, 90));
+      // Roster-join proof, both card generations: the legacy dt/dd card
+      // carries the role label ("State Senator") as its member row's label;
+      // the redesigned card (engine-v1.0.10) renders the joined member as a
+      // .card-person-name row instead — the office lives in the card title
+      // and the badge shows party, so the role text is gone by design.
+      const member = await page.evaluate((cid) => {
+        const box = document.getElementById("toggle-" + cid);
+        const block = box && box.closest(".layer-block");
+        const name = block && block.querySelector(".card-person-name");
+        return name ? name.textContent.trim() : null;
+      }, id);
+      check(`${id} classifies City Hall (District ${district}) + joins its ${role} roster`,
+        !c.error && c.text.includes(district) && (!!member || c.text.includes(role)),
+        `${c.text.slice(0, 60)} | member=${member}`);
     }
     await context.close();
   }
