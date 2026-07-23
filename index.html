@@ -5347,7 +5347,8 @@ function initSFExplorer() {
     style: { color: "#0B5394", weight: 1.5, fillColor: "#41B6E6", fillOpacity: 0.05, dashArray: "1 4" },
     fields: [
       { name: "zip", label: "ZIP Code", keys: ["zcta5", "zip", "zip_code", "zipcode", "zcta5ce10"], primary: true }
-    ]
+    ],
+    compact: true // 4b name-only card (no meta field — the ZIP is the value)
   });
 
   /* ---------- SF Thread-1 offline anchors: Supervisor District, Neighborhood,
@@ -5409,12 +5410,21 @@ function initSFExplorer() {
       });
     },
     render: function (result) {
-      var fields = [{ label: "Supervisor District", value: result.district ? String(result.district) : "Unknown" }];
+      // supervisor as a badged person row; district in the header pill; the
+      // Board of Supervisors link in the footer (card-helpers vocabulary,
+      // engine-v1.0.10; docs/CARD_RENDER_API.md in the reference fork)
+      var wrap = cardEl("div", "card-flush");
+      wrap.appendChild(renderBodyIntro({ title: "San Francisco Board of Supervisors" }));
       if (result.member && result.member.name) {
-        fields.push({ label: "Supervisor", value: String(result.member.name) });
+        wrap.appendChild(renderPersonRows([{ name: String(result.member.name), badge: "Supervisor" }]));
       }
-      fields.push({ label: "Represented by", html: SF_BOARD_HTML });
-      return renderFieldList(fields);
+      return wrap;
+    },
+    cardIdentifier: function (result) {
+      return result.district ? "District " + String(result.district) : null;
+    },
+    primaryLink: function () {
+      return { label: "San Francisco Board of Supervisors", url: "https://sfbos.org/" };
     }
   });
 
@@ -5461,11 +5471,17 @@ function initSFExplorer() {
         };
       });
     },
-    render: function (result) {
-      var fields = [{ label: "Precinct", value: result.precinct ? String(result.precinct) : "Unknown" }];
-      if (result.supervisorDistrict) fields.push({ label: "Supervisor District", value: String(result.supervisorDistrict) });
-      fields.push({ label: "Where you vote", html: SF_POLLSITE_HTML });
-      return renderFieldList(fields);
+    // 4b compact: precinct in the header, its supervisor district as the
+    // meta line; polling-place lookup stays one click away in the footer
+    compact: true,
+    cardIdentifier: function (result) {
+      return result.precinct ? "Precinct " + String(result.precinct) : "Unknown";
+    },
+    cardMeta: function (result) {
+      return result.supervisorDistrict ? "Supervisor District " + String(result.supervisorDistrict) : null;
+    },
+    primaryLink: function () {
+      return { label: "Look up your polling place (SF Elections)", url: "https://www.sf.gov/vote-in-person" };
     },
     onToggle: function (on) {
       var supeRt = layerRuntime["supervisor-district"];
@@ -5542,18 +5558,25 @@ function initSFExplorer() {
       });
     },
     render: function (result) {
-      var fields = [{ label: "BART Director District", value: result.district != null ? String(result.district) : "Unknown" }];
+      // director as a badged person row (board role as the badge when the
+      // roster carries one), profile on the person, board link in the footer
+      var wrap = cardEl("div", "card-flush");
       if (result.member && result.member.name) {
-        fields.push({
-          label: "Director",
-          value: String(result.member.name) + (result.member.role ? " (" + String(result.member.role) + ")" : "")
-        });
-        if (result.member.url && safeHttpUrl(result.member.url)) {
-          fields.push({ label: "Profile", html: '<a href="' + sanitize(String(result.member.url)) + '" target="_blank" rel="noopener">' + sanitize(String(result.member.name)) + " — bart.gov</a>" });
-        }
+        var person = {
+          name: String(result.member.name),
+          badge: result.member.role ? String(result.member.role) : "Director"
+        };
+        var profile = result.member.url ? safeHttpUrl(result.member.url) : null;
+        if (profile) person.links = [{ label: "Profile (bart.gov)", url: profile }];
+        wrap.appendChild(renderPersonRows([person]));
       }
-      fields.push({ label: "Elected board", html: BART_BOARD_HTML });
-      return renderFieldList(fields);
+      return wrap;
+    },
+    cardIdentifier: function (result) {
+      return result.district != null ? "District " + String(result.district) : null;
+    },
+    primaryLink: function () {
+      return { label: "BART Board of Directors", url: "https://www.bart.gov/about/bod" };
     }
   });
 
@@ -5581,9 +5604,11 @@ function initSFExplorer() {
     loader: loadPoliceDistricts,
     style: { color: "#0B3D2E", weight: 2, fillColor: "#1B7F5A", fillOpacity: 0.05 },
     fields: [
-      { name: "district", label: "Police District", keys: ["district"], primary: true },
-      { label: "Find your station", html: '<a href="https://www.sanfranciscopolice.org/your-sfpd/police-stations" target="_blank" rel="noopener">SFPD district stations</a>' }
-    ]
+      { name: "district", label: "Police District", keys: ["district"], primary: true }
+    ],
+    primaryLink: function () {
+      return { label: "SFPD district stations", url: "https://www.sanfranciscopolice.org/your-sfpd/police-stations" };
+    }
   });
   /* ==== ENGINE:BEGIN haversine ==== */
   /* ---------- great-circle distance in miles ---------- */
@@ -5753,6 +5778,13 @@ function initSFExplorer() {
       return (name ? String(name) : "Police station") +
         (address ? " — " + String(address) : "") +
         (phone ? " — " + String(phone) : "");
+    },
+    item: function (props) { // 4d two-line row: station over address + phone
+      var name = findPropCI(props, ["district_name", "company_name"]);
+      var address = findPropCI(props, ["address", "location_address"]);
+      var phone = findPropCI(props, ["telephone_number", "phone"]);
+      var note = (address ? String(address) : "") + (phone ? (address ? " — " : "") + String(phone) : "");
+      return { name: name ? String(name) : "Police station", note: note || undefined };
     }
   });
 
@@ -5781,6 +5813,11 @@ function initSFExplorer() {
       var address = findPropCI(props, ["address"]);
       return (name ? String(name) : "Fire station") +
         (address ? " — " + String(address) : "");
+    },
+    item: function (props) { // 4d two-line row: station over address
+      var name = findPropCI(props, ["common_name"]);
+      var address = findPropCI(props, ["address"]);
+      return { name: name ? String(name) : "Fire station", note: address ? String(address) : undefined };
     }
   });
 
@@ -5824,6 +5861,14 @@ function initSFExplorer() {
         (address ? " — " + String(address) : "") +
         (city ? ", " + String(city) : "") +
         (zip ? " " + String(zip) : "");
+    },
+    item: function (props) { // 4d two-line row: name over address
+      var name = findPropCI(props, ["name"]);
+      var address = findPropCI(props, ["address"]);
+      var city = findPropCI(props, ["city"]);
+      var zip = findPropCI(props, ["zipcode", "zip"]);
+      var note = (address ? String(address) : "") + (city ? (address ? ", " : "") + String(city) : "") + (zip ? " " + String(zip) : "");
+      return { name: name ? String(name) : "Post office", note: note || undefined };
     }
   });
 
@@ -5852,6 +5897,13 @@ function initSFExplorer() {
       return (name ? String(name) : "Library") +
         (address ? " — " + String(address) : "") +
         (zip ? ", " + String(zip) : "");
+    },
+    item: function (props) { // 4d two-line row: branch over address
+      var name = findPropCI(props, ["common_name", "name"]);
+      var address = findPropCI(props, ["address"]);
+      var zip = findPropCI(props, ["zip_code", "zip"]);
+      var note = (address ? String(address) : "") + (zip ? (address ? ", " : "") + String(zip) : "");
+      return { name: name ? String(name) : "Library", note: note || undefined };
     }
   });
 
@@ -5888,6 +5940,18 @@ function initSFExplorer() {
         (type === "drop-box" ? " (ballot drop-off)" : (type === "voting-center" ? " (voting center)" : "")) +
         (address ? " — " + String(address) : "") +
         (supe ? " — Supervisor District " + String(supe) : "");
+    },
+    item: function (props) { // 4d two-line row: site over address + district
+      var name = findPropCI(props, ["name"]);
+      var type = findPropCI(props, ["type"]);
+      var address = findPropCI(props, ["address"]);
+      var supe = findPropCI(props, ["supervisorial_district"]);
+      return {
+        name: (name ? String(name) : "Voting site") +
+          (type === "drop-box" ? " (ballot drop-off)" : (type === "voting-center" ? " (voting center)" : "")),
+        note: (address ? String(address) : "") +
+          (supe ? (address ? " — " : "") + "Supervisor District " + String(supe) : "") || undefined
+      };
     }
   });
 
@@ -6109,12 +6173,20 @@ function initSFExplorer() {
       });
     },
     render: function (result) {
-      return renderFieldList([
-        { label: "Attendance-area school", value: result.name ? String(result.name) : "Unknown" },
-        { label: "School district", value: "San Francisco Unified (SFUSD)" },
-        { label: "How assignment works", value: "SFUSD assigns elementary seats by lottery. This attendance area is a tiebreaker preference for the school above — not a guaranteed seat." },
-        { label: "Enroll", html: '<a href="' + sanitize(SFUSD_ENROLL_URL) + '" target="_blank" rel="noopener">SFUSD enrollment</a>' }
-      ]);
+      // zoned-school identity + the lottery caveat, stated as prominently as
+      // before — this attendance area is a tiebreaker, not a guaranteed seat
+      var wrap = cardEl("div", "card-flush");
+      wrap.appendChild(renderLinkRow({
+        title: result.name ? String(result.name) : "Unknown",
+        note: "San Francisco Unified (SFUSD)"
+      }));
+      wrap.appendChild(renderBodyIntro({
+        note: "SFUSD assigns elementary seats by lottery. This attendance area is a tiebreaker preference for the school above — not a guaranteed seat."
+      }));
+      return wrap;
+    },
+    primaryLink: function () {
+      return { label: "SFUSD enrollment", url: SFUSD_ENROLL_URL };
     }
   });
 
