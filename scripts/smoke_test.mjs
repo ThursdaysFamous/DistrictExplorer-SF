@@ -64,18 +64,28 @@ function routeLeaflet(page) {
   ]);
 }
 
+// Redesigned cards (engine-v1.0.10, docs/CARD_RENDER_API.md in the reference
+// fork) render a .card-flush body and move the district identifier into the
+// header pill (.card-id-pill), so completion accepts either card generation
+// and the returned text prepends the pill — the "District N" assertions read
+// the whole card, not just the body, exactly as a user does. Backward
+// compatible: with no pill (pre-bump engine) this reads the body alone.
 async function cardText(page, id) {
   await page.waitForFunction((cid) => {
     const el = document.getElementById("card-" + cid);
     return el && !el.querySelector(".loading-row") &&
-      (el.querySelector(".result-fields") || el.querySelector(".state-empty") ||
+      (el.querySelector(".result-fields") || el.querySelector(".card-flush") ||
+       el.querySelector(".state-empty") ||
        el.classList.contains("state-empty") || el.classList.contains("state-error") || el.querySelector(".state-error"));
   }, id, { timeout: QUERY_TIMEOUT }).catch(() => {});
   return page.evaluate((cid) => {
     const el = document.getElementById("card-" + cid);
     if (!el) return { text: "(no card)", error: true, empty: false };
+    const block = el.closest(".layer-block");
+    const pill = block && block.querySelector(".card-id-pill:not([hidden])");
+    const text = (pill ? pill.textContent + " " : "") + el.innerText;
     return {
-      text: el.innerText.replace(/\s+/g, " ").trim(),
+      text: text.replace(/\s+/g, " ").trim(),
       error: el.classList.contains("state-error") || !!el.querySelector(".state-error"),
       empty: el.classList.contains("state-empty") || !!el.querySelector(".state-empty"),
     };
