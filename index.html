@@ -1830,17 +1830,31 @@ svg.leaflet-image-layer.leaflet-interactive path {
     .card-details-hint-word { display: none; }
   }
   /* ==== ENGINE:END styles-card-v2 ==== */
-  /* ---- School Location layer: type filter + color-coded nearest list ---- */
-  .school-filter { display: flex; flex-wrap: wrap; gap: 5px 14px; margin: 0 0 10px; }
-  .school-filter-item { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; cursor: pointer; user-select: none; }
-  .school-filter-item input { margin: 0; cursor: pointer; }
-  .school-filter-swatch { display: inline-block; width: 11px; height: 11px; border-radius: 3px; flex: none; }
-  .school-filter-note { margin: 8px 0 0; font-size: 11px; color: var(--slate-soft); line-height: 1.4; }
-  .school-list-intro { margin: 0 0 8px; }
-  .school-list { margin: 0; padding-left: 20px; }
-  .school-list li { margin: 2px 0; }
-  .school-list-dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 5px; vertical-align: 1px; }
-  .school-list-empty { list-style: none; margin-left: -20px; color: var(--slate); }
+  /* ---- School Location card (Handoff 3 §8a/8b): type chips + typed rows.
+     On-state chip colors are set inline from the type palette; this is the
+     off/base state — dashed grey outline, struck label, count kept. ---- */
+  .school-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 18px; border-bottom: 1px solid var(--card-row-border); }
+  .school-chip {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 600;
+    color: var(--card-hint); background: #fff;
+    border: 1px dashed #d1d5db; border-radius: 99px;
+    padding: 4px 11px; cursor: pointer;
+  }
+  .school-chip.is-on { border-style: solid; }
+  .school-chip:not(.is-on) .school-chip-label { text-decoration: line-through; }
+  .school-chip-dot { width: 8px; height: 8px; border-radius: 50%; background: #d1d5db; flex: none; }
+  .school-chip-count { font-weight: 500; opacity: 0.85; }
+  .school-suffix { font-weight: 600; color: var(--card-muted); font-size: 13px; }
+  .school-footrow { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-top: 1px solid var(--card-border); }
+  .school-footnote { font-size: 11.5px; color: var(--card-hint); line-height: 1.45; flex: 1; }
+  .school-show-all {
+    font-size: 12px; font-weight: 600;
+    color: var(--card-link); background: #fff;
+    border: 1px solid var(--card-btn-border); border-radius: 99px;
+    padding: 4px 11px; cursor: pointer; white-space: nowrap;
+  }
+  .school-list-empty { padding: 12px 18px; margin: 0; color: var(--slate); }
 
   /* ==== ENGINE:BEGIN styles-footer ==== */
   /* ---- Footer: a dark bookend echoing the masthead ---- */
@@ -5661,7 +5675,8 @@ function initSFExplorer() {
     style: { color: "#124F63", weight: 1.5, fillColor: "#1D6F8B", fillOpacity: 0.05, dashArray: "4 3" },
     fields: [
       { name: "nhood", label: "Neighborhood", keys: ["nhood", "name", "neighborhood"], primary: true }
-    ]
+    ],
+    compact: true // 4b name-only card (no meta field — the neighborhood name is the value)
   });
 
   var loadPoliceDistricts = makeCached(function () {
@@ -6278,28 +6293,269 @@ function initSFExplorer() {
    * lone Pending (not-yet-open) row, so a "nearest school" is always a real one. ---------- */
   var loadSchoolSites = makeSocrataPointLoader("7e7j-59qk", "status='Active'", "latitude", "longitude");
 
-  registerNearestPointLayer({
-    id: "school-site",
-    group: "schools",
-    color: "#0F6F6F",
-    fill: "#4FB0A5",
-    label: "School Location",
-    loader: loadSchoolSites,
-    intro: "Nearest schools (public, charter & private), straight-line distance:",
-    line: function (props) {
-      var name = findPropCI(props, ["school", "school_name", "name"]);
-      var lo = findPropCI(props, ["low_grade"]);
-      var hi = findPropCI(props, ["high_grade"]);
-      var addr = findPropCI(props, ["street_address", "address"]);
-      var phone = findPropCI(props, ["phone", "telephone_number"]);
-      var kind = findPropCI(props, ["charter_yesno"]) ? "charter"
-        : (findPropCI(props, ["public_yesno"]) === false ? "private" : "public");
-      var grades = (lo && hi) ? " (grades " + String(lo) + "-" + String(hi) + ", " + kind + ")" : " (" + kind + ")";
-      // phone matches the Police Station card's contact field (cross-group parity):
-      // the dataset carries it, so a nearest-school row surfaces it too.
-      return (name ? String(name) : "School") + grades +
-        (addr ? " — " + String(addr) : "") +
-        (phone ? " — " + String(phone) : "");
+  /* School Location card rebuilt per Handoff 3 §8a/8b (Chicago's chips card is
+   * the reference implementation): type filter chips (Public / Charter /
+   * Private — the DataSF Schools table's own charter_yesno/public_yesno
+   * taxonomy), typed rows via renderNearestRows carrying the school's grade
+   * range, display-only header suffix, and a footer that swaps to the hiding
+   * notice + Show all while filtered. SF names/addresses arrive mixed-case, so
+   * no cardTitleCase pass. */
+  var SF_SCHOOL_SITE_COUNT = 3;
+  var SF_SCHOOL_CATS = ["Public", "Charter", "Private"];
+  var SF_SCHOOL_CAT_META = {
+    Public:  { full: "Public",  color: "#0F6F6F" }, // the layer's own teal
+    Charter: { full: "Charter", color: "#A15C00" },
+    Private: { full: "Private", color: "#6A3FA0" }
+  };
+  // filter selection persists across point selections AND page loads
+  // (sessionStorage — §8b "persist chip state per session"); a storage failure
+  // (private mode) degrades to in-memory only.
+  var SF_SCHOOL_FILTER_KEY = "sf-school-type-filter";
+  function loadSchoolTypeFilter() {
+    try {
+      var saved = JSON.parse(sessionStorage.getItem(SF_SCHOOL_FILTER_KEY));
+      if (saved && typeof saved === "object") {
+        return { Public: saved.Public !== false, Charter: saved.Charter !== false, Private: saved.Private !== false };
+      }
+    } catch (e) { /* fall through to defaults */ }
+    return { Public: true, Charter: true, Private: true };
+  }
+  function saveSchoolTypeFilter() {
+    try { sessionStorage.setItem(SF_SCHOOL_FILTER_KEY, JSON.stringify(schoolTypeFilter)); } catch (e) { /* display pref only */ }
+  }
+  var schoolTypeFilter = loadSchoolTypeFilter();
+  function sfSchoolCategory(props) {
+    // charter_yesno / public_yesno arrive as real booleans from the .json feed
+    if (findPropCI(props || {}, ["charter_yesno"]) === true) return "Charter";
+    return findPropCI(props || {}, ["public_yesno"]) === false ? "Private" : "Public";
+  }
+  function sfSchoolGradeRange(props) {
+    var lo = findPropCI(props || {}, ["low_grade"]);
+    var hi = findPropCI(props || {}, ["high_grade"]);
+    if (lo == null || hi == null || lo === "" || hi === "") return null;
+    return String(lo) === String(hi) ? String(lo) : String(lo) + "–" + String(hi);
+  }
+
+  registerLayer({
+    id: "school-site", group: "schools",
+    label: "School Location (nearest " + SF_SCHOOL_SITE_COUNT + ")",
+    color: "#0F6F6F", // legend/accent color (matches overlay.style below)
+    overlay: {
+      load: loadSchoolSites,
+      // flat base kept for moduleColor()/baseStyleFor; the per-feature styler
+      // paints each dot by type and hides filtered-off types. Explicit
+      // fillOpacity everywhere — dots must not inherit the polygon-oriented
+      // scaled fill.
+      style: { color: "#0F6F6F", weight: 1.5, fillColor: "#4FB0A5", fillOpacity: 0.85 },
+      styleForFeature: function (feature) {
+        var cat = sfSchoolCategory(feature.properties);
+        if (!schoolTypeFilter[cat]) return { opacity: 0, fillOpacity: 0 };
+        var color = SF_SCHOOL_CAT_META[cat].color;
+        return { color: color, fillColor: color, opacity: 1, fillOpacity: 0.85 };
+      },
+      pointToLayer: function (feature, latlng) {
+        var cat = sfSchoolCategory(feature.properties);
+        var meta = SF_SCHOOL_CAT_META[cat];
+        var off = !schoolTypeFilter[cat];
+        var marker = L.circleMarker(latlng, {
+          radius: 5, weight: 1.5,
+          color: meta.color, fillColor: meta.color,
+          opacity: off ? 0 : 1, fillOpacity: off ? 0 : 0.85
+        });
+        // hover identity for the dots — same pattern as the nearest-point
+        // factory: the shared dark hover snapshot, gated to hover-capable
+        // devices; identity mirrors the card row (name + type + address).
+        if (hoverCapable) {
+          var token = null;
+          marker
+            .on("mouseover", function () {
+              var props = feature.properties || {};
+              var name = findPropCI(props, ["school", "school_name", "name"]);
+              var addr = findPropCI(props, ["street_address", "address"]);
+              token = {
+                modId: "school-site",
+                label: (name ? String(name) : "School") + " — " + meta.full,
+                address: addr ? String(addr) : "",
+                latlng: latlng,
+                color: meta.color,
+                layerLabel: "School Location (nearest " + SF_SCHOOL_SITE_COUNT + ")"
+              };
+              hoveredPoi = token;
+              updateHover();
+            })
+            .on("mouseout", function () {
+              if (hoveredPoi === token) {
+                hoveredPoi = null;
+                updateHover();
+              }
+            });
+        }
+        return marker;
+      }
+    },
+    query: function (point, seq) {
+      return loadSchoolSites().then(function (geojson) {
+        var features = (geojson && geojson.features) || [];
+        var clean = function (v) { var s = v == null ? "" : String(v).trim(); return s ? s : null; };
+        var withDistance = [];
+        for (var i = 0; i < features.length; i++) {
+          var latLng = pointFeatureLatLng(features[i]);
+          if (!latLng) continue;
+          var props = features[i].properties || {};
+          withDistance.push({
+            name: clean(findPropCI(props, ["school", "school_name", "name"])),
+            category: sfSchoolCategory(props),
+            grades: sfSchoolGradeRange(props),
+            address: clean(findPropCI(props, ["street_address", "address"])),
+            distanceMi: haversineMiles(point.lat, point.lng, latLng.lat, latLng.lng)
+          });
+        }
+        if (!withDistance.length) return null;
+        withDistance.sort(function (a, b) { return a.distanceMi - b.distanceMi; });
+        // full sorted set (not just nearest 3) so the type chips re-slice the
+        // list client-side without re-querying
+        return { seq: seq, schools: withDistance };
+      });
+    },
+    render: function (result) {
+      var wrap = document.createElement("div");
+      wrap.className = "card-flush";
+
+      var counts = { Public: 0, Charter: 0, Private: 0 };
+      result.schools.forEach(function (s) { counts[s.category]++; });
+
+      // ---- type chips (§8a/8b) — pure toggles driving the list, the map
+      // dots, the header suffix, and the footer notice ----
+      var chipsWrap = document.createElement("div");
+      chipsWrap.className = "school-chips";
+      var chipEls = {};
+      SF_SCHOOL_CATS.forEach(function (cat) {
+        var meta = SF_SCHOOL_CAT_META[cat];
+        var chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = "school-chip";
+        chip.setAttribute("aria-pressed", "false");
+        var dot = document.createElement("span");
+        dot.className = "school-chip-dot";
+        var txt = document.createElement("span");
+        txt.className = "school-chip-label";
+        txt.textContent = meta.full;
+        var count = document.createElement("span");
+        count.className = "school-chip-count";
+        count.textContent = String(counts[cat]);
+        chip.appendChild(dot);
+        chip.appendChild(txt);
+        chip.appendChild(count);
+        chip.addEventListener("click", function () {
+          schoolTypeFilter[cat] = !schoolTypeFilter[cat];
+          saveSchoolTypeFilter();
+          renderList();
+          var mod = getLayerById("school-site");
+          if (mod) restyleOverlayFeatures(mod); // repaint/hide dots to match
+        });
+        chipEls[cat] = { chip: chip, dot: dot };
+        chipsWrap.appendChild(chip);
+      });
+      wrap.appendChild(chipsWrap);
+
+      var rowsWrap = document.createElement("div");
+      rowsWrap.className = "school-nearest";
+      wrap.appendChild(rowsWrap);
+
+      // footer strip: the source footnote by default; the hiding notice +
+      // "Show all" reset while any type is toggled off
+      var footRow = document.createElement("div");
+      footRow.className = "school-footrow";
+      var footNote = document.createElement("div");
+      footNote.className = "school-footnote";
+      footRow.appendChild(footNote);
+      var showAll = document.createElement("button");
+      showAll.type = "button";
+      showAll.className = "school-show-all";
+      showAll.textContent = "Show all";
+      showAll.hidden = true;
+      showAll.addEventListener("click", function () {
+        SF_SCHOOL_CATS.forEach(function (cat) { schoolTypeFilter[cat] = true; });
+        saveSchoolTypeFilter();
+        renderList();
+        var mod = getLayerById("school-site");
+        if (mod) restyleOverlayFeatures(mod);
+      });
+      footRow.appendChild(showAll);
+      wrap.appendChild(footRow);
+
+      // header suffix — display-only: the block label reads "School Location
+      // (all, incl. private · nearest 3)" or "(2 of 3 types · nearest 3)";
+      // mod.label (worksheet-canonical string) is untouched.
+      function updateHeaderSuffix(onCount) {
+        var labelEl = document.querySelector('label[for="toggle-school-site"]');
+        if (!labelEl) return;
+        var suffixText = (onCount === SF_SCHOOL_CATS.length
+          ? "(all, incl. private · nearest " + SF_SCHOOL_SITE_COUNT + ")"
+          : "(" + onCount + " of " + SF_SCHOOL_CATS.length + " types · nearest " + SF_SCHOOL_SITE_COUNT + ")");
+        labelEl.textContent = "School Location ";
+        var suffix = document.createElement("span");
+        suffix.className = "school-suffix";
+        suffix.textContent = suffixText;
+        labelEl.appendChild(suffix);
+      }
+
+      function renderList() {
+        rowsWrap.innerHTML = "";
+        var onCats = SF_SCHOOL_CATS.filter(function (cat) { return schoolTypeFilter[cat]; });
+        SF_SCHOOL_CATS.forEach(function (cat) {
+          var on = !!schoolTypeFilter[cat];
+          var meta = SF_SCHOOL_CAT_META[cat];
+          var els = chipEls[cat];
+          els.chip.className = "school-chip" + (on ? " is-on" : "");
+          els.chip.setAttribute("aria-pressed", on ? "true" : "false");
+          if (on) {
+            els.chip.style.color = "color-mix(in srgb, " + meta.color + " 55%, #1f2937)";
+            els.chip.style.background = "color-mix(in srgb, " + meta.color + " 12%, transparent)";
+            els.chip.style.borderColor = "color-mix(in srgb, " + meta.color + " 35%, transparent)";
+            els.dot.style.background = meta.color;
+          } else {
+            els.chip.style.color = "";
+            els.chip.style.background = "";
+            els.chip.style.borderColor = "";
+            els.dot.style.background = "";
+          }
+        });
+        updateHeaderSuffix(onCats.length);
+        var shown = result.schools.filter(function (s) { return schoolTypeFilter[s.category]; }).slice(0, SF_SCHOOL_SITE_COUNT);
+        if (!shown.length) {
+          var empty = document.createElement("p");
+          empty.className = "school-list-empty";
+          empty.textContent = "No schools of the selected type(s) nearby.";
+          rowsWrap.appendChild(empty);
+        } else {
+          rowsWrap.appendChild(renderNearestRows(shown.map(function (s) {
+            var meta = SF_SCHOOL_CAT_META[s.category];
+            return {
+              name: s.name ? String(s.name) : "School",
+              tag: { text: meta.full + (s.grades ? " · " + s.grades : ""), color: meta.color },
+              note: s.address ? String(s.address) : null,
+              dotColor: meta.color,
+              accentColor: meta.color,
+              distanceLabel: s.distanceMi.toFixed(2) + " mi"
+            };
+          })));
+        }
+        var hiddenCount = SF_SCHOOL_CATS.reduce(function (sum, cat) {
+          return schoolTypeFilter[cat] ? sum : sum + counts[cat];
+        }, 0);
+        if (hiddenCount > 0) {
+          var offNames = SF_SCHOOL_CATS.filter(function (cat) { return !schoolTypeFilter[cat]; })
+            .map(function (cat) { return SF_SCHOOL_CAT_META[cat].full; });
+          footNote.textContent = "Hiding " + hiddenCount + " school" + (hiddenCount === 1 ? "" : "s") + " (" + offNames.join(", ") + ").";
+          showAll.hidden = false;
+        } else {
+          footNote.textContent = "Straight-line distance. Type from the DataSF school registry (public / charter / private).";
+          showAll.hidden = true;
+        }
+      }
+      renderList();
+      return wrap;
     }
   });
 
