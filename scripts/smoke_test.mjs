@@ -76,6 +76,10 @@ async function cardText(page, id) {
     return el && !el.querySelector(".loading-row") &&
       (el.querySelector(".result-fields") || el.querySelector(".card-flush") ||
        el.querySelector(".state-empty") ||
+       // 4b compact cards (docs/CARD_RENDER_API.md): render() is skipped on
+       // success and the body goes state-compact (hidden) — the result lives
+       // in the header .card-compact-value instead, so accept that as done.
+       el.classList.contains("state-compact") ||
        el.classList.contains("state-empty") || el.classList.contains("state-error") || el.querySelector(".state-error"));
   }, id, { timeout: QUERY_TIMEOUT }).catch(() => {});
   return page.evaluate((cid) => {
@@ -83,7 +87,13 @@ async function cardText(page, id) {
     if (!el) return { text: "(no card)", error: true, empty: false };
     const block = el.closest(".layer-block");
     const pill = block && block.querySelector(".card-id-pill:not([hidden])");
-    const text = (pill ? pill.textContent + " " : "") + el.innerText;
+    // a compact card carries its identity in the header value/meta, not the
+    // (hidden) body — prepend those the same way the pill is prepended, so
+    // the "District N" / neighborhood-name assertions read the whole card.
+    const cv = block && block.querySelector(".card-compact-value:not([hidden])");
+    const cm = block && block.querySelector(".card-compact-meta:not([hidden])");
+    const head = [pill, cv, cm].filter(Boolean).map((n) => n.textContent).join(" ");
+    const text = (head ? head + " " : "") + el.innerText;
     return {
       text: text.replace(/\s+/g, " ").trim(),
       error: el.classList.contains("state-error") || !!el.querySelector(".state-error"),
