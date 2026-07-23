@@ -1636,7 +1636,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
        tie predating the redesign); the redesign blue is only the fallback */
     border-left: 3px solid var(--layer-accent, var(--card-accent));
     border-radius: 10px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    /* Handoff 3 §5a: the soft shadow also carries the layer's color */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
+      0 3px 14px -4px color-mix(in srgb, var(--layer-accent, var(--card-accent)) 45%, transparent);
   }
   /* 4e state accents live on the card's left edge; :has() reads the body's
      state class because the accent element (the block) is the body's parent. */
@@ -1662,8 +1664,9 @@ svg.leaflet-image-layer.leaflet-interactive path {
     flex: none;
     font-size: 13px;
     font-weight: 600;
-    color: var(--card-link);
-    background: var(--card-pill-bg);
+    /* Handoff 3 §5a: the pill is tinted with the layer's own color */
+    color: var(--layer-accent, var(--card-link));
+    background: color-mix(in srgb, currentColor 9%, transparent);
     padding: 3px 10px;
     border-radius: 999px;
     white-space: nowrap;
@@ -1771,6 +1774,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
   .card-nearest-name { font-size: 14px; font-weight: 700; color: var(--card-ink); }
   .card-nearest-dot { display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-right: 6px; vertical-align: 0; }
   .card-nearest-note { font-size: 12.5px; color: var(--card-body-ink); }
+  .card-nearest-tag { font-weight: 600; }
+  .card-nearest-note .card-sep { color: var(--card-sep); }
   .card-distance {
     flex: none;
     font-size: 12px;
@@ -4905,6 +4910,35 @@ function initSFExplorer() {
     hint.appendChild(cardEl("span", "card-details-hint-word", "details"));
     return hint;
   }
+  function cardTitleCase(str) {
+    // Handoff 3 §6a: normalize ALL-CAPS feed strings for display ("WATERS"
+    // -> "Waters", "700 S STATE ST" -> "700 S State St"). Single letters
+    // (grid directionals), tokens carrying digits, and a small keep-caps
+    // set (school types like "HS"/"PS", compound directionals, the fleet's
+    // state codes) pass through untouched — expanding abbreviations would
+    // be a guess, and guessing is worse (honesty rules).
+    if (str == null) return str;
+    var KEEP = { ES: 1, MS: 1, HS: 1, PS: 1, IS: 1, NE: 1, NW: 1, SE: 1, SW: 1, IL: 1, NY: 1, CA: 1, US: 1 };
+    return String(str).split(/\s+/).map(function (word) {
+      if (word.length < 2 || /\d/.test(word) || KEEP[word] === 1) return word;
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    }).join(" ");
+  }
+  function cardGradeRange(str) {
+    // Handoff 3 §6a: collapse a contiguous comma-separated grade list to a
+    // range ("PK, K, 1, 2, ..., 8" -> "PK–8"). A gapped or unrecognized
+    // list renders unchanged — never imply coverage the data doesn't state.
+    if (str == null) return str;
+    var ladder = ["PE", "PK", "K", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
+    var parts = String(str).split(",").map(function (p) { return p.trim().toUpperCase(); }).filter(Boolean);
+    if (parts.length < 2) return String(str).trim();
+    var start = ladder.indexOf(parts[0]);
+    if (start === -1) return String(str).trim();
+    for (var i = 1; i < parts.length; i++) {
+      if (ladder[start + i] !== parts[i]) return String(str).trim();
+    }
+    return parts[0] + "–" + parts[parts.length - 1];
+  }
   function renderBodyIntro(spec) {
     // { title?, note? } — the body-name + count line under the header.
     var el = cardEl("div", "card-intro");
@@ -4981,8 +5015,11 @@ function initSFExplorer() {
     return det;
   }
   function renderNearestRows(items) {
-    // [{ name, note?, distanceLabel? }] — nearest-N rows with distance pills;
-    // the caller owns distance formatting (Handoff 2 §4d).
+    // [{ name, note?, tag?: {text, color}, accentColor?, dotColor?,
+    //    distanceLabel? }] — nearest-N rows with distance pills (Handoff 2
+    // §4d + Handoff 3 §8a). tag renders as a colored 600-weight lead on the
+    // note line ("High · 9–12"); accentColor tints the distance pill with
+    // the same type color; the caller owns distance formatting.
     var frag = document.createDocumentFragment();
     items.forEach(function (item) {
       var row = cardEl("div", "card-nearest card-row-b");
@@ -4996,9 +5033,28 @@ function initSFExplorer() {
         nameEl.insertBefore(dot, nameEl.firstChild);
       }
       main.appendChild(nameEl);
-      if (item.note) main.appendChild(cardEl("div", "card-nearest-note", item.note));
+      if (item.tag || item.note) {
+        var noteEl = cardEl("div", "card-nearest-note");
+        if (item.tag && item.tag.text) {
+          var tagEl = cardEl("span", "card-nearest-tag", item.tag.text);
+          if (item.tag.color) tagEl.style.color = String(item.tag.color);
+          noteEl.appendChild(tagEl);
+        }
+        if (item.note) {
+          if (item.tag && item.tag.text) noteEl.appendChild(cardEl("span", "card-sep", " · "));
+          noteEl.appendChild(document.createTextNode(item.note));
+        }
+        main.appendChild(noteEl);
+      }
       row.appendChild(main);
-      if (item.distanceLabel) row.appendChild(cardEl("span", "card-distance", item.distanceLabel));
+      if (item.distanceLabel) {
+        var pill = cardEl("span", "card-distance", item.distanceLabel);
+        if (item.accentColor) {
+          pill.style.color = String(item.accentColor);
+          pill.style.background = "color-mix(in srgb, " + String(item.accentColor) + " 10%, transparent)";
+        }
+        row.appendChild(pill);
+      }
       frag.appendChild(row);
     });
     return frag;
@@ -6059,16 +6115,26 @@ function initSFExplorer() {
           if (profileHtml) fields.push({ label: "Profile", html: profileHtml });
           return renderFieldList(fields);
         }
+        // Handoff 3 §6a: title-cased name/address (opts.titleCaseData for
+        // ALL-CAPS feeds), grades collapsed to a range and moved to the
+        // header pill (cardIdentifier below) — the note carries the address
+        // (and district where a fork's schema supplies one).
+        var fmt = opts.titleCaseData ? cardTitleCase : String;
         var noteBits = [];
-        if (result.address) noteBits.push(String(result.address));
-        if (result.grades) noteBits.push("Grades " + String(result.grades));
+        if (result.address) noteBits.push(fmt(String(result.address)));
         if (result.district) noteBits.push("District " + String(result.district));
         var wrap = cardEl("div", "card-flush");
         wrap.appendChild(renderLinkRow({
-          title: result.name ? String(result.name) : "Unknown",
+          title: result.name ? fmt(String(result.name)) : "Unknown",
           note: noteBits.length ? noteBits.join(" · ") : null
         }));
         return wrap;
+      },
+      cardIdentifier: function (result) {
+        // the collapsed grade range as the identifier pill ("K–8"); no
+        // grades in the feed -> no pill, never an empty one
+        if (result.none || !result.grades) return null;
+        return cardGradeRange(String(result.grades));
       },
       primaryLink: function (result) {
         if (result.none) return opts.moreLink || null;
